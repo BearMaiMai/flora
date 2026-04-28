@@ -1,0 +1,12 @@
+/* components/flower-card/flower-card.wxss */
+.flower-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20rpx;
+}
+.flower-image { width: 100%; height: 300rpx; display: block; }
+.flower-info { padding: 16rpx 20rpx; }
+.flower-name { font-size: var(--font-md); font-weight: 600; display: block; }
+.flower-category { font-size: var(--font-sm); display: block; margin-top: 4rpx; }

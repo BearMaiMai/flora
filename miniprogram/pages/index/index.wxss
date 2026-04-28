@@ -1,0 +1,60 @@
+/* pages/index/index.wxss - 首页样式 */
+.container {
+  padding: 24rpx;
+}
+
+.search-bar {
+  background-color: var(--bg-grey);
+  border-radius: var(--border-radius-round);
+  padding: 20rpx 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.search-placeholder {
+  color: var(--text-hint);
+  font-size: var(--font-md);
+}
+
+.daily-tip {
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  border: none;
+}
+
+.tip-label {
+  font-size: var(--font-sm);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.tip-content {
+  font-size: var(--font-md);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.section {
+  margin-top: 32rpx;
+}
+
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.section-more {
+  font-size: var(--font-sm);
+}
+
+.empty-placeholder {
+  text-align: center;
+  padding: 80rpx 0;
+  color: var(--text-hint);
+  font-size: var(--font-sm);
+}

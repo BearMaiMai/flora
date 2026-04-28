@@ -1,0 +1,27 @@
+<!--pages/index/index.wxml - 首页-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="goToEncyclopedia">
+    <text class="search-placeholder">🔍 搜索花卉...</text>
+  </view>
+
+  <!-- 每日养花小贴士 -->
+  <view class="card daily-tip" wx:if="{{dailyTip}}">
+    <text class="tip-label">🌱 今日小贴士</text>
+    <text class="tip-content">{{dailyTip}}</text>
+  </view>
+
+  <!-- 推荐花卉 -->
+  <view class="section">
+    <view class="section-header flex-between">
+      <text class="section-title">推荐花卉</text>
+      <text class="section-more text-green" bindtap="goToEncyclopedia">查看更多 ></text>
+    </view>
+    <view class="recommend-list">
+      <!-- TODO: 花卉卡片列表 -->
+      <view class="empty-placeholder" wx:if="{{!recommendList.length}}">
+        <text>暂无推荐，快去探索花卉百科吧 🌺</text>
+      </view>
+    </view>
+  </view>
+</view>

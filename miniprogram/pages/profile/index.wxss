@@ -1,0 +1,12 @@
+/* pages/profile/index.wxss */
+.container { padding: 24rpx; }
+.user-card { padding: 32rpx; }
+.avatar { width: 100rpx; height: 100rpx; border-radius: 50%; margin-right: 24rpx; }
+.username { font-size: var(--font-lg); font-weight: 600; }
+.login-text { font-size: var(--font-lg); color: var(--text-hint); }
+.stats-card { text-align: center; }
+.stat-item { flex: 1; }
+.stat-num { display: block; font-size: var(--font-xl); font-weight: 600; color: var(--color-primary); }
+.stat-label { display: block; font-size: var(--font-xs); color: var(--text-hint); margin-top: 8rpx; }
+.menu-item { padding: 24rpx 0; }
+.arrow { color: var(--text-hint); }

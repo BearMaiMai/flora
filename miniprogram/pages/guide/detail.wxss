@@ -1,0 +1,4 @@
+/* pages/guide/detail.wxss */
+.container { padding: 24rpx; }
+.guide-title { font-size: var(--font-xl); font-weight: 600; }
+.empty-placeholder { text-align: center; padding: 200rpx 0; color: var(--text-hint); }

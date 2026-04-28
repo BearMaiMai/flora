@@ -1,0 +1,32 @@
+<!--pages/encyclopedia/detail.wxml - 花卉详情页-->
+<view class="container" wx:if="{{flower}}">
+  <!-- 头图 -->
+  <image class="flower-cover" src="{{flower.coverImage}}" mode="aspectFill" />
+
+  <!-- 基本信息 -->
+  <view class="card info-card">
+    <view class="flower-name">{{flower.name}}</view>
+    <view class="flower-alias text-hint" wx:if="{{flower.alias}}">别名：{{flower.alias}}</view>
+    <view class="flower-desc mt-sm">{{flower.description}}</view>
+  </view>
+
+  <!-- 养护指南 -->
+  <view class="card">
+    <view class="card-title">🌱 养护指南</view>
+    <!-- TODO: 养护信息详情 -->
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar safe-bottom">
+    <view class="action-btn" bindtap="onToggleFavorite">
+      <text>{{isFavorite ? '❤️' : '🤍'}} 收藏</text>
+    </view>
+    <view class="action-btn primary" bindtap="onAddToGarden">
+      <text>🌱 添加到花园</text>
+    </view>
+  </view>
+</view>
+
+<view class="empty-placeholder" wx:else>
+  <text>加载中...</text>
+</view>

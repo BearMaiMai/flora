@@ -1,0 +1,9 @@
+<!--pages/guide/index.wxml-->
+<view class="container">
+  <view class="guide-list">
+    <view class="empty-placeholder" wx:if="{{!loading && !guideList.length}}">
+      <text>种植指南即将上线 📖</text>
+    </view>
+    <!-- TODO: 指南卡片列表 -->
+  </view>
+</view>

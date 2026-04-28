@@ -1,0 +1,10 @@
+/* tabbar 和功能图标占位说明 */
+/* 请将以下图标文件放入对应目录：*/
+/* images/tabbar/home.png */
+/* images/tabbar/home-active.png */
+/* images/tabbar/encyclopedia.png */
+/* images/tabbar/encyclopedia-active.png */
+/* images/tabbar/garden.png */
+/* images/tabbar/garden-active.png */
+/* images/tabbar/profile.png */
+/* images/tabbar/profile-active.png */

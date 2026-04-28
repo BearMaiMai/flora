@@ -1,0 +1,26 @@
+<!--pages/garden/index.wxml - 我的花园-->
+<view class="container">
+  <!-- 今日提醒 -->
+  <view class="card" wx:if="{{todayReminders.length}}">
+    <view class="card-title">⏰ 今日待办</view>
+    <!-- TODO: 提醒列表 -->
+  </view>
+
+  <!-- 我的植物 -->
+  <view class="section">
+    <view class="section-header flex-between">
+      <text class="section-title">🌱 我的植物 ({{plantList.length}})</text>
+      <text class="text-green" bindtap="goToAddPlant">+ 添加</text>
+    </view>
+
+    <view class="plant-list" wx:if="{{plantList.length}}">
+      <!-- TODO: 植物卡片列表 -->
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">🪴</text>
+      <text class="empty-text">还没有种花哦</text>
+      <view class="btn-primary" bindtap="goToAddPlant">去花卉百科添加</view>
+    </view>
+  </view>
+</view>

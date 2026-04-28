@@ -1,0 +1,8 @@
+<!--pages/reminder/index.wxml-->
+<view class="container">
+  <view class="empty-placeholder" wx:if="{{!loading && !reminderList.length}}">
+    <text class="empty-icon">🔔</text>
+    <text>暂无提醒，添加植物后会自动生成哦</text>
+  </view>
+  <!-- TODO: 提醒列表 -->
+</view>

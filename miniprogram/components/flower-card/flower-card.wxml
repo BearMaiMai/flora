@@ -1,0 +1,8 @@
+<!--components/flower-card/flower-card.wxml-->
+<view class="flower-card" bindtap="onTap">
+  <image class="flower-image" src="{{flower.coverImage}}" mode="aspectFill" lazy-load />
+  <view class="flower-info">
+    <text class="flower-name">{{flower.name}}</text>
+    <text class="flower-category text-hint">{{flower.category}}</text>
+  </view>
+</view>

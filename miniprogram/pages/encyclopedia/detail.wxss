@@ -1,0 +1,54 @@
+/* pages/encyclopedia/detail.wxss - 花卉详情页样式 */
+.flower-cover {
+  width: 100%;
+  height: 480rpx;
+  display: block;
+}
+
+.container { padding-bottom: 120rpx; }
+
+.info-card { margin: 24rpx; }
+
+.flower-name {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 16rpx 32rpx;
+  background-color: var(--bg-card);
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: var(--font-md);
+  border-radius: var(--border-radius-round);
+  margin: 0 8rpx;
+  background-color: var(--bg-grey);
+}
+
+.action-btn.primary {
+  background-color: var(--color-primary);
+  color: var(--text-white);
+}
+
+.empty-placeholder {
+  text-align: center;
+  padding: 200rpx 0;
+  color: var(--text-hint);
+}

@@ -1,0 +1,8 @@
+<!--pages/guide/detail.wxml-->
+<view class="container" wx:if="{{guide}}">
+  <view class="card">
+    <text class="guide-title">{{guide.title}}</text>
+    <rich-text nodes="{{guide.content}}" class="mt-md"></rich-text>
+  </view>
+</view>
+<view class="empty-placeholder" wx:else><text>加载中...</text></view>

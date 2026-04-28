@@ -1,0 +1,40 @@
+/* pages/encyclopedia/index.wxss - 花卉百科列表页样式 */
+.container { padding: 24rpx; }
+
+.search-bar {
+  background-color: var(--bg-grey);
+  border-radius: var(--border-radius-round);
+  padding: 16rpx 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.search-input {
+  font-size: var(--font-md);
+  width: 100%;
+}
+
+.category-scroll {
+  white-space: nowrap;
+  margin-bottom: 24rpx;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: var(--border-radius-round);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  background-color: var(--bg-grey);
+}
+
+.category-item.active {
+  background-color: var(--color-primary);
+  color: var(--text-white);
+}
+
+.empty-placeholder {
+  text-align: center;
+  padding: 120rpx 0;
+  color: var(--text-hint);
+}

@@ -1,0 +1,7 @@
+/* pages/reminder/index.wxss */
+.container { padding: 24rpx; }
+.empty-placeholder {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 200rpx 0; color: var(--text-hint);
+}
+.empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }

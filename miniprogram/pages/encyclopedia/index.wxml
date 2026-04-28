@@ -1,0 +1,21 @@
+<!--pages/encyclopedia/index.wxml - 花卉百科列表页-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索花卉名称..." value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view class="category-scroll" scroll-x enable-flex>
+    <view class="category-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryTap" data-category="">全部</view>
+    <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 花卉列表 -->
+  <view class="flower-list">
+    <view class="empty-placeholder" wx:if="{{!loading && !flowerList.length}}">
+      <text>暂无花卉数据 🌿</text>
+    </view>
+    <!-- TODO: 使用 flower-card 组件渲染列表 -->
+  </view>
+</view>

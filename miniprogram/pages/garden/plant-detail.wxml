@@ -1,0 +1,16 @@
+<!--pages/garden/plant-detail.wxml-->
+<view class="container" wx:if="{{plant}}">
+  <view class="card">
+    <text class="plant-name">{{plant.nickname || plant.flowerName}}</text>
+    <text class="text-hint mt-sm">{{plant.location}} · 养了 {{plant.days}} 天</text>
+  </view>
+  <view class="section">
+    <view class="flex-between mb-md">
+      <text class="section-title">📔 成长日记</text>
+      <text class="text-green" bindtap="goToAddDiary">+ 记录</text>
+    </view>
+    <view class="empty-placeholder" wx:if="{{!diaryList.length}}">
+      <text>还没有日记，记录一下吧 ✏️</text>
+    </view>
+  </view>
+</view>
