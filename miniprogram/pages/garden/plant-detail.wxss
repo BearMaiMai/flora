@@ -1,6 +1,63 @@
 /* pages/garden/plant-detail.wxss */
 .container { padding: 24rpx; }
+
+.plant-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.plant-avatar-lg {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.plant-emoji-lg {
+  font-size: 80rpx;
+}
+
 .plant-name { font-size: var(--font-xl); font-weight: 600; }
+.plant-type { font-size: var(--font-sm); margin-top: 4rpx; }
+
+.plant-meta-row {
+  display: flex;
+  gap: 16rpx;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.meta-tag {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  background-color: var(--bg-grey);
+  padding: 4rpx 16rpx;
+  border-radius: var(--border-radius-round);
+}
+
 .section { margin-top: 32rpx; }
 .section-title { font-size: var(--font-lg); font-weight: 600; }
+
+.diary-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.diary-date {
+  display: block;
+  font-size: var(--font-xs);
+  margin-bottom: 8rpx;
+}
+
+.diary-content {
+  font-size: var(--font-md);
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
 .empty-placeholder { text-align: center; padding: 80rpx 0; color: var(--text-hint); }

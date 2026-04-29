@@ -1,18 +1,18 @@
 // pages/profile/index.js - 个人中心
 Page({
   data: {
-    userInfo: null,
-    isLoggedIn: false,
-    stats: { plantCount: 0, diaryCount: 0, favoriteCount: 0 },
+    userInfo: {
+      avatarUrl: '',
+      nickName: '花友小明',
+    },
+    isLoggedIn: true,
+    stats: { plantCount: 3, diaryCount: 12, favoriteCount: 8 },
   },
-  onLoad() { this.checkLoginStatus() },
-  onShow() { this.checkLoginStatus() },
-  checkLoginStatus() {
-    const app = getApp()
-    this.setData({
-      userInfo: app.globalData.userInfo,
-      isLoggedIn: app.globalData.isLoggedIn,
-    })
+  onLoad() {
+    // 模拟已登录状态
+  },
+  onShow() {
+    // 后续接入 service 后刷新
   },
   onLogin() {
     wx.getUserProfile({
@@ -22,7 +22,6 @@ Page({
         app.globalData.userInfo = res.userInfo
         app.globalData.isLoggedIn = true
         this.setData({ userInfo: res.userInfo, isLoggedIn: true })
-        // TODO: 调用云函数保存用户信息
       },
     })
   },
@@ -30,9 +29,13 @@ Page({
     wx.navigateTo({ url: '/pages/reminder/index' })
   },
   goToFavorites() {
-    // TODO: 跳转到收藏页
+    wx.showToast({ title: '收藏页开发中', icon: 'none' })
   },
   goToAbout() {
-    // TODO: 跳转到关于页面
+    wx.showModal({
+      title: '关于养花呀',
+      content: '养花呀 v1.0.0\n\n一款帮助花卉爱好者轻松种花的小助手 🌸\n\n功能：花卉百科、我的花园、养护提醒、成长日记',
+      showCancel: false,
+    })
   },
 })

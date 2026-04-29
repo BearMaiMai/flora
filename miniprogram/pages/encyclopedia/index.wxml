@@ -11,11 +11,29 @@
     <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}">{{item}}</view>
   </scroll-view>
 
+  <!-- 花卉数量统计 -->
+  <view class="list-count text-hint" wx:if="{{flowerList.length}}">
+    <text>共 {{flowerList.length}} 种花卉</text>
+  </view>
+
   <!-- 花卉列表 -->
   <view class="flower-list">
     <view class="empty-placeholder" wx:if="{{!loading && !flowerList.length}}">
-      <text>暂无花卉数据 🌿</text>
+      <text class="empty-icon">🔍</text>
+      <text>没有找到相关花卉</text>
     </view>
-    <!-- TODO: 使用 flower-card 组件渲染列表 -->
+    <view class="flower-item card" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+      <view class="flower-cover" style="background-color: #E8F5E9;">
+        <text class="flower-emoji">🌿</text>
+      </view>
+      <view class="flower-info">
+        <view class="flower-name-row flex-between">
+          <text class="flower-name">{{item.name}}</text>
+          <text class="flower-difficulty">{{item.difficulty === 1 ? '⭐' : item.difficulty === 2 ? '⭐⭐' : '⭐⭐⭐'}}</text>
+        </view>
+        <text class="flower-cat text-hint">{{item.category}}</text>
+        <text class="flower-desc text-secondary text-ellipsis">{{item.description}}</text>
+      </view>
+    </view>
   </view>
 </view>

@@ -2,9 +2,15 @@
 <view class="container">
   <!-- 用户信息 -->
   <view class="card user-card flex-row" wx:if="{{isLoggedIn}}">
-    <image class="avatar" src="{{userInfo.avatarUrl}}" />
+    <view class="avatar-wrap">
+      <image wx:if="{{userInfo.avatarUrl}}" class="avatar" src="{{userInfo.avatarUrl}}" />
+      <view wx:else class="avatar-placeholder">
+        <text class="avatar-emoji">🧑‍🌾</text>
+      </view>
+    </view>
     <view class="user-info">
       <text class="username">{{userInfo.nickName}}</text>
+      <text class="user-motto text-hint">用心养花，静待花开 🌸</text>
     </view>
   </view>
   <view class="card user-card flex-center" wx:else bindtap="onLogin">

@@ -1,9 +1,22 @@
 <!--pages/garden/index.wxml - 我的花园-->
 <view class="container">
   <!-- 今日提醒 -->
-  <view class="card" wx:if="{{todayReminders.length}}">
-    <view class="card-title">⏰ 今日待办</view>
-    <!-- TODO: 提醒列表 -->
+  <view class="card reminder-card" wx:if="{{todayReminders.length}}">
+    <view class="card-title">⏰ 今日待办 ({{todayReminders.length}})</view>
+    <view class="reminder-list">
+      <view class="reminder-item flex-between" wx:for="{{todayReminders}}" wx:key="_id">
+        <view class="reminder-left flex-row">
+          <text class="reminder-icon">{{item.icon}}</text>
+          <view class="reminder-text">
+            <text class="reminder-plant">{{item.plantName}}</text>
+            <text class="reminder-type text-hint">{{item.type}} · {{item.time}}</text>
+          </view>
+        </view>
+        <view class="reminder-done-btn" bindtap="onCompleteReminder" data-id="{{item._id}}">
+          <text>✓</text>
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- 我的植物 -->
@@ -14,7 +27,22 @@
     </view>
 
     <view class="plant-list" wx:if="{{plantList.length}}">
-      <!-- TODO: 植物卡片列表 -->
+      <view class="plant-card card" wx:for="{{plantList}}" wx:key="_id" bindtap="goToPlantDetail" data-id="{{item._id}}">
+        <view class="plant-avatar" style="background-color: {{item.status === 'needCare' ? '#FFF3E0' : '#E8F5E9'}};">
+          <text class="plant-emoji">{{item.status === 'needCare' ? '🌻' : '🌿'}}</text>
+        </view>
+        <view class="plant-info">
+          <view class="flex-between">
+            <text class="plant-name">{{item.nickname}}</text>
+            <text class="plant-status {{item.status === 'needCare' ? 'status-warn' : 'status-ok'}}">{{item.status === 'needCare' ? '需关注' : '健康'}}</text>
+          </view>
+          <text class="plant-flower text-hint">{{item.flowerName}} · {{item.location}}</text>
+          <view class="plant-meta flex-between mt-sm">
+            <text class="text-hint">🗓️ 养了 {{item.days}} 天</text>
+            <text class="text-hint">💧 {{item.lastWatered}}</text>
+          </view>
+        </view>
+      </view>
     </view>
 
     <view class="empty-state" wx:else>

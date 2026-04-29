@@ -5,6 +5,116 @@
 .section-header { margin-bottom: 20rpx; }
 .section-title { font-size: var(--font-lg); font-weight: 600; }
 
+/* 提醒卡片 */
+.reminder-card {
+  background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+}
+
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.reminder-item {
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid rgba(0,0,0,0.06);
+}
+
+.reminder-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.reminder-left {
+  gap: 16rpx;
+  align-items: center;
+}
+
+.reminder-icon {
+  font-size: 40rpx;
+}
+
+.reminder-plant {
+  display: block;
+  font-size: var(--font-md);
+  font-weight: 500;
+}
+
+.reminder-type {
+  display: block;
+  font-size: var(--font-xs);
+}
+
+.reminder-done-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-md);
+}
+
+/* 植物卡片 */
+.plant-card {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  overflow: hidden;
+}
+
+.plant-avatar {
+  width: 160rpx;
+  min-height: 180rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.plant-emoji {
+  font-size: 64rpx;
+}
+
+.plant-info {
+  flex: 1;
+  padding: 20rpx 24rpx;
+}
+
+.plant-name {
+  font-size: var(--font-lg);
+  font-weight: 600;
+}
+
+.plant-status {
+  font-size: var(--font-xs);
+  padding: 2rpx 12rpx;
+  border-radius: var(--border-radius-round);
+}
+
+.status-ok {
+  background-color: #E8F5E9;
+  color: var(--color-primary-dark);
+}
+
+.status-warn {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+.plant-flower {
+  display: block;
+  font-size: var(--font-xs);
+  margin-top: 4rpx;
+}
+
+.plant-meta {
+  font-size: var(--font-xs);
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

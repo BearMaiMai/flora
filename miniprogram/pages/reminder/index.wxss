@@ -1,7 +1,83 @@
 /* pages/reminder/index.wxss */
 .container { padding: 24rpx; }
-.empty-placeholder {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 200rpx 0; color: var(--text-hint);
+
+.page-title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  margin-bottom: 8rpx;
 }
+
+.reminder-count {
+  font-size: var(--font-sm);
+}
+
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.reminder-item.done {
+  opacity: 0.6;
+}
+
+.reminder-main {
+  align-items: center;
+}
+
+.reminder-left {
+  gap: 20rpx;
+  align-items: center;
+}
+
+.reminder-icon {
+  font-size: 44rpx;
+}
+
+.reminder-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.reminder-plant {
+  font-size: var(--font-md);
+  font-weight: 500;
+}
+
+.reminder-detail {
+  font-size: var(--font-xs);
+  margin-top: 4rpx;
+}
+
+.reminder-next {
+  font-size: var(--font-xs);
+  margin-top: 2rpx;
+}
+
+.check-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-lg);
+  color: var(--text-hint);
+  flex-shrink: 0;
+}
+
+.check-btn.checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+}
+
 .empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-text { color: var(--text-hint); font-size: var(--font-md); }

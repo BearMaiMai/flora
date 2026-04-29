@@ -1,8 +1,20 @@
 /* pages/encyclopedia/detail.wxss - 花卉详情页样式 */
+.flower-cover-wrap {
+  width: 100%;
+  height: 480rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .flower-cover {
   width: 100%;
   height: 480rpx;
   display: block;
+}
+
+.cover-placeholder-emoji {
+  font-size: 160rpx;
 }
 
 .container { padding-bottom: 120rpx; }
@@ -15,10 +27,107 @@
   color: var(--text-primary);
 }
 
+.info-tags {
+  display: flex;
+  gap: 16rpx;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: var(--border-radius-round);
+  font-size: var(--font-xs);
+}
+
+.tag-category {
+  background-color: #E8F5E9;
+  color: var(--color-primary-dark);
+}
+
+.tag-difficulty {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+.flower-desc {
+  font-size: var(--font-md);
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.flower-language {
+  font-size: var(--font-sm);
+}
+
+.card { margin: 0 24rpx 24rpx; }
+
 .card-title {
   font-size: var(--font-lg);
   font-weight: 600;
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 养护指南 */
+.care-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.care-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20rpx;
+}
+
+.care-icon {
+  font-size: 40rpx;
+  flex-shrink: 0;
+  width: 48rpx;
+  text-align: center;
+}
+
+.care-content {
+  flex: 1;
+}
+
+.care-label {
+  display: block;
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4rpx;
+}
+
+.care-text {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 小贴士 */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.tip-item {
+  display: flex;
+  gap: 12rpx;
+}
+
+.tip-dot {
+  color: var(--color-primary);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.tip-text {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .action-bar {

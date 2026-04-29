@@ -1,33 +1,60 @@
 // pages/garden/index.js - 我的花园
 Page({
   data: {
-    loading: true,
-    plantList: [],
-    todayReminders: [],
+    loading: false,
+    plantList: [
+      {
+        _id: 'p1',
+        flowerName: '绿萝',
+        nickname: '小绿',
+        location: '客厅窗台',
+        days: 45,
+        status: 'healthy',
+        lastWatered: '2天前',
+      },
+      {
+        _id: 'p2',
+        flowerName: '多肉（桃蛋）',
+        nickname: '小桃',
+        location: '阳台',
+        days: 30,
+        status: 'healthy',
+        lastWatered: '5天前',
+      },
+      {
+        _id: 'p3',
+        flowerName: '栀子花',
+        nickname: '小栀',
+        location: '卧室',
+        days: 15,
+        status: 'needCare',
+        lastWatered: '3天前',
+      },
+    ],
+    todayReminders: [
+      { _id: 'r1', plantName: '小绿', type: '浇水', icon: '💧', time: '09:00' },
+      { _id: 'r2', plantName: '小栀', type: '施肥', icon: '🧪', time: '10:00' },
+      { _id: 'r3', plantName: '小桃', type: '晒太阳', icon: '☀️', time: '14:00' },
+    ],
   },
 
   onLoad() {
-    this.loadGardenData()
+    // 模拟数据已直接写入
   },
 
   onShow() {
-    this.loadGardenData()
+    // 后续接入 service 后刷新
   },
 
   onPullDownRefresh() {
-    this.loadGardenData().then(() => wx.stopPullDownRefresh())
+    wx.stopPullDownRefresh()
   },
 
-  async loadGardenData() {
-    this.setData({ loading: true })
-    try {
-      // TODO: 加载我的植物列表和今日提醒
-      console.log('加载花园数据')
-    } catch (err) {
-      console.error('加载花园数据失败:', err)
-    } finally {
-      this.setData({ loading: false })
-    }
+  onCompleteReminder(e) {
+    const { id } = e.currentTarget.dataset
+    const todayReminders = this.data.todayReminders.filter(r => r._id !== id)
+    this.setData({ todayReminders })
+    wx.showToast({ title: '已完成', icon: 'success' })
   },
 
   goToPlantDetail(e) {

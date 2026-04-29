@@ -1,18 +1,16 @@
 // pages/guide/detail.js - 种植指南详情页
 Page({
-  data: { loading: true, guide: null },
-  onLoad(options) {
-    if (options.id) this.loadGuideDetail(options.id)
+  data: {
+    loading: false,
+    guide: {
+      _id: 'g1',
+      title: '新手入门：第一盆花怎么养？',
+      content: '<h3>🌱 选花篇</h3><p>新手推荐从以下植物开始：</p><p><b>绿萝</b> - 最好养的室内植物，耐阴耐湿，放哪都能活</p><p><b>多肉</b> - 少浇水就行，造型可爱</p><p><b>薄荷</b> - 生命力旺盛，还能泡茶</p><h3>🪴 选盆篇</h3><p>花盆一定要有<b>排水孔</b>！没有排水孔是新手养死花的第一大原因。</p><p>建议选择透气性好的<b>陶盆</b>或<b>红陶盆</b>，尺寸比植物根团大2-3cm即可。</p><h3>💧 浇水篇</h3><p>最重要的原则：<b>见干见湿</b></p><p>用手指插入土壤2cm，感觉干了再浇，浇就浇透。</p><p>冬季和阴雨天减少浇水频率。</p><h3>☀️ 光照篇</h3><p>大部分植物需要明亮的散射光。放在窗台附近，避免夏天正午的强光直射。</p>',
+    },
   },
-  async loadGuideDetail(id) {
-    this.setData({ loading: true })
-    try {
-      // TODO: 加载指南详情
-      console.log('加载指南详情, id:', id)
-    } catch (err) {
-      console.error('加载失败:', err)
-    } finally {
-      this.setData({ loading: false })
+  onLoad(options) {
+    if (options.id) {
+      wx.setNavigationBarTitle({ title: '种植指南' })
     }
   },
 })

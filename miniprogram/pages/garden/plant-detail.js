@@ -1,22 +1,29 @@
 // pages/garden/plant-detail.js - 植物详情页
 Page({
-  data: { loading: true, plant: null, diaryList: [] },
-  onLoad(options) {
-    if (options.id) this.loadPlantDetail(options.id)
+  data: {
+    loading: false,
+    plant: {
+      _id: 'p1',
+      flowerName: '绿萝',
+      nickname: '小绿',
+      location: '客厅窗台',
+      days: 45,
+      status: 'healthy',
+      addDate: '2026-03-15',
+    },
+    diaryList: [
+      { _id: 'd1', content: '今天给小绿换了新花盆，用了透气性更好的陶盆。换盆后浇了一次透水。', date: '2026-04-28', images: [] },
+      { _id: 'd2', content: '发现新长了两片嫩叶，生长状态很好！叶子油绿有光泽 ✨', date: '2026-04-25', images: [] },
+      { _id: 'd3', content: '用啤酒兑水擦了叶片，果然变得更亮了。春天是生长季，准备开始每月施肥。', date: '2026-04-20', images: [] },
+    ],
   },
-  async loadPlantDetail(id) {
-    this.setData({ loading: true })
-    try {
-      // TODO: 加载植物详情和日记
-      console.log('加载植物详情, id:', id)
-    } catch (err) {
-      console.error('加载失败:', err)
-    } finally {
-      this.setData({ loading: false })
+  onLoad(options) {
+    if (options.id) {
+      wx.setNavigationBarTitle({ title: this.data.plant.nickname })
     }
   },
   goToAddDiary() {
     const { plant } = this.data
-    wx.navigateTo({ url: `/pages/garden/diary-edit?plantId=${plant?._id}` })
+    wx.navigateTo({ url: `/pages/garden/diary-edit?plantId=${plant._id}` })
   },
 })

@@ -1,8 +1,30 @@
 <!--pages/reminder/index.wxml-->
 <view class="container">
-  <view class="empty-placeholder" wx:if="{{!loading && !reminderList.length}}">
-    <text class="empty-icon">🔔</text>
-    <text>暂无提醒，添加植物后会自动生成哦</text>
+  <view class="page-title">🔔 养护提醒</view>
+  <view class="reminder-count text-hint mb-md" wx:if="{{reminderList.length}}">
+    共 {{reminderList.length}} 条提醒
   </view>
-  <!-- TODO: 提醒列表 -->
+
+  <view class="reminder-list" wx:if="{{reminderList.length}}">
+    <view class="reminder-item card {{item.done ? 'done' : ''}}" wx:for="{{reminderList}}" wx:key="_id">
+      <view class="reminder-main flex-between">
+        <view class="reminder-left flex-row">
+          <text class="reminder-icon">{{item.icon}}</text>
+          <view class="reminder-info">
+            <text class="reminder-plant {{item.done ? 'text-hint' : ''}}">{{item.plantName}}</text>
+            <text class="reminder-detail text-hint">{{item.type}} · {{item.time}}</text>
+            <text class="reminder-next text-hint">⏰ {{item.nextTime}}</text>
+          </view>
+        </view>
+        <view class="check-btn {{item.done ? 'checked' : ''}}" bindtap="onComplete" data-id="{{item._id}}">
+          <text>{{item.done ? '✓' : '○'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && !reminderList.length}}">
+    <text class="empty-icon">🔔</text>
+    <text class="empty-text">暂无提醒，添加植物后会自动生成哦</text>
+  </view>
 </view>
