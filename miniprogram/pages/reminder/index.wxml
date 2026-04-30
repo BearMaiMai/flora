@@ -1,30 +1,58 @@
-<!--pages/reminder/index.wxml-->
-<view class="container">
-  <view class="page-title">🔔 养护提醒</view>
-  <view class="reminder-count text-hint mb-md" wx:if="{{reminderList.length}}">
-    共 {{reminderList.length}} 条提醒
+<!--pages/reminder/index.wxml - 养护提醒-->
+<view class="container reminder-page">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="page-title-row">
+      <text class="page-title">养护提醒</text>
+      <view class="reminder-count-badge" wx:if="{{reminderList.length}}">{{reminderList.length}}</view>
+    </view>
+    <text class="page-subtitle">共 {{pendingCount}} 条待完成</text>
   </view>
 
-  <view class="reminder-list" wx:if="{{reminderList.length}}">
-    <view class="reminder-item card {{item.done ? 'done' : ''}}" wx:for="{{reminderList}}" wx:key="_id">
-      <view class="reminder-main flex-between">
-        <view class="reminder-left flex-row">
-          <text class="reminder-icon">{{item.icon}}</text>
-          <view class="reminder-info">
-            <text class="reminder-plant {{item.done ? 'text-hint' : ''}}">{{item.plantName}}</text>
-            <text class="reminder-detail text-hint">{{item.type}} · {{item.time}}</text>
-            <text class="reminder-next text-hint">⏰ {{item.nextTime}}</text>
+  <!-- 筛选标签 -->
+  <view class="filter-tabs">
+    <view class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" bindtap="onFilterTap" data-filter="all">全部</view>
+    <view class="filter-tab {{currentFilter === 'today' ? 'active' : ''}}" bindtap="onFilterTap" data-filter="today">今日</view>
+    <view class="filter-tab {{currentFilter === 'pending' ? 'active' : ''}}" bindtap="onFilterTap" data-filter="pending">待完成</view>
+    <view class="filter-tab {{currentFilter === 'done' ? 'active' : ''}}" bindtap="onFilterTap" data-filter="done">已完成</view>
+  </view>
+
+  <!-- 提醒列表 (Timeline 样式) -->
+  <view class="timeline-list" wx:if="{{filteredList.length}}">
+    <view class="timeline-item {{item.done ? 'item-done' : ''}}" wx:for="{{filteredList}}" wx:key="_id">
+      <!-- 时间线 -->
+      <view class="timeline-left">
+        <view class="timeline-dot {{item.done ? 'dot-done' : item.overdue ? 'dot-overdue' : 'dot-upcoming'}}"></view>
+        <view class="timeline-line" wx:if="{{index < filteredList.length - 1}}"></view>
+      </view>
+      <!-- 内容卡片 -->
+      <view class="timeline-card">
+        <view class="timeline-card-main">
+          <view class="reminder-content">
+            <view class="reminder-avatar-mini">
+              <text>{{item.icon}}</text>
+            </view>
+            <view class="reminder-info">
+              <text class="reminder-plant-name {{item.done ? 'text-line-through' : ''}}">{{item.plantName}}</text>
+              <view class="reminder-tags-row">
+                <text class="reminder-type-tag {{item.type === '浇水' ? 'type-water' : item.type === '施肥' ? 'type-fertilizer' : 'type-other'}}">{{item.type}}</text>
+                <text class="reminder-time-text">{{item.time}}</text>
+              </view>
+              <text class="reminder-next-time">⏰ {{item.nextTime}}</text>
+            </view>
           </view>
-        </view>
-        <view class="check-btn {{item.done ? 'checked' : ''}}" bindtap="onComplete" data-id="{{item._id}}">
-          <text>{{item.done ? '✓' : '○'}}</text>
+          <view class="check-circle {{item.done ? 'checked' : ''}}" bindtap="onComplete" data-id="{{item._id}}">
+            <text wx:if="{{item.done}}">✓</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
 
-  <view class="empty-state" wx:if="{{!loading && !reminderList.length}}">
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && !filteredList.length}}">
     <text class="empty-icon">🔔</text>
-    <text class="empty-text">暂无提醒，添加植物后会自动生成哦</text>
+    <text class="empty-text">暂无提醒</text>
+    <text class="empty-subtext">添加植物后会自动生成养护提醒哦</text>
   </view>
 </view>

@@ -1,11 +1,36 @@
 // pages/encyclopedia/index.js - 花卉百科列表页
+
+// 分类 → 标签颜色映射
+const CATEGORY_COLOR_MAP = {
+  '观叶植物': 'green',
+  '开花植物': 'orange',
+  '多肉植物': 'purple',
+  '香草植物': 'blue',
+  '水培植物': 'blue',
+  '果蔬植物': 'orange',
+}
+
+function addTagColor(list) {
+  return list.map(item => ({
+    ...item,
+    tagColor: CATEGORY_COLOR_MAP[item.category] || 'green',
+  }))
+}
+
 Page({
   data: {
     loading: false,
     keyword: '',
     categoryList: ['观叶植物', '开花植物', '多肉植物', '香草植物', '水培植物', '果蔬植物'],
     currentCategory: '',
-    flowerList: [
+    flowerList: [],
+    allFlowers: [], // 存储全量数据用于筛选
+    page: 1,
+    hasMore: false,
+  },
+
+  onLoad() {
+    const rawList = [
       { _id: 'f1', name: '绿萝', category: '观叶植物', difficulty: 1, description: '最好养的室内植物，净化空气' },
       { _id: 'f2', name: '多肉（桃蛋）', category: '多肉植物', difficulty: 2, description: '粉嫩可爱，喜阳光充足' },
       { _id: 'f3', name: '栀子花', category: '开花植物', difficulty: 3, description: '花香浓郁，洁白优雅' },
@@ -18,14 +43,12 @@ Page({
       { _id: 'f10', name: '小番茄', category: '果蔬植物', difficulty: 2, description: '阳台种植首选，好种又好吃' },
       { _id: 'f11', name: '龟背竹', category: '观叶植物', difficulty: 2, description: '大叶植物，北欧风格装饰必备' },
       { _id: 'f12', name: '仙人掌', category: '多肉植物', difficulty: 1, description: '超级耐旱，一个月浇一次水就行' },
-    ],
-    allFlowers: [], // 存储全量数据用于筛选
-    page: 1,
-    hasMore: false,
-  },
-
-  onLoad() {
-    this.setData({ allFlowers: this.data.flowerList })
+    ]
+    const flowers = addTagColor(rawList)
+    this.setData({
+      flowerList: flowers,
+      allFlowers: flowers,
+    })
   },
 
   onReachBottom() {

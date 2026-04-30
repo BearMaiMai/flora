@@ -1,17 +1,60 @@
-<!--pages/guide/index.wxml-->
-<view class="container">
-  <view class="page-title">📖 种植指南</view>
-  <view class="guide-list">
-    <view class="guide-item card" wx:for="{{guideList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-      <view class="guide-icon">{{item.icon}}</view>
-      <view class="guide-info">
-        <text class="guide-title">{{item.title}}</text>
-        <text class="guide-summary text-secondary">{{item.summary}}</text>
+<!--pages/guide/index.wxml - 种植指南-->
+<view class="guide-page">
+  <!-- 页面头部 -->
+  <view class="guide-header">
+    <text class="guide-page-title">📖 种植指南</text>
+  </view>
+
+  <!-- 精选指南 - 大图卡片 -->
+  <view class="featured-card" bindtap="goToDetail" data-id="{{featuredGuide._id}}">
+    <view class="featured-image-wrap">
+      <view class="featured-image-bg"></view>
+      <view class="featured-overlay">
+        <view class="featured-reading-badge">5 min</view>
+        <text class="featured-title">{{featuredGuide.title}}</text>
+        <text class="featured-desc">{{featuredGuide.summary}}</text>
       </view>
-      <text class="guide-arrow text-hint">></text>
     </view>
-    <view class="empty-placeholder" wx:if="{{!loading && !guideList.length}}">
-      <text>种植指南即将上线 📖</text>
+  </view>
+
+  <!-- 分类图标 -->
+  <view class="category-section">
+    <scroll-view scroll-x class="category-scroll" enable-flex>
+      <view class="category-circle-item" wx:for="{{categoryList}}" wx:key="name">
+        <view class="category-circle" style="background-color: {{item.bgColor}};">
+          <text class="category-emoji">{{item.icon}}</text>
+        </view>
+        <text class="category-label">{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 指南文章列表 -->
+  <view class="article-section">
+    <text class="article-section-title">全部指南</text>
+    <view class="article-list">
+      <view class="article-card" wx:for="{{guideList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+        <view class="article-thumb">
+          <text class="article-thumb-emoji">{{item.icon}}</text>
+        </view>
+        <view class="article-info">
+          <text class="article-title">{{item.title}}</text>
+          <text class="article-summary">{{item.summary}}</text>
+          <view class="article-meta">
+            <text class="article-difficulty" wx:if="{{item.difficulty}}">{{item.difficulty}}</text>
+            <text class="article-read-time">{{item.readTime || '3分钟阅读'}}</text>
+          </view>
+        </view>
+        <view class="article-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
     </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-placeholder" wx:if="{{!loading && !guideList.length}}">
+    <text class="empty-icon">📖</text>
+    <text class="empty-text">种植指南即将上线</text>
   </view>
 </view>

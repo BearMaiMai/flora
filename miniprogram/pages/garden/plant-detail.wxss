@@ -1,63 +1,252 @@
-/* pages/garden/plant-detail.wxss */
-.container { padding: 24rpx; }
+/* pages/garden/plant-detail.wxss - 植物详情页样式 */
+.plant-detail-page {
+  min-height: 100vh;
+  padding: 32rpx;
+  padding-bottom: 180rpx;
+  background-color: var(--bg-page);
+}
 
-.plant-header {
+/* 植物头像区域 */
+.plant-profile-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  padding: 32rpx 0 40rpx;
 }
 
-.plant-avatar-lg {
-  width: 160rpx;
-  height: 160rpx;
+.plant-avatar-glow {
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+.glow-ring {
+  position: absolute;
+  top: -16rpx;
+  left: -16rpx;
+  right: -16rpx;
+  bottom: -16rpx;
   border-radius: 50%;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.15) 0%, transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.plant-avatar-large {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16rpx;
+  box-shadow: 0 8rpx 32rpx rgba(76, 175, 80, 0.2);
+  position: relative;
+  z-index: 1;
 }
 
-.plant-emoji-lg {
+.plant-avatar-emoji {
   font-size: 80rpx;
 }
 
-.plant-name { font-size: var(--font-xl); font-weight: 600; }
-.plant-type { font-size: var(--font-sm); margin-top: 4rpx; }
+.plant-nickname {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6rpx;
+}
 
-.plant-meta-row {
+.plant-species {
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+  margin-bottom: 20rpx;
+}
+
+/* 信息标签 */
+.plant-info-pills {
   display: flex;
-  gap: 16rpx;
+  gap: 12rpx;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.meta-tag {
-  font-size: var(--font-xs);
-  color: var(--text-secondary);
-  background-color: var(--bg-grey);
-  padding: 4rpx 16rpx;
+.info-pill {
+  background-color: var(--bg-card);
   border-radius: var(--border-radius-round);
+  padding: 10rpx 20rpx;
+  box-shadow: var(--shadow-sm);
 }
 
-.section { margin-top: 32rpx; }
-.section-title { font-size: var(--font-lg); font-weight: 600; }
+.pill-status-healthy {
+  background-color: var(--bg-green-light);
+}
 
-.diary-list {
+.pill-status-needCare {
+  background-color: #FFF3E0;
+}
+
+.pill-text {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+}
+
+/* 统计卡片行 */
+.stats-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 36rpx;
+}
+
+.stat-mini-card {
+  flex: 1;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: 24rpx 16rpx;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
 }
 
-.diary-date {
-  display: block;
+.stat-mini-num {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 6rpx;
+}
+
+.stat-mini-label {
   font-size: var(--font-xs);
-  margin-bottom: 8rpx;
+  color: var(--text-hint);
 }
 
-.diary-content {
-  font-size: var(--font-md);
-  line-height: 1.8;
+/* 成长日记区域 */
+.diary-section {
+  margin-top: 8rpx;
+}
+
+.diary-header {
+  margin-bottom: 24rpx;
+}
+
+.diary-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.diary-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  color: var(--color-primary);
+  font-size: var(--font-sm);
+  padding: 8rpx 20rpx;
+  border-radius: var(--border-radius-round);
+  background-color: var(--bg-green-light);
+}
+
+.diary-add-icon {
+  font-size: var(--font-lg);
+  font-weight: 300;
+}
+
+.diary-add-text {
+  font-weight: 500;
+}
+
+/* 时间线 */
+.diary-timeline {
+  padding-left: 8rpx;
+}
+
+.timeline-entry {
+  display: flex;
+  flex-direction: row;
+}
+
+.entry-timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32rpx;
+  margin-right: 20rpx;
+}
+
+.entry-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 6rpx rgba(76, 175, 80, 0.12);
+  flex-shrink: 0;
+  margin-top: 28rpx;
+}
+
+.entry-line {
+  width: 3rpx;
+  flex: 1;
+  background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--border-color) 100%);
+  margin: 8rpx 0;
+  min-height: 40rpx;
+}
+
+.entry-card {
+  flex: 1;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.entry-date-bubble {
+  display: inline-block;
+  font-size: var(--font-xs);
+  color: var(--color-primary-dark);
+  background-color: var(--bg-green-light);
+  padding: 4rpx 16rpx;
+  border-radius: var(--border-radius-round);
+  margin-bottom: 12rpx;
+}
+
+.entry-content {
+  display: block;
+  font-size: var(--font-sm);
   color: var(--text-secondary);
+  line-height: 1.8;
 }
 
-.empty-placeholder { text-align: center; padding: 80rpx 0; color: var(--text-hint); }
+.entry-images {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 16rpx;
+  flex-wrap: wrap;
+}
+
+.entry-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: var(--border-radius-md);
+}
+
+/* 空状态 */
+.diary-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.diary-empty-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.diary-empty-text {
+  font-size: var(--font-md);
+  color: var(--text-hint);
+}

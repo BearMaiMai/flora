@@ -1,81 +1,109 @@
 <!--pages/encyclopedia/detail.wxml - 花卉详情页-->
-<view class="container" wx:if="{{flower}}">
-  <!-- 头图 -->
-  <view class="flower-cover-wrap" style="background-color: #E8F5E9;">
-    <image wx:if="{{flower.coverImage}}" class="flower-cover" src="{{flower.coverImage}}" mode="aspectFill" />
-    <text wx:else class="cover-placeholder-emoji">🌿</text>
+<view class="detail-page" wx:if="{{flower}}">
+  <!-- Hero 头图区域 -->
+  <view class="hero-section">
+    <view class="hero-image-wrap">
+      <image wx:if="{{flower.coverImage}}" class="hero-image" src="{{flower.coverImage}}" mode="aspectFill" />
+      <view wx:else class="hero-placeholder">
+        <text class="hero-emoji">🌿</text>
+      </view>
+    </view>
+    <view class="hero-gradient"></view>
+    <!-- 浮动返回按钮 -->
+    <view class="hero-nav" style="padding-top: {{statusBarHeight + 10}}px;">
+      <view class="nav-btn" bindtap="onGoBack">
+        <text class="nav-btn-icon">‹</text>
+      </view>
+    </view>
   </view>
 
-  <!-- 基本信息 -->
-  <view class="card info-card">
-    <view class="flower-name">{{flower.name}}</view>
-    <view class="flower-alias text-hint" wx:if="{{flower.alias}}">别名：{{flower.alias}}</view>
-    <view class="info-tags mt-sm">
-      <text class="tag tag-category">{{flower.category}}</text>
+  <!-- 基本信息区域 -->
+  <view class="info-section">
+    <text class="flower-name-lg">{{flower.name}}</text>
+    <text class="flower-alias" wx:if="{{flower.alias}}">{{flower.alias}}</text>
+    <view class="info-tags">
+      <text class="tag tag-green">{{flower.category}}</text>
       <text class="tag tag-difficulty">难度 {{flower.difficulty === 1 ? '⭐' : flower.difficulty === 2 ? '⭐⭐' : '⭐⭐⭐'}}</text>
     </view>
-    <view class="flower-desc mt-sm">{{flower.description}}</view>
-    <view class="flower-language mt-sm" wx:if="{{flower.flowerLanguage}}">
-      <text class="text-hint">💐 花语：</text>
-      <text class="text-green">{{flower.flowerLanguage}}</text>
+  </view>
+
+  <!-- 花语区域 -->
+  <view class="flower-language-section" wx:if="{{flower.flowerLanguage}}">
+    <view class="language-divider">
+      <view class="divider-line"></view>
+      <text class="divider-icon">🌸</text>
+      <view class="divider-line"></view>
+    </view>
+    <text class="flower-language-text">"{{flower.flowerLanguage}}"</text>
+  </view>
+
+  <!-- 养护指南 - 左右排列卡片 -->
+  <view class="care-section" wx:if="{{flower.careGuide}}">
+    <text class="section-title">🌱 养护指南</text>
+    <view class="care-grid">
+      <view class="care-card card-water">
+        <view class="care-icon-circle icon-water">
+          <text class="care-icon-emoji">💧</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">浇水</text>
+          <text class="care-card-value">{{flower.careGuide.water}}</text>
+        </view>
+      </view>
+      <view class="care-card card-sun">
+        <view class="care-icon-circle icon-sun">
+          <text class="care-icon-emoji">☀️</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">光照</text>
+          <text class="care-card-value">{{flower.careGuide.light}}</text>
+        </view>
+      </view>
+      <view class="care-card card-soil">
+        <view class="care-icon-circle icon-soil">
+          <text class="care-icon-emoji">🪴</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">土壤</text>
+          <text class="care-card-value">{{flower.careGuide.soil}}</text>
+        </view>
+      </view>
+      <view class="care-card card-temp">
+        <view class="care-icon-circle icon-temp">
+          <text class="care-icon-emoji">🌡️</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">温度</text>
+          <text class="care-card-value">{{flower.careGuide.temperature}}</text>
+        </view>
+      </view>
+      <view class="care-card card-fertilizer">
+        <view class="care-icon-circle icon-fertilizer">
+          <text class="care-icon-emoji">🧪</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">施肥</text>
+          <text class="care-card-value">{{flower.careGuide.fertilizer}}</text>
+        </view>
+      </view>
+      <view class="care-card card-humidity">
+        <view class="care-icon-circle icon-humidity">
+          <text class="care-icon-emoji">💨</text>
+        </view>
+        <view class="care-card-text">
+          <text class="care-card-label">湿度</text>
+          <text class="care-card-value">{{flower.careGuide.humidity}}</text>
+        </view>
+      </view>
     </view>
   </view>
 
-  <!-- 养护指南 -->
-  <view class="card" wx:if="{{flower.careGuide}}">
-    <view class="card-title">🌱 养护指南</view>
-    <view class="care-list">
-      <view class="care-item">
-        <view class="care-icon">💧</view>
-        <view class="care-content">
-          <text class="care-label">浇水</text>
-          <text class="care-text">{{flower.careGuide.water}}</text>
-        </view>
-      </view>
-      <view class="care-item">
-        <view class="care-icon">☀️</view>
-        <view class="care-content">
-          <text class="care-label">光照</text>
-          <text class="care-text">{{flower.careGuide.light}}</text>
-        </view>
-      </view>
-      <view class="care-item">
-        <view class="care-icon">🪴</view>
-        <view class="care-content">
-          <text class="care-label">土壤</text>
-          <text class="care-text">{{flower.careGuide.soil}}</text>
-        </view>
-      </view>
-      <view class="care-item">
-        <view class="care-icon">🌡️</view>
-        <view class="care-content">
-          <text class="care-label">温度</text>
-          <text class="care-text">{{flower.careGuide.temperature}}</text>
-        </view>
-      </view>
-      <view class="care-item">
-        <view class="care-icon">🧪</view>
-        <view class="care-content">
-          <text class="care-label">施肥</text>
-          <text class="care-text">{{flower.careGuide.fertilizer}}</text>
-        </view>
-      </view>
-      <view class="care-item">
-        <view class="care-icon">💨</view>
-        <view class="care-content">
-          <text class="care-label">湿度</text>
-          <text class="care-text">{{flower.careGuide.humidity}}</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 养护小贴士 -->
-  <view class="card" wx:if="{{flower.tips.length}}">
-    <view class="card-title">💡 小贴士</view>
+  <!-- 小贴士 -->
+  <view class="tips-section" wx:if="{{flower.tips.length}}">
+    <text class="section-title">💡 养护小贴士</text>
     <view class="tips-list">
       <view class="tip-item" wx:for="{{flower.tips}}" wx:key="*this">
-        <text class="tip-dot">•</text>
+        <view class="tip-number">{{index + 1}}</view>
         <text class="tip-text">{{item}}</text>
       </view>
     </view>
@@ -83,15 +111,17 @@
 
   <!-- 底部操作栏 -->
   <view class="action-bar safe-bottom">
-    <view class="action-btn" bindtap="onToggleFavorite">
-      <text>{{isFavorite ? '❤️' : '🤍'}} 收藏</text>
+    <view class="action-fav {{isFavorite ? 'fav-active' : ''}}" bindtap="onToggleFavorite">
+      <text class="fav-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
     </view>
-    <view class="action-btn primary" bindtap="onAddToGarden">
-      <text>🌱 添加到花园</text>
+    <view class="action-add-btn" bindtap="onAddToGarden">
+      <text class="add-btn-text">🌱 添加到花园</text>
     </view>
   </view>
 </view>
 
-<view class="empty-placeholder" wx:else>
-  <text>加载中...</text>
+<!-- 加载状态 -->
+<view class="loading-state" wx:else>
+  <text class="loading-emoji">🌿</text>
+  <text class="loading-text">加载中...</text>
 </view>

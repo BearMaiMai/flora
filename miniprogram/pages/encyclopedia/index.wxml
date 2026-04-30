@@ -1,39 +1,57 @@
 <!--pages/encyclopedia/index.wxml - 花卉百科列表页-->
-<view class="container">
-  <!-- 搜索栏 -->
-  <view class="search-bar">
-    <input class="search-input" placeholder="搜索花卉名称..." value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
-  </view>
+<view class="page-layout">
+  <!-- 公共标题组件 -->
+  <custom-header></custom-header>
 
-  <!-- 分类筛选 -->
-  <scroll-view class="category-scroll" scroll-x enable-flex>
-    <view class="category-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryTap" data-category="">全部</view>
-    <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}">{{item}}</view>
-  </scroll-view>
-
-  <!-- 花卉数量统计 -->
-  <view class="list-count text-hint" wx:if="{{flowerList.length}}">
-    <text>共 {{flowerList.length}} 种花卉</text>
-  </view>
-
-  <!-- 花卉列表 -->
-  <view class="flower-list">
-    <view class="empty-placeholder" wx:if="{{!loading && !flowerList.length}}">
-      <text class="empty-icon">🔍</text>
-      <text>没有找到相关花卉</text>
-    </view>
-    <view class="flower-item card" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-      <view class="flower-cover" style="background-color: #E8F5E9;">
-        <text class="flower-emoji">🌿</text>
-      </view>
-      <view class="flower-info">
-        <view class="flower-name-row flex-between">
-          <text class="flower-name">{{item.name}}</text>
-          <text class="flower-difficulty">{{item.difficulty === 1 ? '⭐' : item.difficulty === 2 ? '⭐⭐' : '⭐⭐⭐'}}</text>
+  <!-- 可滚动内容区 -->
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+    <view class="encyclopedia-page">
+      <!-- 搜索栏 -->
+      <view class="search-bar">
+        <view class="search-icon-wrap">
+          <text class="search-icon-text">🔍</text>
         </view>
-        <text class="flower-cat text-hint">{{item.category}}</text>
-        <text class="flower-desc text-secondary text-ellipsis">{{item.description}}</text>
+        <input class="search-input" placeholder="搜索花卉名称..." value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+      </view>
+
+      <!-- 分类筛选 -->
+      <scroll-view class="category-scroll" scroll-x enable-flex>
+        <view class="category-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryTap" data-category="">全部</view>
+        <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}">{{item}}</view>
+      </scroll-view>
+
+      <!-- 花卉数量统计 -->
+      <view class="list-count" wx:if="{{flowerList.length}}">
+        <text class="list-count-icon">🌱</text>
+        <text class="list-count-text">共 <text class="list-count-num">{{flowerList.length}}</text> 种花卉</text>
+      </view>
+
+      <!-- 花卉列表 -->
+      <view class="flower-list">
+        <view class="empty-state" wx:if="{{!loading && !flowerList.length}}">
+          <text class="empty-icon">🔍</text>
+          <text class="empty-text">没有找到相关花卉</text>
+        </view>
+        <view class="flower-card" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+          <view class="flower-thumb" style="background-color: {{item.coverImage ? '' : '#E8F5E9'}};">
+            <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="thumb-img" />
+            <text wx:else class="thumb-emoji">🌿</text>
+          </view>
+          <view class="flower-info">
+            <view class="flower-name-row">
+              <text class="flower-name">{{item.name}}</text>
+              <text class="flower-tag tag-{{item.tagColor || 'green'}}">{{item.category}}</text>
+            </view>
+            <text class="flower-desc">{{item.description}}</text>
+            <view class="flower-meta">
+              <text class="meta-label">难度：</text>
+              <text class="star filled" wx:for="{{item.difficulty}}" wx:for-item="s" wx:key="*this">★</text>
+              <text class="star empty" wx:for="{{5 - item.difficulty}}" wx:for-item="s" wx:key="*this">☆</text>
+            </view>
+          </view>
+          <text class="flower-arrow">›</text>
+        </view>
       </view>
     </view>
-  </view>
+  </scroll-view>
 </view>
