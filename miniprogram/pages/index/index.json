@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "养花呀",
-  "enablePullDownRefresh": true
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "usingComponents": {
+    "custom-header": "/components/custom-header/custom-header"
+  }
 }

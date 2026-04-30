@@ -1,46 +1,121 @@
 /* pages/encyclopedia/detail.wxss - 花卉详情页样式 */
-.flower-cover-wrap {
+page {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.detail-page {
+  min-height: 100vh;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+  background-color: var(--bg-page);
+}
+
+/* Hero 头图区域 */
+.hero-section {
+  position: relative;
   width: 100%;
-  height: 480rpx;
+  height: 560rpx;
+}
+
+.hero-image-wrap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.flower-cover {
-  width: 100%;
-  height: 480rpx;
-  display: block;
-}
-
-.cover-placeholder-emoji {
+.hero-emoji {
   font-size: 160rpx;
 }
 
-.container { padding-bottom: 120rpx; }
+.hero-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200rpx;
+  background: linear-gradient(180deg, transparent 0%, var(--bg-page) 100%);
+}
 
-.info-card { margin: 24rpx; }
+/* 浮动导航按钮 */
+.hero-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+}
 
-.flower-name {
-  font-size: var(--font-xl);
-  font-weight: 600;
+.nav-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.nav-btn:active {
+  transform: scale(0.92);
+}
+
+.nav-btn-icon {
+  font-size: 36rpx;
   color: var(--text-primary);
+  font-weight: 600;
+}
+
+
+/* 基本信息区域 */
+.info-section {
+  padding: 0 32rpx;
+  margin-top: -40rpx;
+  position: relative;
+}
+
+.flower-name-lg {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+  letter-spacing: 2rpx;
+}
+
+.flower-alias {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+  margin-bottom: 16rpx;
 }
 
 .info-tags {
   display: flex;
-  gap: 16rpx;
+  gap: 12rpx;
+  margin-bottom: 32rpx;
 }
 
-.tag {
-  display: inline-block;
-  padding: 4rpx 16rpx;
-  border-radius: var(--border-radius-round);
-  font-size: var(--font-xs);
-}
-
-.tag-category {
-  background-color: #E8F5E9;
+.tag-green {
+  background-color: var(--bg-green-light);
   color: var(--color-primary-dark);
 }
 
@@ -49,115 +124,234 @@
   color: #E65100;
 }
 
-.flower-desc {
-  font-size: var(--font-md);
-  line-height: 1.8;
-  color: var(--text-secondary);
+/* 花语区域 */
+.flower-language-section {
+  padding: 0 32rpx;
+  margin-bottom: 40rpx;
 }
 
-.flower-language {
-  font-size: var(--font-sm);
-}
-
-.card { margin: 0 24rpx 24rpx; }
-
-.card-title {
-  font-size: var(--font-lg);
-  font-weight: 600;
+.language-divider {
+  display: flex;
+  align-items: center;
   margin-bottom: 20rpx;
 }
 
-/* 养护指南 */
-.care-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
 }
 
-.care-item {
-  display: flex;
-  flex-direction: row;
+.divider-icon {
+  margin: 0 20rpx;
+  font-size: 28rpx;
+}
+
+.flower-language-text {
+  display: block;
+  text-align: center;
+  font-size: var(--font-md);
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.8;
+}
+
+/* 养护指南 - 两列左右排列卡片 */
+.care-section {
+  padding: 0 32rpx;
+  margin-bottom: 36rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24rpx;
+}
+
+.care-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20rpx;
 }
 
-.care-icon {
-  font-size: 40rpx;
+.care-card {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius-lg);
+  padding: 24rpx 20rpx;
+  gap: 16rpx;
+}
+
+/* 各卡片背景色 */
+.card-water { background-color: #E3F2FD; }
+.card-sun { background-color: #FFF8E1; }
+.card-soil { background-color: #EFEBE9; }
+.card-temp { background-color: #FFEBEE; }
+.card-fertilizer { background-color: #E8F5E9; }
+.card-humidity { background-color: #E0F7FA; }
+
+.care-icon-circle {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
-  width: 48rpx;
-  text-align: center;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
-.care-content {
-  flex: 1;
+.care-icon-emoji {
+  font-size: 32rpx;
 }
 
-.care-label {
-  display: block;
-  font-size: var(--font-md);
-  font-weight: 600;
-  color: var(--text-primary);
+.care-card-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.care-card-label {
+  font-size: var(--font-xs);
+  color: var(--text-hint);
   margin-bottom: 4rpx;
 }
 
-.care-text {
-  display: block;
+.care-card-value {
   font-size: var(--font-sm);
-  color: var(--text-secondary);
-  line-height: 1.6;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 小贴士 */
+.tips-section {
+  padding: 0 32rpx;
+  margin-bottom: 40rpx;
+}
+
 .tips-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 20rpx;
 }
 
 .tip-item {
   display: flex;
-  gap: 12rpx;
+  align-items: flex-start;
+  gap: 16rpx;
 }
 
-.tip-dot {
-  color: var(--color-primary);
+.tip-number {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 22rpx;
   font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
+  margin-top: 4rpx;
 }
 
 .tip-text {
   font-size: var(--font-sm);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
+  flex: 1;
 }
 
+/* 底部操作栏 */
 .action-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
-  padding: 16rpx 32rpx;
+  align-items: center;
+  padding: 20rpx 32rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
   background-color: var(--bg-card);
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  gap: 20rpx;
 }
 
-.action-btn {
+.action-fav {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.action-fav:active {
+  transform: scale(0.92);
+}
+
+.action-fav.fav-active {
+  border-color: #FFCDD2;
+  background-color: #FFF5F5;
+}
+
+.fav-icon {
+  font-size: 36rpx;
+}
+
+.action-add-btn {
   flex: 1;
-  text-align: center;
-  padding: 20rpx 0;
-  font-size: var(--font-md);
-  border-radius: var(--border-radius-round);
-  margin: 0 8rpx;
-  background-color: var(--bg-grey);
-}
-
-.action-btn.primary {
+  height: 88rpx;
   background-color: var(--color-primary);
-  color: var(--text-white);
+  border-radius: var(--border-radius-round);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6rpx 20rpx rgba(76, 175, 80, 0.3);
 }
 
-.empty-placeholder {
-  text-align: center;
-  padding: 200rpx 0;
+.action-add-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.add-btn-text {
+  color: white;
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.loading-emoji {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-text {
+  font-size: var(--font-md);
   color: var(--text-hint);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
 }
