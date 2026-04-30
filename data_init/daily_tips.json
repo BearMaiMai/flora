@@ -1,2 +1,30 @@
-{"content":"早起给花儿喷喷水，开启充满活力的一天！🌸","date":"2024-04-29"}
-{"content":"虎尾兰非常耐阴，放在卧室里还能净化空气哦。🌿","date":"2024-04-28"}
+{"_id": "tip_001", "content": "早起给花儿喷喷水，开启充满活力的一天！🌸", "category": "浇水", "season": "全年", "isPublished": true, "sortOrder": 1}
+{"_id": "tip_002", "content": "虎尾兰非常耐阴，放在卧室里还能净化空气哦。🌿", "category": "养护", "season": "全年", "isPublished": true, "sortOrder": 2}
+{"_id": "tip_003", "content": "多肉植物浇水宁少勿多，土壤完全干透再浇，防止根系腐烂。🌵", "category": "浇水", "season": "全年", "isPublished": true, "sortOrder": 3}
+{"_id": "tip_004", "content": "春季是植物生长的黄金季节，可以适当追施氮肥促进枝叶生长。🌱", "category": "施肥", "season": "春", "isPublished": true, "sortOrder": 4}
+{"_id": "tip_005", "content": "夏季高温时，尽量避免在正午前后给植物浇水，早晚各一次最为合适。☀️", "category": "浇水", "season": "夏", "isPublished": true, "sortOrder": 5}
+{"_id": "tip_006", "content": "绿萝可以水培也可以土培，换水时加入少量液肥，叶片更翠绿。💚", "category": "养护", "season": "全年", "isPublished": true, "sortOrder": 6}
+{"_id": "tip_007", "content": "秋季适当控水可以帮助植物积累养分，为越冬做准备。🍂", "category": "浇水", "season": "秋", "isPublished": true, "sortOrder": 7}
+{"_id": "tip_008", "content": "冬季室内植物要注意通风，避免长期密闭导致病虫害滋生。❄️", "category": "环境", "season": "冬", "isPublished": true, "sortOrder": 8}
+{"_id": "tip_009", "content": "发现叶片发黄，先检查是否浇水过多，根系腐烂是黄叶最常见原因。🌻", "category": "病虫害", "season": "全年", "isPublished": true, "sortOrder": 9}
+{"_id": "tip_010", "content": "龟背竹叶片积尘会影响光合，记得定期用湿布轻轻擦拭叶面。🍃", "category": "清洁", "season": "全年", "isPublished": true, "sortOrder": 10}
+{"_id": "tip_011", "content": "月季施肥要勤，每隔10天施一次磷钾肥，花开更多更艳。🌹", "category": "施肥", "season": "春", "isPublished": true, "sortOrder": 11}
+{"_id": "tip_012", "content": "蝴蝶兰浇水不能过多，根部要有良好透气性，见根变绿才需浇水。🌺", "category": "浇水", "season": "全年", "isPublished": true, "sortOrder": 12}
+{"_id": "tip_013", "content": "栀子花喜酸性土，浇水时加几滴白醋，能有效防止叶片泛黄。🌼", "category": "土壤", "season": "全年", "isPublished": true, "sortOrder": 13}
+{"_id": "tip_014", "content": "绣球花颜色可以通过调节土壤pH来改变，酸性土壤开蓝色，碱性开粉色。💜", "category": "土壤", "season": "春", "isPublished": true, "sortOrder": 14}
+{"_id": "tip_015", "content": "植物换盆最佳时机是春季，选择稍大一号的花盆，给根系更多生长空间。🪴", "category": "换盆", "season": "春", "isPublished": true, "sortOrder": 15}
+{"_id": "tip_016", "content": "薰衣草怕涝，盆底要有良好排水孔，积水会导致根系腐烂死亡。💜", "category": "浇水", "season": "全年", "isPublished": true, "sortOrder": 16}
+{"_id": "tip_017", "content": "发现白色粉末状分泌物，很可能是粉蚧，用棉签蘸酒精轻轻擦除即可。🔍", "category": "病虫害", "season": "全年", "isPublished": true, "sortOrder": 17}
+{"_id": "tip_018", "content": "君子兰冬季开花需要低温刺激，10-15°C保持4-6周可以促进花芽分化。❄️", "category": "养护", "season": "冬", "isPublished": true, "sortOrder": 18}
+{"_id": "tip_019", "content": "薄荷生长旺盛，要定期打顶摘心，防止徒长，同时促进侧枝生长更茂盛。🌿", "category": "修剪", "season": "春", "isPublished": true, "sortOrder": 19}
+{"_id": "tip_020", "content": "室内植物摆放忌直吹空调出风口，冷热风对叶片伤害极大。🏠", "category": "环境", "season": "夏", "isPublished": true, "sortOrder": 20}
+{"_id": "tip_021", "content": "向日葵每天需要6小时以上光照，光照不足会导致茎叶徒长、花小甚至不开花。🌻", "category": "光照", "season": "夏", "isPublished": true, "sortOrder": 21}
+{"_id": "tip_022", "content": "铁线蕨喜欢高湿度，可以在花盆旁放一碗水，或者定期向叶面喷水增湿。💧", "category": "环境", "season": "全年", "isPublished": true, "sortOrder": 22}
+{"_id": "tip_023", "content": "仙人掌冬季要严格控水，整个冬季可以不浇水，保持土壤干燥越冬。🌵", "category": "浇水", "season": "冬", "isPublished": true, "sortOrder": 23}
+{"_id": "tip_024", "content": "修剪下来的绿萝枝条，插入水中或潮湿土壤，很容易就能扦插繁殖。🌱", "category": "繁殖", "season": "春", "isPublished": true, "sortOrder": 24}
+{"_id": "tip_025", "content": "郁金香球根需要秋季种植，冬季低温休眠后，春季才能绽放美丽花朵。🌷", "category": "养护", "season": "秋", "isPublished": true, "sortOrder": 25}
+{"_id": "tip_026", "content": "室外植物遇到连续阴雨天，注意排水防涝，多数植物耐旱远比耐涝能力强。🌧️", "category": "浇水", "season": "夏", "isPublished": true, "sortOrder": 26}
+{"_id": "tip_027", "content": "茉莉花孕蕾期施磷肥，花朵会更多更香；氮肥过多反而导致只长叶不开花。🌸", "category": "施肥", "season": "春", "isPublished": true, "sortOrder": 27}
+{"_id": "tip_028", "content": "红掌喜欢高温高湿，夏季每天向叶面喷水一次，保持60%以上的环境湿度。🌺", "category": "环境", "season": "夏", "isPublished": true, "sortOrder": 28}
+{"_id": "tip_029", "content": "秋冬季节减少施肥频率，植物进入半休眠状态，多余的肥料会伤害根系。🍂", "category": "施肥", "season": "秋", "isPublished": true, "sortOrder": 29}
+{"_id": "tip_030", "content": "种植盆栽草莓时，保持充足阳光和持续供水，结出的草莓会比想象中更甜！🍓", "category": "养护", "season": "春", "isPublished": true, "sortOrder": 30}
