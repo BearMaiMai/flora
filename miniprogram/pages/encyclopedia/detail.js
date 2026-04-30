@@ -50,8 +50,6 @@ Page({
       wx.switchTab({ url: '/pages/garden/index' })
     }, 1500)
   },
-})s' })
-  },
 
   onShareAppMessage() {
     const { flower } = this.data
