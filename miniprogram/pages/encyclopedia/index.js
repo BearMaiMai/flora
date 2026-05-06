@@ -1,6 +1,16 @@
 // pages/encyclopedia/index.js - 花卉百科列表页
 const flowerService = require('../../services/flower')
 
+// 分类 → 标签颜色映射
+const CATEGORY_COLOR_MAP = {
+  '观叶植物': 'green',
+  '开花植物': 'orange',
+  '多肉植物': 'purple',
+  '香草植物': 'blue',
+  '水培植物': 'blue',
+  '果蔬植物': 'orange',
+}
+
 Page({
   data: {
     loading: false,
@@ -58,10 +68,12 @@ Page({
 
   normalizeFlowerItem(item) {
     const difficultyNum = Number(item && item.difficulty) || 1
+    const category = (item && item.category) || '未分类'
     return {
       _id: item && item._id ? item._id : '',
       name: (item && item.name) || '未命名花卉',
-      category: (item && item.category) || '未分类',
+      category,
+      tagColor: CATEGORY_COLOR_MAP[category] || 'green',
       difficulty: Math.min(Math.max(difficultyNum, 1), 5),
       description: (item && item.description) || '暂无介绍',
       coverImage: (item && item.coverImage) || '',

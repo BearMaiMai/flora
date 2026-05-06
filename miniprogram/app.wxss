@@ -10,4 +10,20 @@ page {
   background-color: var(--bg-page);
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 页面布局框架：固定标题 + 可滚动内容区 */
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.page-content {
+  flex: 1;
+  overflow: hidden;
 }

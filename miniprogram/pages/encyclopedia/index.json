@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "花卉百科",
-  "enablePullDownRefresh": true
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "usingComponents": {
+    "custom-header": "/components/custom-header/custom-header"
+  }
 }

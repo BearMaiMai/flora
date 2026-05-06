@@ -3,14 +3,17 @@ const commonService = require('../../services/common')
 
 Page({
   data: {
+    statusBarHeight: 20,
     loading: false,
+    userName: '花友小明',
     bannerList: [],
     dailyTip: '',
     recommendList: [],
     seasonTips: [
-      { icon: '🌱', title: '浇水提醒', desc: '春季保持土壤微湿' },
-      { icon: '☀️', title: '光照建议', desc: '增加日照时间至6小时' },
-      { icon: '🌡️', title: '温度注意', desc: '昼夜温差大，注意保暖' },
+      { icon: '🚿', title: '浇水技巧', desc: '保持土壤微湿', bgColor: '#E3F2FD' },
+      { icon: '☀️', title: '光照管理', desc: '日照6小时', bgColor: '#FFF8E1' },
+      { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', bgColor: '#F3E5F5' },
+      { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', bgColor: '#E8F5E9' },
     ],
   },
 
@@ -31,7 +34,6 @@ Page({
       const recommendList = Array.isArray(payload.recommendList)
         ? this.pickUniqueTop3(payload.recommendList).map(item => this.normalizeRecommendItem(item))
         : []
-
 
       this.setData({
         dailyTip: payload.dailyTip || '给花花浇点水吧 💧',
@@ -81,10 +83,14 @@ Page({
     }
   },
 
-
   // 跳转到花卉百科
   goToEncyclopedia() {
     wx.switchTab({ url: '/pages/encyclopedia/index' })
+  },
+
+  // 跳转到种植指南
+  goToGuide() {
+    wx.navigateTo({ url: '/pages/guide/index' })
   },
 
   // 跳转到花卉详情

@@ -1,50 +1,91 @@
 <!--pages/index/index.wxml - 首页-->
-<view class="container">
-  <!-- 搜索栏 -->
-  <view class="search-bar" bindtap="goToEncyclopedia">
-    <text class="search-placeholder">🔍 搜索花卉...</text>
+<view class="page-layout">
+  <!-- 公共标题组件 -->
+  <custom-header></custom-header>
+
+  <!-- 可滚动内容区 -->
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+    <view class="home-page">
+      <!-- 搜索栏 -->
+      <view class="search-bar" bindtap="goToEncyclopedia">
+    <text class="search-icon">🔍</text>
+    <text class="search-placeholder">搜索花卉...</text>
   </view>
 
-  <!-- 每日养花小贴士 -->
-  <view class="card daily-tip" wx:if="{{dailyTip}}">
-    <text class="tip-label">🌱 今日小贴士</text>
-    <text class="tip-content">{{dailyTip}}</text>
-  </view>
-
-  <!-- 季节养护速览 -->
-  <view class="season-tips flex-row" wx:if="{{seasonTips.length}}">
-    <view class="season-tip-item card" wx:for="{{seasonTips}}" wx:key="title">
-      <text class="season-icon">{{item.icon}}</text>
-      <text class="season-title">{{item.title}}</text>
-      <text class="season-desc">{{item.desc}}</text>
+  <!-- 每日养护小贴士 -->
+  <view class="daily-tip-card" wx:if="{{dailyTip}}">
+    <view class="tip-content-area">
+      <view class="tip-header">
+        <view class="tip-icon-circle">
+          <text class="tip-icon-emoji">🌿</text>
+        </view>
+        <text class="tip-title">每日养花小贴士</text>
+      </view>
+      <text class="tip-desc">{{dailyTip}}</text>
+    </view>
+    <view class="tip-decoration">
+      <text class="tip-deco-emoji">🌱</text>
     </view>
   </view>
 
-  <!-- 推荐花卉 -->
-  <view class="section">
+  <!-- 季节养护 -->
+  <view class="season-section" wx:if="{{seasonTips.length}}">
     <view class="section-header flex-between">
-      <text class="section-title">推荐花卉</text>
-      <text class="section-more text-green" bindtap="goToEncyclopedia">查看更多 ></text>
+      <view class="section-title-row">
+        <text class="section-icon">🌱</text>
+        <text class="section-title">季节养护</text>
+      </view>
+      <view class="section-more" bindtap="goToGuide">
+        <text>查看更多</text>
+        <text class="more-arrow">›</text>
+      </view>
+    </view>
+    <view class="season-grid">
+      <view class="season-card" wx:for="{{seasonTips}}" wx:key="title" style="background-color: {{item.bgColor || '#E8F5E9'}};">
+        <text class="season-card-icon">{{item.icon}}</text>
+        <text class="season-card-title">{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 为你推荐 -->
+  <view class="recommend-section">
+    <view class="section-header flex-between">
+      <view class="section-title-row">
+        <text class="section-icon">🌿</text>
+        <text class="section-title">为你推荐</text>
+      </view>
+      <view class="section-more" bindtap="goToEncyclopedia">
+        <text>查看更多</text>
+        <text class="more-arrow">›</text>
+      </view>
     </view>
     <view class="recommend-list" wx:if="{{recommendList.length}}">
-      <view class="recommend-card card" wx:for="{{recommendList}}" wx:key="_id" bindtap="goToFlowerDetail" data-id="{{item._id}}">
-        <view class="recommend-cover" style="background-color: {{item.coverImage ? '' : '#E8F5E9'}};">
-          <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="cover-img" />
-          <text wx:else class="cover-emoji">🌿</text>
+      <view class="recommend-item" wx:for="{{recommendList}}" wx:key="_id" bindtap="goToFlowerDetail" data-id="{{item._id}}">
+        <view class="recommend-thumb" style="background-color: {{item.coverImage ? '' : '#E8F5E9'}};">
+          <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="thumb-img" />
+          <text wx:else class="thumb-emoji">🌿</text>
         </view>
         <view class="recommend-info">
-          <text class="recommend-name">{{item.name}}</text>
-          <text class="recommend-category text-hint">{{item.category}}</text>
-          <text class="recommend-desc text-secondary text-ellipsis-2">{{item.description}}</text>
-          <view class="difficulty-row mt-sm">
-            <text class="difficulty-label text-hint">难度：</text>
-            <text class="difficulty-stars">{{item.difficulty === 1 ? '⭐' : item.difficulty === 2 ? '⭐⭐' : '⭐⭐⭐'}}</text>
+          <view class="recommend-name-row">
+            <text class="recommend-name">{{item.name}}</text>
+            <text class="recommend-tag tag-{{item.tagColor || 'green'}}">{{item.category}}</text>
+          </view>
+          <text class="recommend-desc">{{item.description}}</text>
+          <view class="recommend-meta">
+            <text class="meta-label">难度：</text>
+            <text class="star filled" wx:for="{{item.difficulty}}" wx:for-item="s" wx:key="*this">★</text>
+            <text class="star empty" wx:for="{{5 - item.difficulty}}" wx:for-item="s" wx:key="*this">☆</text>
           </view>
         </view>
+        <text class="recommend-arrow">›</text>
       </view>
     </view>
     <view class="empty-placeholder" wx:else>
-      <text>暂无推荐，快去探索花卉百科吧 🌺</text>
+      <text class="empty-emoji">🌺</text>
+      <text class="empty-text">暂无推荐，快去探索花卉百科吧</text>
     </view>
   </view>
+    </view>
+  </scroll-view>
 </view>

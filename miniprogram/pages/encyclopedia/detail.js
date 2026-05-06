@@ -4,17 +4,25 @@ const flowerService = require('../../services/flower')
 Page({
   data: {
     loading: false,
+    statusBarHeight: 20,
     flower: null,
     isFavorite: false,
   },
 
   onLoad(options) {
+    const sysInfo = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
+
     const id = options && options.id
     if (!id) {
       wx.showToast({ title: '缺少花卉ID', icon: 'none' })
       return
     }
     this.loadFlower(id)
+  },
+
+  onGoBack() {
+    wx.navigateBack({ delta: 1 })
   },
 
   async loadFlower(id) {

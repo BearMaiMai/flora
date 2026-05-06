@@ -1,50 +1,132 @@
-<!--pages/profile/index.wxml-->
-<view class="container">
-  <!-- 用户信息 -->
-  <view class="card user-card flex-row" wx:if="{{isLoggedIn}}">
-    <view class="avatar-wrap">
-      <image wx:if="{{userInfo.avatarUrl}}" class="avatar" src="{{userInfo.avatarUrl}}" />
-      <view wx:else class="avatar-placeholder">
-        <text class="avatar-emoji">🧑‍🌾</text>
+<!--pages/profile/index.wxml - 个人中心-->
+<view class="page-layout">
+  <!-- 公共标题组件 -->
+  <custom-header></custom-header>
+
+  <!-- 可滚动内容区 -->
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+    <view class="profile-page">
+
+  <!-- 顶部渐变背景区域 -->
+  <view class="profile-header">
+    <view class="header-bg"></view>
+    
+    <!-- 用户信息 -->
+    <view class="user-section" wx:if="{{isLoggedIn}}">
+      <view class="avatar-container">
+        <view class="avatar-decoration">
+          <image wx:if="{{userInfo.avatarUrl}}" class="avatar-img" src="{{userInfo.avatarUrl}}" />
+          <view wx:else class="avatar-default">
+            <text class="avatar-emoji">🧑‍🌾</text>
+          </view>
+        </view>
       </view>
-    </view>
-    <view class="user-info">
       <text class="username">{{userInfo.nickName}}</text>
-      <text class="user-motto text-hint">用心养花，静待花开 🌸</text>
+      <text class="user-motto">用心养花，静待花开 🌸</text>
     </view>
-  </view>
-  <view class="card user-card flex-center" wx:else bindtap="onLogin">
-    <text class="login-text">点击登录 👋</text>
+    <view class="user-section login-section" wx:else bindtap="onLogin">
+      <view class="avatar-container">
+        <view class="avatar-decoration">
+          <view class="avatar-default">
+            <text class="avatar-emoji">👋</text>
+          </view>
+        </view>
+      </view>
+      <text class="login-text">点击登录</text>
+    </view>
   </view>
 
-  <!-- 统计 -->
-  <view class="card stats-card flex-between">
+  <!-- 统计数据 -->
+  <view class="stats-card">
     <view class="stat-item">
       <text class="stat-num">{{stats.plantCount}}</text>
       <text class="stat-label">我的植物</text>
     </view>
+    <view class="stat-divider"></view>
     <view class="stat-item">
       <text class="stat-num">{{stats.diaryCount}}</text>
       <text class="stat-label">成长日记</text>
     </view>
+    <view class="stat-divider"></view>
     <view class="stat-item">
       <text class="stat-num">{{stats.favoriteCount}}</text>
       <text class="stat-label">我的收藏</text>
     </view>
   </view>
 
-  <!-- 菜单 -->
-  <view class="card menu-card">
-    <view class="menu-item flex-between" bindtap="goToReminder">
-      <text>🔔 养护提醒</text><text class="arrow">></text>
+  <!-- 菜单列表 -->
+  <view class="menu-card">
+    <view class="menu-item" bindtap="goToReminder">
+      <view class="menu-left">
+        <view class="menu-icon-wrap icon-bell">
+          <text class="menu-icon-text">🔔</text>
+        </view>
+        <text class="menu-label">养护提醒</text>
+      </view>
+      <view class="menu-right">
+        <view class="notification-badge" wx:if="{{reminderCount > 0}}">{{reminderCount}}</view>
+        <text class="menu-arrow">›</text>
+      </view>
     </view>
-    <view class="divider"></view>
-    <view class="menu-item flex-between" bindtap="goToFavorites">
-      <text>❤️ 我的收藏</text><text class="arrow">></text>
+
+    <view class="menu-item" bindtap="goToFavorites">
+      <view class="menu-left">
+        <view class="menu-icon-wrap icon-heart">
+          <text class="menu-icon-text">❤️</text>
+        </view>
+        <text class="menu-label">我的收藏</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
     </view>
-    <view class="divider"></view>
-    <view class="menu-item flex-between" bindtap="goToAbout">
-      <text>ℹ️ 关于养花呀</text><text class="arrow">></text>
+
+    <view class="menu-item" bindtap="goToGuide">
+      <view class="menu-left">
+        <view class="menu-icon-wrap icon-book">
+          <text class="menu-icon-text">📖</text>
+        </view>
+        <text class="menu-label">种植指南</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="goToSettings">
+      <view class="menu-left">
+        <view class="menu-icon-wrap icon-settings">
+          <text class="menu-icon-text">⚙️</text>
+        </view>
+        <text class="menu-label">设置</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="goToAbout">
+      <view class="menu-left">
+        <view class="menu-icon-wrap icon-info">
+          <text class="menu-icon-text">ℹ️</text>
+        </view>
+        <text class="menu-label">关于养花呀</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
     </view>
   </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <view class="logout-btn" bindtap="onLogout">
+      <text class="logout-text">退出登录</text>
+    </view>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view class="bottom-spacer safe-bottom"></view>
+    </view>
+  </scroll-view>
 </view>

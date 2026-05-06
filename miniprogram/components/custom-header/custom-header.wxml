@@ -1,0 +1,12 @@
+<!--components/custom-header/custom-header.wxml - 公共顶部标题组件-->
+<view class="custom-header-wrap">
+  <view class="custom-header" style="padding-top: {{statusBarHeight + 8}}px;">
+    <view class="header-content">
+      <text class="app-title">养花呀</text>
+      <view class="app-subtitle-row" wx:if="{{showSubtitle}}">
+        <view class="subtitle-dot"></view>
+        <text class="app-subtitle">Flora</text>
+      </view>
+    </view>
+  </view>
+</view>

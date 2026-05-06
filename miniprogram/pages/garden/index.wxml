@@ -1,18 +1,33 @@
 <!--pages/garden/index.wxml - 我的花园-->
-<view class="container">
-  <!-- 今日提醒 -->
-  <view class="card reminder-card" wx:if="{{todayReminders.length}}">
-    <view class="card-title">⏰ 今日待办 ({{todayReminders.length}})</view>
-    <view class="reminder-list">
-      <view class="reminder-item flex-between" wx:for="{{todayReminders}}" wx:key="_id">
-        <view class="reminder-left flex-row">
-          <text class="reminder-icon">{{item.icon}}</text>
-          <view class="reminder-text">
-            <text class="reminder-plant">{{item.plantName}}</text>
-            <text class="reminder-type text-hint">{{item.type}} · {{item.time}}</text>
+<view class="page-layout">
+  <!-- 公共标题组件 -->
+  <custom-header></custom-header>
+
+  <!-- 可滚动内容区 -->
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+    <view class="garden-page">
+
+  <!-- 今日待办 -->
+  <view class="tasks-card" wx:if="{{todayReminders.length}}">
+    <view class="tasks-header">
+      <view class="tasks-title-row">
+        <text class="tasks-icon">📋</text>
+        <text class="tasks-title">今日待办</text>
+      </view>
+      <view class="tasks-badge">{{todayReminders.length}}</view>
+    </view>
+    <view class="tasks-list">
+      <view class="task-item" wx:for="{{todayReminders}}" wx:key="_id">
+        <view class="task-left">
+          <view class="task-plant-avatar">
+            <text>{{item.icon}}</text>
+          </view>
+          <view class="task-info">
+            <text class="task-plant-name">{{item.plantName}}</text>
+            <text class="task-type-time">{{item.type}} · {{item.time}}</text>
           </view>
         </view>
-        <view class="reminder-done-btn" bindtap="onCompleteReminder" data-id="{{item._id}}">
+        <view class="task-check-btn {{item.done ? 'checked' : ''}}" bindtap="onCompleteReminder" data-id="{{item._id}}">
           <text>✓</text>
         </view>
       </view>
@@ -22,24 +37,32 @@
   <!-- 我的植物 -->
   <view class="section">
     <view class="section-header flex-between">
-      <text class="section-title">🌱 我的植物 ({{plantList.length}})</text>
-      <text class="text-green" bindtap="goToAddPlant">+ 添加</text>
+      <view class="section-title-row">
+        <text class="section-title">我的植物</text>
+        <view class="count-badge" wx:if="{{plantList.length}}">{{plantList.length}}</view>
+      </view>
+      <view class="add-btn" bindtap="goToAddPlant">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加</text>
+      </view>
     </view>
 
     <view class="plant-list" wx:if="{{plantList.length}}">
-      <view class="plant-card card" wx:for="{{plantList}}" wx:key="_id" bindtap="goToPlantDetail" data-id="{{item._id}}">
-        <view class="plant-avatar" style="background-color: {{item.status === 'needCare' ? '#FFF3E0' : '#E8F5E9'}};">
-          <text class="plant-emoji">{{item.status === 'needCare' ? '🌻' : '🌿'}}</text>
+      <view class="plant-card {{item.status === 'needCare' ? 'plant-card-warn' : 'plant-card-ok'}}" wx:for="{{plantList}}" wx:key="_id" bindtap="goToPlantDetail" data-id="{{item._id}}">
+        <view class="plant-avatar-wrap">
+          <view class="plant-avatar-circle {{item.status === 'needCare' ? 'avatar-warn' : 'avatar-ok'}}">
+            <text class="plant-emoji">{{item.status === 'needCare' ? '🌻' : '🌿'}}</text>
+          </view>
         </view>
         <view class="plant-info">
-          <view class="flex-between">
+          <view class="plant-header flex-between">
             <text class="plant-name">{{item.nickname}}</text>
-            <text class="plant-status {{item.status === 'needCare' ? 'status-warn' : 'status-ok'}}">{{item.status === 'needCare' ? '需关注' : '健康'}}</text>
+            <text class="plant-status-badge {{item.status === 'needCare' ? 'badge-warn' : 'badge-ok'}}">{{item.status === 'needCare' ? '需关注' : '健康'}}</text>
           </view>
-          <text class="plant-flower text-hint">{{item.flowerName}} · {{item.location}}</text>
-          <view class="plant-meta flex-between mt-sm">
-            <text class="text-hint">🗓️ 养了 {{item.days}} 天</text>
-            <text class="text-hint">💧 {{item.lastWatered}}</text>
+          <text class="plant-flower-name">{{item.flowerName}} · {{item.location}}</text>
+          <view class="plant-meta-row">
+            <text class="plant-days">🗓️ 养了 {{item.days}} 天</text>
+            <text class="plant-water">💧 {{item.lastWatered}}</text>
           </view>
         </view>
       </view>
@@ -51,4 +74,6 @@
       <view class="btn-primary" bindtap="goToAddPlant">去花卉百科添加</view>
     </view>
   </view>
+    </view>
+  </scroll-view>
 </view>
