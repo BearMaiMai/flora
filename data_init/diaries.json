@@ -1,0 +1,6 @@
+{"_id": "diary_001", "_openid": "test_openid_001", "plantId": "plant_001", "content": "今天给小绿换了个大一点的盆，根系非常健康，白白的嫩根长了很多，应该会长得更好了！", "images": [], "careActions": ["换盆", "浇水"], "weather": "晴", "createdAt": "2026-04-20T10:30:00.000Z"}
+{"_id": "diary_002", "_openid": "test_openid_001", "plantId": "plant_001", "content": "发现有一片叶子开始泛黄，检查了一下应该是浇水稍微有点多，减少频率观察一下。", "images": [], "careActions": ["观察"], "weather": "多云", "createdAt": "2026-04-25T15:00:00.000Z"}
+{"_id": "diary_003", "_openid": "test_openid_001", "plantId": "plant_002", "content": "小虎今天长出了两片新叶！颜色深绿油亮，状态非常好，继续保持。🎉", "images": [], "careActions": ["浇水"], "weather": "晴", "createdAt": "2026-04-22T09:00:00.000Z"}
+{"_id": "diary_004", "_openid": "test_openid_001", "plantId": "plant_003", "content": "龟背竹叶片擦拭干净了，有几片叶子背面有小红蜘蛛，用了稀释的洗洁精喷雾处理。", "images": [], "careActions": ["清洁", "病虫害处理"], "weather": "阴", "createdAt": "2026-04-27T11:00:00.000Z"}
+{"_id": "diary_005", "_openid": "test_openid_001", "plantId": "plant_001", "content": "泛黄的叶片已经剪掉，停止浇水一周后状态恢复正常，重新焕发活力了！", "images": [], "careActions": ["修剪", "观察"], "weather": "晴", "createdAt": "2026-04-30T08:00:00.000Z"}
+{"_id": "diary_006", "_openid": "test_openid_002", "plantId": "plant_004", "content": "买回来的富贵竹适应了新环境，水培状态良好，今天换了一次清水。", "images": [], "careActions": ["换水"], "weather": "晴", "createdAt": "2026-04-20T14:00:00.000Z"}

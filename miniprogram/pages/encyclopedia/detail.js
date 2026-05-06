@@ -1,45 +1,93 @@
 // pages/encyclopedia/detail.js - 花卉详情页
+const flowerService = require('../../services/flower')
+
 Page({
   data: {
     loading: false,
     statusBarHeight: 20,
-    flower: {
-      _id: 'f1',
-      name: '绿萝',
-      alias: '黄金葛、魔鬼藤',
-      category: '观叶植物',
-      difficulty: 1,
-      coverImage: '',
-      description: '绿萝是最受欢迎的室内观叶植物之一，原产于东南亚热带雨林。它不仅能美化环境，还被NASA列为最佳空气净化植物之一，可有效去除甲醛、苯等有害气体。',
-      flowerLanguage: '坚韧善良、守望幸福',
-      careGuide: {
-        water: '每3-5天浇水一次',
-        light: '散射光，忌直射',
-        soil: '泥炭土:珍珠岩 7:3',
-        temperature: '15-25°C',
-        fertilizer: '生长季每月一次',
-        humidity: '经常喷水保湿',
-      },
-      tips: [
-        '发黄的叶子及时剪掉，促进新叶生长',
-        '水培绿萝每周换水一次，保持水质清洁',
-        '可以用啤酒稀释后擦拭叶面，让叶片更有光泽',
-      ],
-    },
+    flower: null,
     isFavorite: false,
   },
 
   onLoad(options) {
     const sysInfo = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
+
+    const id = options && options.id
+    if (!id) {
+      wx.showToast({ title: '缺少花卉ID', icon: 'none' })
+      return
+    }
+    this.loadFlower(id)
   },
 
   onGoBack() {
     wx.navigateBack({ delta: 1 })
   },
 
-  onShare() {
-    // 触发分享
+  async loadFlower(id) {
+    this.setData({ loading: true })
+    try {
+      const res = await flowerService.getDetail(id)
+      const rawFlower = (res && res.data) || null
+
+      if (!rawFlower || !rawFlower._id) {
+        throw new Error('未找到花卉详情')
+      }
+
+      const flower = this.normalizeFlower(rawFlower)
+      this.setData({ flower })
+
+      wx.setNavigationBarTitle({
+        title: flower.name || '花卉详情',
+      })
+    } catch (err) {
+      console.error('获取花卉详情失败:', err)
+      wx.showToast({
+        title: '花卉详情加载失败',
+        icon: 'none',
+      })
+      this.setData({ flower: null })
+    } finally {
+      this.setData({ loading: false })
+    }
+  },
+
+  normalizeFlower(raw) {
+    const alias = Array.isArray(raw.alias)
+      ? raw.alias.join('、')
+      : (raw.alias || '')
+
+    const waterText = raw.waterDays
+      ? `约每${raw.waterDays}天浇水一次`
+      : '根据土壤干湿度灵活浇水'
+
+    const fertilizeText = raw.fertilizeDays
+      ? `约每${raw.fertilizeDays}天施肥一次`
+      : '生长季薄肥勤施，休眠期停肥'
+
+    const tips = Array.isArray(raw.tips) && raw.tips.length
+      ? raw.tips
+      : (Array.isArray(raw.tags) ? raw.tags.map(tag => `关键词：${tag}`) : [])
+
+    const difficultyNum = Number(raw.difficulty) || 1
+
+    return {
+      ...raw,
+      alias,
+      difficulty: Math.min(Math.max(difficultyNum, 1), 5),
+      coverImage: raw.coverImage || '',
+      description: raw.description || '暂无简介',
+      careGuide: {
+        water: waterText,
+        light: raw.light || '明亮散射光',
+        soil: raw.soil || raw.soilType || '疏松透气土壤',
+        temperature: raw.temperature || '15-30°C',
+        fertilizer: fertilizeText,
+        humidity: raw.humidity || '保持通风，空气干燥时可适当喷水',
+      },
+      tips,
+    }
   },
 
   onToggleFavorite() {
@@ -59,10 +107,10 @@ Page({
   },
 
   onShareAppMessage() {
-    const { flower } = this.data
+    const flower = this.data.flower
     return {
       title: flower ? `来看看「${flower.name}」的养护方法` : '养花呀 - 花卉百科',
-      path: `/pages/encyclopedia/detail?id=${flower?._id || ''}`,
+      path: `/pages/encyclopedia/detail?id=${flower && flower._id ? flower._id : ''}`,
     }
   },
 })

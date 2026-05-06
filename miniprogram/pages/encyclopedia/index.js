@@ -1,4 +1,5 @@
 // pages/encyclopedia/index.js - 花卉百科列表页
+const flowerService = require('../../services/flower')
 
 // 分类 → 标签颜色映射
 const CATEGORY_COLOR_MAP = {
@@ -10,18 +11,11 @@ const CATEGORY_COLOR_MAP = {
   '果蔬植物': 'orange',
 }
 
-function addTagColor(list) {
-  return list.map(item => ({
-    ...item,
-    tagColor: CATEGORY_COLOR_MAP[item.category] || 'green',
-  }))
-}
-
 Page({
   data: {
     loading: false,
     keyword: '',
-    categoryList: ['观叶植物', '开花植物', '多肉植物', '香草植物', '水培植物', '果蔬植物'],
+    categoryList: [],
     currentCategory: '',
     flowerList: [],
     allFlowers: [], // 存储全量数据用于筛选
@@ -29,39 +23,71 @@ Page({
     hasMore: false,
   },
 
-  onLoad() {
-    const rawList = [
-      { _id: 'f1', name: '绿萝', category: '观叶植物', difficulty: 1, description: '最好养的室内植物，净化空气' },
-      { _id: 'f2', name: '多肉（桃蛋）', category: '多肉植物', difficulty: 2, description: '粉嫩可爱，喜阳光充足' },
-      { _id: 'f3', name: '栀子花', category: '开花植物', difficulty: 3, description: '花香浓郁，洁白优雅' },
-      { _id: 'f4', name: '薄荷', category: '香草植物', difficulty: 1, description: '清新提神，可泡茶入菜' },
-      { _id: 'f5', name: '月季', category: '开花植物', difficulty: 3, description: '花色丰富，四季开花' },
-      { _id: 'f6', name: '虎皮兰', category: '观叶植物', difficulty: 1, description: '耐阴耐旱，净化甲醛能手' },
-      { _id: 'f7', name: '铜钱草', category: '水培植物', difficulty: 1, description: '圆圆的叶子像铜钱，水土皆可养' },
-      { _id: 'f8', name: '茉莉花', category: '开花植物', difficulty: 2, description: '花香袭人，夏季盛开' },
-      { _id: 'f9', name: '碰碰香', category: '香草植物', difficulty: 1, description: '触碰散发清香，驱蚊好帮手' },
-      { _id: 'f10', name: '小番茄', category: '果蔬植物', difficulty: 2, description: '阳台种植首选，好种又好吃' },
-      { _id: 'f11', name: '龟背竹', category: '观叶植物', difficulty: 2, description: '大叶植物，北欧风格装饰必备' },
-      { _id: 'f12', name: '仙人掌', category: '多肉植物', difficulty: 1, description: '超级耐旱，一个月浇一次水就行' },
-    ]
-    const flowers = addTagColor(rawList)
-    this.setData({
-      flowerList: flowers,
-      allFlowers: flowers,
-    })
+  async onLoad() {
+    await this.fetchFlowers()
   },
 
-  onReachBottom() {
-    // 模拟数据暂不分页
-  },
-
-  onPullDownRefresh() {
+  async onPullDownRefresh() {
     this.setData({
       currentCategory: '',
       keyword: '',
-      flowerList: this.data.allFlowers,
     })
+
+    await this.fetchFlowers()
     wx.stopPullDownRefresh()
+  },
+
+  onReachBottom() {
+    // 当前为全量加载，暂不做分页
+  },
+
+  async fetchFlowers() {
+    this.setData({ loading: true })
+    try {
+      const res = await flowerService.getList({ page: 1, pageSize: 200 })
+      const rawList = (res && res.data) || []
+      const allFlowers = rawList.map(item => this.normalizeFlowerItem(item))
+      const categoryList = this.buildCategoryList(allFlowers)
+
+      this.setData({
+        allFlowers,
+        flowerList: allFlowers,
+        categoryList,
+      })
+    } catch (err) {
+      console.error('获取花卉列表失败:', err)
+      wx.showToast({
+        title: '花卉数据加载失败',
+        icon: 'none',
+      })
+      this.setData({ allFlowers: [], flowerList: [], categoryList: [] })
+    } finally {
+      this.setData({ loading: false })
+    }
+  },
+
+  normalizeFlowerItem(item) {
+    const difficultyNum = Number(item && item.difficulty) || 1
+    const category = (item && item.category) || '未分类'
+    return {
+      _id: item && item._id ? item._id : '',
+      name: (item && item.name) || '未命名花卉',
+      category,
+      tagColor: CATEGORY_COLOR_MAP[category] || 'green',
+      difficulty: Math.min(Math.max(difficultyNum, 1), 5),
+      description: (item && item.description) || '暂无介绍',
+      coverImage: (item && item.coverImage) || '',
+    }
+  },
+
+  buildCategoryList(flowers) {
+    const categorySet = new Set()
+    flowers.forEach(item => {
+      if (item && item.category) {
+        categorySet.add(item.category)
+      }
+    })
+    return Array.from(categorySet)
   },
 
   onSearchInput(e) {
@@ -81,17 +107,26 @@ Page({
   filterFlowers() {
     const { allFlowers, keyword, currentCategory } = this.data
     let result = allFlowers
+
     if (currentCategory) {
       result = result.filter(f => f.category === currentCategory)
     }
+
     if (keyword) {
-      result = result.filter(f => f.name.indexOf(keyword) > -1 || f.description.indexOf(keyword) > -1)
+      const text = keyword.trim()
+      result = result.filter(f => {
+        const inName = (f.name || '').indexOf(text) > -1
+        const inDesc = (f.description || '').indexOf(text) > -1
+        return inName || inDesc
+      })
     }
+
     this.setData({ flowerList: result })
   },
 
   goToDetail(e) {
     const { id } = e.currentTarget.dataset
+    if (!id) return
     wx.navigateTo({ url: `/pages/encyclopedia/detail?id=${id}` })
   },
 })
