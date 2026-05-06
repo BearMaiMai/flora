@@ -11,7 +11,8 @@ const flowerService = {
 
   /** 获取花卉详情 */
   getDetail(id) {
-    return callFunction('flower', { action: 'detail', id })
+    // 兼容云端历史版本参数：id / flowerId
+    return callFunction('flower', { action: 'detail', id, flowerId: id })
   },
 
   /** 搜索花卉 */
