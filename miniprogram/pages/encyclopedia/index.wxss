@@ -48,7 +48,7 @@
 .category-item.active {
   background-color: var(--color-primary);
   color: var(--text-white);
-  box-shadow: 0 4rpx 12rpx rgba(76, 175, 80, 0.3);
+  box-shadow: var(--shadow-btn);
 }
 
 /* 统计 */
@@ -112,6 +112,10 @@
   height: 100%;
 }
 
+.thumb-placeholder {
+  background-color: var(--bg-green-light);
+}
+
 .thumb-emoji {
   font-size: 64rpx;
 }
@@ -146,30 +150,30 @@
   font-weight: 500;
 }
 
-/* 分类标签颜色 */
+/* 分类标签颜色 - 复用全局 tag 变量 */
 .tag-green {
-  color: #388E3C;
-  background-color: #E8F5E9;
+  color: var(--color-primary-dark);
+  background-color: var(--bg-green-light);
 }
 
 .tag-orange {
   color: #E65100;
-  background-color: #FFF3E0;
+  background-color: var(--bg-orange-light);
 }
 
 .tag-pink {
   color: #AD1457;
-  background-color: #FCE4EC;
+  background-color: var(--bg-pink-light);
 }
 
 .tag-purple {
   color: #6A1B9A;
-  background-color: #F3E5F5;
+  background-color: var(--bg-purple-light);
 }
 
 .tag-blue {
   color: #1565C0;
-  background-color: #E3F2FD;
+  background-color: var(--bg-blue-light);
 }
 
 .flower-desc {
@@ -198,11 +202,11 @@
 }
 
 .star.filled {
-  color: #4CAF50;
+  color: var(--color-primary);
 }
 
 .star.empty {
-  color: #D0D0D0;
+  color: var(--border-color);
 }
 
 .flower-arrow {

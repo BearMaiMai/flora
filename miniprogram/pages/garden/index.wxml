@@ -4,14 +4,14 @@
   <custom-header></custom-header>
 
   <!-- 可滚动内容区 -->
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
     <view class="garden-page">
 
   <!-- 今日待办 -->
   <view class="tasks-card" wx:if="{{todayReminders.length}}">
     <view class="tasks-header">
       <view class="tasks-title-row">
-        <text class="tasks-icon">📋</text>
+        <icon name="clipboard" size="md" />
         <text class="tasks-title">今日待办</text>
       </view>
       <view class="tasks-badge">{{todayReminders.length}}</view>
@@ -20,7 +20,7 @@
       <view class="task-item" wx:for="{{todayReminders}}" wx:key="_id">
         <view class="task-left">
           <view class="task-plant-avatar">
-            <text>{{item.icon}}</text>
+            <icon emoji="{{item.icon}}" size="md" />
           </view>
           <view class="task-info">
             <text class="task-plant-name">{{item.plantName}}</text>
@@ -69,7 +69,7 @@
     </view>
 
     <view class="empty-state" wx:else>
-      <text class="empty-icon">🪴</text>
+      <icon name="tree" size="xl" />
       <text class="empty-text">还没有种花哦</text>
       <view class="btn-primary" bindtap="goToAddPlant">去花卉百科添加</view>
     </view>

@@ -3,7 +3,7 @@
   <!-- Hero 头图区域 -->
   <view class="hero-section">
     <view class="hero-image-wrap">
-      <image wx:if="{{flower.coverImage}}" class="hero-image" src="{{flower.coverImage}}" mode="aspectFill" />
+      <image wx:if="{{flower.coverImage && !imgError}}" class="hero-image" src="{{flower.coverImage}}" mode="aspectFill" binderror="onHeroImageError" />
       <view wx:else class="hero-placeholder">
         <text class="hero-emoji">🌿</text>
       </view>
@@ -42,54 +42,42 @@
     <text class="section-title">🌱 养护指南</text>
     <view class="care-grid">
       <view class="care-card card-water">
-        <view class="care-icon-circle icon-water">
-          <text class="care-icon-emoji">💧</text>
-        </view>
+        <icon name="water" size="lg" bg="water" />
         <view class="care-card-text">
           <text class="care-card-label">浇水</text>
           <text class="care-card-value">{{flower.careGuide.water}}</text>
         </view>
       </view>
       <view class="care-card card-sun">
-        <view class="care-icon-circle icon-sun">
-          <text class="care-icon-emoji">☀️</text>
-        </view>
+        <icon name="sun" size="lg" bg="sun" />
         <view class="care-card-text">
           <text class="care-card-label">光照</text>
           <text class="care-card-value">{{flower.careGuide.light}}</text>
         </view>
       </view>
       <view class="care-card card-soil">
-        <view class="care-icon-circle icon-soil">
-          <text class="care-icon-emoji">🪴</text>
-        </view>
+        <icon name="soil" size="lg" bg="soil" />
         <view class="care-card-text">
           <text class="care-card-label">土壤</text>
           <text class="care-card-value">{{flower.careGuide.soil}}</text>
         </view>
       </view>
       <view class="care-card card-temp">
-        <view class="care-icon-circle icon-temp">
-          <text class="care-icon-emoji">🌡️</text>
-        </view>
+        <icon name="temp" size="lg" bg="temp" />
         <view class="care-card-text">
           <text class="care-card-label">温度</text>
           <text class="care-card-value">{{flower.careGuide.temperature}}</text>
         </view>
       </view>
       <view class="care-card card-fertilizer">
-        <view class="care-icon-circle icon-fertilizer">
-          <text class="care-icon-emoji">🧪</text>
-        </view>
+        <icon name="fertilizer" size="lg" bg="fertilizer" />
         <view class="care-card-text">
           <text class="care-card-label">施肥</text>
           <text class="care-card-value">{{flower.careGuide.fertilizer}}</text>
         </view>
       </view>
       <view class="care-card card-humidity">
-        <view class="care-icon-circle icon-humidity">
-          <text class="care-icon-emoji">💨</text>
-        </view>
+        <icon name="humidity" size="lg" bg="humidity" />
         <view class="care-card-text">
           <text class="care-card-label">湿度</text>
           <text class="care-card-value">{{flower.careGuide.humidity}}</text>

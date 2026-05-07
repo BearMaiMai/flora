@@ -1,0 +1,51 @@
+/* components/icon/icon.wxss - 图标组件样式 */
+
+/* 容器 */
+.icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 文本 */
+.icon-text {
+  line-height: 1;
+  text-align: center;
+}
+
+/* ===== 尺寸 ===== */
+.icon-size-xs { font-size: var(--font-sm); }
+.icon-size-sm { font-size: var(--icon-sm); }
+.icon-size-md { font-size: var(--icon-md); }
+.icon-size-lg { font-size: var(--icon-lg); }
+.icon-size-xl { font-size: var(--icon-xl); }
+
+/* 圆形容器尺寸跟随 */
+.icon-circle.icon-size-xs { width: 44rpx; height: 44rpx; border-radius: 50%; }
+.icon-circle.icon-size-sm { width: 56rpx; height: 56rpx; border-radius: 50%; }
+.icon-circle.icon-size-md { width: 72rpx; height: 72rpx; border-radius: 50%; }
+.icon-circle.icon-size-lg { width: 96rpx; height: 96rpx; border-radius: 50%; }
+.icon-circle.icon-size-xl { width: 120rpx; height: 120rpx; border-radius: 50%; }
+
+/* ===== 背景色 ===== */
+.icon-bg-water { background-color: var(--bg-blue-light); }
+.icon-bg-sun { background-color: var(--bg-yellow-light); }
+.icon-bg-soil { background-color: var(--bg-brown-light); }
+.icon-bg-temp { background-color: var(--bg-red-light); }
+.icon-bg-fertilizer { background-color: var(--bg-green-light); }
+.icon-bg-humidity { background-color: var(--bg-cyan-light); }
+.icon-bg-primary { background-color: var(--bg-green-light); }
+.icon-bg-orange { background-color: var(--bg-orange-light); }
+.icon-bg-blue { background-color: var(--bg-blue-light); }
+.icon-bg-pink { background-color: var(--bg-pink-light); }
+.icon-bg-purple { background-color: var(--bg-purple-light); }
+.icon-bg-red { background-color: var(--bg-red-light); }
+.icon-bg-yellow { background-color: var(--bg-yellow-light); }
+.icon-bg-cyan { background-color: var(--bg-cyan-light); }
+.icon-bg-brown { background-color: var(--bg-brown-light); }
+
+/* 圆形默认背景（未指定色系时） */
+.icon-circle:not([class*="icon-bg-"]) {
+  background-color: var(--bg-grey);
+}

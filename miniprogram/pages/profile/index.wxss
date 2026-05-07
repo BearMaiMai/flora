@@ -1,13 +1,14 @@
 /* pages/profile/index.wxss - 个人中心样式 */
 .profile-page {
-  min-height: 100vh;
   background-color: var(--bg-page);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 顶部渐变背景 */
 .profile-header {
   position: relative;
   padding: 32rpx 32rpx 48rpx;
+  overflow: hidden;
 }
 
 .header-bg {
@@ -15,7 +16,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 400rpx;
+  height: 100%;
   background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 40%, var(--bg-page) 100%);
   border-radius: 0 0 60rpx 60rpx;
 }
@@ -90,12 +91,14 @@
 
 /* 统计卡片 */
 .stats-card {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   background-color: var(--bg-card);
   border-radius: var(--border-radius-xl);
   padding: 36rpx 24rpx;
-  margin: 0 32rpx 24rpx;
+  margin: -16rpx 32rpx 24rpx;
   box-shadow: var(--shadow-md);
 }
 
@@ -193,7 +196,7 @@
 
 .notification-badge {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--text-white);
   font-size: 20rpx;
   font-weight: 600;
   min-width: 32rpx;
@@ -233,5 +236,5 @@
 
 /* 底部安全留白 */
 .bottom-spacer {
-  height: 48rpx;
+  height: 32rpx;
 }

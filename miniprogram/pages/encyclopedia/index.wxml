@@ -4,7 +4,7 @@
   <custom-header></custom-header>
 
   <!-- 可滚动内容区 -->
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}" enable-back-to-top>
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
     <view class="encyclopedia-page">
       <!-- 搜索栏 -->
       <view class="search-bar">
@@ -22,7 +22,7 @@
 
       <!-- 花卉数量统计 -->
       <view class="list-count" wx:if="{{flowerList.length}}">
-        <text class="list-count-icon">🌱</text>
+        <icon name="plant" size="sm" />
         <text class="list-count-text">共 <text class="list-count-num">{{flowerList.length}}</text> 种花卉</text>
       </view>
 
@@ -33,8 +33,8 @@
           <text class="empty-text">没有找到相关花卉</text>
         </view>
         <view class="flower-card" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-          <view class="flower-thumb" style="background-color: {{item.coverImage ? '' : '#E8F5E9'}};">
-            <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="thumb-img" />
+          <view class="flower-thumb {{item.coverImage && !item.imgError ? '' : 'thumb-placeholder'}}">
+            <image wx:if="{{item.coverImage && !item.imgError}}" src="{{item.coverImage}}" mode="aspectFill" class="thumb-img" binderror="onImageError" data-id="{{item._id}}" />
             <text wx:else class="thumb-emoji">🌿</text>
           </view>
           <view class="flower-info">

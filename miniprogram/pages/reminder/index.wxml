@@ -30,7 +30,7 @@
         <view class="timeline-card-main">
           <view class="reminder-content">
             <view class="reminder-avatar-mini">
-              <text>{{item.icon}}</text>
+              <icon emoji="{{item.icon}}" size="md" />
             </view>
             <view class="reminder-info">
               <text class="reminder-plant-name {{item.done ? 'text-line-through' : ''}}">{{item.plantName}}</text>

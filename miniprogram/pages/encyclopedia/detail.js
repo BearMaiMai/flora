@@ -21,6 +21,10 @@ Page({
     this.loadFlower(id)
   },
 
+  onHeroImageError() {
+    this.setData({ imgError: true })
+  },
+
   onGoBack() {
     wx.navigateBack({ delta: 1 })
   },
@@ -72,11 +76,15 @@ Page({
 
     const difficultyNum = Number(raw.difficulty) || 1
 
+    // 过滤不可用的云存储图片（cloud:// 协议的文件实际不存在于云存储）
+    const rawImage = raw.coverImage || ''
+    const coverImage = rawImage.startsWith('cloud://') ? '' : rawImage
+
     return {
       ...raw,
       alias,
       difficulty: Math.min(Math.max(difficultyNum, 1), 5),
-      coverImage: raw.coverImage || '',
+      coverImage,
       description: raw.description || '暂无简介',
       careGuide: {
         water: waterText,

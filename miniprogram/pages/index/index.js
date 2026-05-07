@@ -10,10 +10,10 @@ Page({
     dailyTip: '',
     recommendList: [],
     seasonTips: [
-      { icon: '🚿', title: '浇水技巧', desc: '保持土壤微湿', bgColor: '#E3F2FD' },
-      { icon: '☀️', title: '光照管理', desc: '日照6小时', bgColor: '#FFF8E1' },
-      { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', bgColor: '#F3E5F5' },
-      { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', bgColor: '#E8F5E9' },
+      { icon: '🚿', title: '浇水技巧', desc: '保持土壤微湿', gradient: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
+      { icon: '☀️', title: '光照管理', desc: '日照6小时', gradient: 'linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%)' },
+      { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', gradient: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
+      { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', gradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },
     ],
   },
 
@@ -73,12 +73,15 @@ Page({
 
   normalizeRecommendItem(item) {
     const difficultyNum = Number(item && item.difficulty) || 1
+    // 过滤不可用的云存储图片（cloud:// 协议的文件实际不存在于云存储）
+    const rawImage = (item && item.coverImage) || ''
+    const coverImage = rawImage.startsWith('cloud://') ? '' : rawImage
     return {
       _id: item && item._id ? item._id : '',
       name: (item && item.name) || '未命名花卉',
       category: (item && item.category) || '未分类',
       difficulty: Math.min(Math.max(difficultyNum, 1), 5),
-      coverImage: (item && item.coverImage) || '',
+      coverImage,
       description: (item && item.description) || '暂无简介',
     }
   },

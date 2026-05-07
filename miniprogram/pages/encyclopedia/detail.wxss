@@ -182,6 +182,7 @@ page {
   border-radius: var(--border-radius-lg);
   padding: 24rpx 20rpx;
   gap: 16rpx;
+  overflow: hidden;
 }
 
 /* 各卡片背景色 */
@@ -211,6 +212,8 @@ page {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
+  flex: 1;
 }
 
 .care-card-label {
@@ -280,7 +283,7 @@ page {
   padding: 20rpx 32rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
   background-color: var(--bg-card);
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-top);
   gap: 20rpx;
 }
 

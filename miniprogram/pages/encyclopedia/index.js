@@ -69,6 +69,9 @@ Page({
   normalizeFlowerItem(item) {
     const difficultyNum = Number(item && item.difficulty) || 1
     const category = (item && item.category) || '未分类'
+    // 过滤不可用的云存储图片（cloud:// 协议的文件实际不存在于云存储）
+    const rawImage = (item && item.coverImage) || ''
+    const coverImage = rawImage.startsWith('cloud://') ? '' : rawImage
     return {
       _id: item && item._id ? item._id : '',
       name: (item && item.name) || '未命名花卉',
@@ -76,7 +79,7 @@ Page({
       tagColor: CATEGORY_COLOR_MAP[category] || 'green',
       difficulty: Math.min(Math.max(difficultyNum, 1), 5),
       description: (item && item.description) || '暂无介绍',
-      coverImage: (item && item.coverImage) || '',
+      coverImage,
     }
   },
 
@@ -122,6 +125,16 @@ Page({
     }
 
     this.setData({ flowerList: result })
+  },
+
+  onImageError(e) {
+    const { id } = e.currentTarget.dataset
+    if (!id) return
+    const { flowerList } = this.data
+    const index = flowerList.findIndex(item => item._id === id)
+    if (index > -1) {
+      this.setData({ [`flowerList[${index}].imgError`]: true })
+    }
   },
 
   goToDetail(e) {
