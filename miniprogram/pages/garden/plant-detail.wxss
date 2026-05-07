@@ -85,7 +85,7 @@
 }
 
 .pill-status-needCare {
-  background-color: #FFF3E0;
+  background-color: var(--bg-orange-light);
 }
 
 .pill-text {

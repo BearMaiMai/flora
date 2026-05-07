@@ -186,17 +186,17 @@
 }
 
 .type-water {
-  background-color: #E3F2FD;
+  background-color: var(--bg-blue-light);
   color: #1565C0;
 }
 
 .type-fertilizer {
-  background-color: #E8F5E9;
+  background-color: var(--bg-green-light);
   color: var(--color-primary-dark);
 }
 
 .type-other {
-  background-color: #FFF8E1;
+  background-color: var(--bg-yellow-light);
   color: #F57F17;
 }
 

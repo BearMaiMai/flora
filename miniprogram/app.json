@@ -50,6 +50,9 @@
     "navigationBarTextStyle": "black",
     "backgroundColor": "#F8FBF5"
   },
+  "usingComponents": {
+    "icon": "/components/icon/icon"
+  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }

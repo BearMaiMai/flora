@@ -44,7 +44,7 @@
 .tasks-title {
   font-size: var(--font-lg);
   font-weight: 700;
-  color: #5D4037;
+  color: var(--text-primary);
 }
 
 .tasks-badge {
@@ -275,7 +275,7 @@
 }
 
 .badge-warn {
-  background-color: #FFF3E0;
+  background-color: var(--bg-orange-light);
   color: #E65100;
 }
 

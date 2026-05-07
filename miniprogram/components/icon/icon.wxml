@@ -1,0 +1,5 @@
+<!--components/icon/icon.wxml - 统一图标组件-->
+<view wx:if="{{wrapCls}}" class="icon-wrap {{wrapCls}} {{sizeCls}}">
+  <text class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>
+</view>
+<text wx:else class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>

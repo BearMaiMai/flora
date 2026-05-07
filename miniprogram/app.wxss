@@ -1,21 +1,51 @@
-/* app.wxss - 全局样式 */
+/* app.wxss - 全局样式入口 */
 @import './styles/variables.wxss';
 @import './styles/common.wxss';
+
+/* ==================== 全局基础样式 ==================== */
 
 page {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  font-size: 28rpx;
+  font-size: var(--font-md);
   color: var(--text-primary);
   background-color: var(--bg-page);
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  line-height: 1.6;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: var(--line-height-normal);
   height: 100%;
   overflow: hidden;
 }
 
-/* 页面布局框架：固定标题 + 可滚动内容区 */
+/* 继承 box-sizing */
+view, scroll-view, swiper, swiper-item, text, image, navigator {
+  box-sizing: border-box;
+}
+
+/* 图片默认行为 */
+image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 移除按钮默认样式 */
+button {
+  padding: 0;
+  margin: 0;
+  background: none;
+  line-height: inherit;
+  font-size: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+/* ==================== 页面布局框架 ==================== */
+
+/* 固定标题 + 可滚动内容区 */
 .page-layout {
   display: flex;
   flex-direction: column;
@@ -26,4 +56,33 @@ page {
 .page-content {
   flex: 1;
   overflow: hidden;
+}
+
+/* 自动为使用TabBar的页面留底部间距 */
+.page-with-tabbar {
+  padding-bottom: var(--tabbar-height);
+}
+
+/* 底部操作栏占位（避免内容被遮挡） */
+.page-with-action-bar {
+  padding-bottom: calc(var(--action-bar-height) + env(safe-area-inset-bottom));
+}
+
+/* ==================== 全局过渡效果 ==================== */
+
+/* 所有可交互元素的 active 态过渡 */
+.hover-scale {
+  transition: transform var(--transition-fast);
+}
+
+.hover-scale:active {
+  transform: scale(0.97);
+}
+
+.hover-opacity {
+  transition: opacity var(--transition-fast);
+}
+
+.hover-opacity:active {
+  opacity: 0.7;
 }

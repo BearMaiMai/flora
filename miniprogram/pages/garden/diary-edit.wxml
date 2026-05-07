@@ -7,7 +7,7 @@
       <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">×</view>
     </view>
     <view class="image-add" bindtap="chooseImage" wx:if="{{images.length < maxImageCount}}">
-      <text class="add-icon">+</text>
+      <icon name="add" size="xl" color="var(--text-hint)" />
     </view>
   </view>
   <button class="btn-primary submit-btn mt-lg" bindtap="onSubmit">保存日记</button>

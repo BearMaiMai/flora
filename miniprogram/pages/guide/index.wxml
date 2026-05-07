@@ -35,7 +35,7 @@
     <view class="article-list">
       <view class="article-card" wx:for="{{guideList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
         <view class="article-thumb">
-          <text class="article-thumb-emoji">{{item.icon}}</text>
+          <icon emoji="{{item.icon}}" size="lg" />
         </view>
         <view class="article-info">
           <text class="article-title">{{item.title}}</text>

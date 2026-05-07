@@ -1,5 +1,7 @@
-/* variables.wxss - 样式变量 */
+/* variables.wxss - 设计令牌（Design Tokens） */
 page {
+  /* ==================== 色彩系统 ==================== */
+
   /* 品牌色 */
   --color-primary: #4CAF50;
   --color-primary-light: #81C784;
@@ -16,48 +18,124 @@ page {
   --color-humidity: #26C6DA;
   --color-warning: #FF9800;
   --color-danger: #E53935;
+  --color-success: #4CAF50;
+  --color-info: #2196F3;
 
   /* 文字颜色 */
   --text-primary: #2E2E2E;
   --text-secondary: #5F6368;
   --text-hint: #9E9E9E;
   --text-white: #ffffff;
+  --text-inverse: #ffffff;
 
   /* 背景色 */
   --bg-page: #F8FBF5;
   --bg-card: #ffffff;
   --bg-grey: #F1F5ED;
   --bg-green-light: #E8F5E9;
+  --bg-orange-light: #FFF3E0;
+  --bg-blue-light: #E3F2FD;
+  --bg-pink-light: #FCE4EC;
+  --bg-purple-light: #F3E5F5;
+  --bg-red-light: #FFEBEE;
+  --bg-yellow-light: #FFF8E1;
+  --bg-cyan-light: #E0F7FA;
+  --bg-brown-light: #EFEBE9;
+  --bg-mask: rgba(0, 0, 0, 0.5);
+  --bg-overlay: rgba(255, 255, 255, 0.85);
 
-  /* 边框 */
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+  --gradient-primary-dark: linear-gradient(135deg, #2E7D32 0%, #4CAF50 50%, #81C784 100%);
+  --gradient-warm: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+  --gradient-hero: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  --gradient-header: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 40%, var(--bg-page) 100%);
+  --gradient-fade-bottom: linear-gradient(180deg, transparent 0%, var(--bg-page) 100%);
+  --gradient-overlay-dark: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+
+  /* ==================== 边框 & 圆角 ==================== */
+
   --border-color: #E8EDE5;
+  --border-light: rgba(0, 0, 0, 0.05);
+  --border-radius-xs: 4rpx;
   --border-radius-sm: 8rpx;
   --border-radius-md: 16rpx;
   --border-radius-lg: 24rpx;
   --border-radius-xl: 32rpx;
   --border-radius-round: 999rpx;
 
-  /* 间距 */
+  /* ==================== 间距 ==================== */
+
   --spacing-xs: 8rpx;
   --spacing-sm: 16rpx;
   --spacing-md: 24rpx;
   --spacing-lg: 32rpx;
   --spacing-xl: 48rpx;
+  --spacing-xxl: 64rpx;
+  --page-padding: 24rpx;
 
-  /* 字号 */
+  /* ==================== 字体 ==================== */
+
   --font-xs: 22rpx;
   --font-sm: 24rpx;
   --font-md: 28rpx;
   --font-lg: 32rpx;
   --font-xl: 36rpx;
   --font-xxl: 44rpx;
+  --font-display: 52rpx;
 
-  /* 阴影 */
+  /* 行高 */
+  --line-height-tight: 1.3;
+  --line-height-normal: 1.6;
+  --line-height-loose: 1.8;
+
+  /* 字重 */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ==================== 阴影 ==================== */
+
   --shadow-sm: 0 2rpx 12rpx rgba(76, 175, 80, 0.06);
   --shadow-md: 0 4rpx 20rpx rgba(76, 175, 80, 0.08);
   --shadow-lg: 0 8rpx 32rpx rgba(76, 175, 80, 0.12);
+  --shadow-xl: 0 12rpx 48rpx rgba(76, 175, 80, 0.16);
+  --shadow-btn: 0 4rpx 16rpx rgba(76, 175, 80, 0.3);
+  --shadow-fab: 0 6rpx 24rpx rgba(76, 175, 80, 0.4);
+  --shadow-card-hover: 0 6rpx 28rpx rgba(76, 175, 80, 0.14);
+  --shadow-top: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
 
-  /* 动画 */
+  /* ==================== 动画 ==================== */
+
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
+  --transition-slow: 0.4s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ==================== 层级 ==================== */
+
+  --z-base: 1;
+  --z-card: 10;
+  --z-sticky: 50;
+  --z-fixed: 100;
+  --z-overlay: 200;
+  --z-modal: 500;
+  --z-toast: 1000;
+
+  /* ==================== 尺寸 ==================== */
+
+  --avatar-xs: 48rpx;
+  --avatar-sm: 64rpx;
+  --avatar-md: 88rpx;
+  --avatar-lg: 128rpx;
+  --avatar-xl: 180rpx;
+
+  --icon-sm: 28rpx;
+  --icon-md: 36rpx;
+  --icon-lg: 48rpx;
+  --icon-xl: 64rpx;
+
+  --tabbar-height: 120rpx;
+  --action-bar-height: 120rpx;
 }
