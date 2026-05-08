@@ -3,14 +3,17 @@
   <!-- 公共标题组件 -->
   <custom-header></custom-header>
 
+  <!-- 骨架屏 -->
+  <skeleton type="home" loading="{{loading}}" />
+
   <!-- 可滚动内容区 -->
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top wx:if="{{!loading}}">
     <view class="home-page">
 
       <!-- 搜索栏 -->
-      <view class="home-search anim-fade-in-down" bindtap="goToEncyclopedia">
+      <view class="home-search anim-fade-in-down" bindtap="goToEncyclopedia" hover-class="hover-card" hover-stay-time="100">
         <view class="home-search-inner">
-          <icon name="search" size="sm" />
+          <icon name="search" size="sm" tint="grey" />
           <text class="home-search-text">搜索花卉百科...</text>
         </view>
       </view>
@@ -19,13 +22,15 @@
       <view class="tip-card anim-fade-in-up anim-delay-1" wx:if="{{dailyTip}}">
         <view class="tip-card-body">
           <view class="tip-card-header">
-            <icon name="leaf" size="lg" bg="primary" />
+            <view class="tip-icon-circle">
+              <icon src="/images/icons/flower/a-029-arugula.svg" size="lg" />
+            </view>
             <text class="tip-card-title">每日养花小贴士</text>
           </view>
           <text class="tip-card-desc">{{dailyTip}}</text>
         </view>
         <view class="tip-card-deco">
-          <icon name="plant" size="xl" />
+          <icon src="/images/icons/flower/a-015-lotusflower.svg" size="xl" />
         </view>
       </view>
 
@@ -33,12 +38,12 @@
       <view class="section anim-fade-in-up anim-delay-2" wx:if="{{seasonTips.length}}">
         <view class="section-header flex-between">
           <view class="section-title-row">
-            <icon name="plant" size="sm" />
+            <icon src="/images/icons/flower/a-002-lavender.svg" size="md" />
             <text class="section-title">季节养护</text>
           </view>
-          <view class="section-more-btn" bindtap="goToGuide">
+          <view class="section-more-btn" bindtap="goToGuide" hover-class="hover-btn" hover-stay-time="100">
             <text>查看更多</text>
-            <icon name="arrow" size="xs" />
+            <icon name="chevronRight" size="xs" tint="primary" />
           </view>
         </view>
         <view class="season-grid">
@@ -47,6 +52,7 @@
             wx:for="{{seasonTips}}"
             wx:key="title"
             style="background: {{item.gradient || item.bgColor}};"
+            hover-class="hover-card" hover-stay-time="100"
           >
             <view class="season-card-icon-wrap">
               <icon emoji="{{item.icon}}" size="lg" />
@@ -61,12 +67,12 @@
       <view class="section anim-fade-in-up anim-delay-4">
         <view class="section-header flex-between">
           <view class="section-title-row">
-            <icon name="leaf" size="sm" />
+            <icon src="/images/icons/flower/a-023-cherryblossom.svg" size="md" />
             <text class="section-title">为你推荐</text>
           </view>
           <view class="section-more-btn" bindtap="goToEncyclopedia">
             <text>查看更多</text>
-            <icon name="arrow" size="xs" />
+            <icon name="chevronRight" size="xs" tint="primary" />
           </view>
         </view>
 
@@ -81,7 +87,7 @@
           >
             <view class="recommend-card-thumb" style="background-color: {{item.coverImage ? '' : item.thumbBg || 'var(--bg-green-light)'}};">
               <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="recommend-card-img" />
-              <icon wx:else name="leaf" size="xl" />
+              <icon wx:else src="/images/icons/flower/a-029-arugula.svg" size="xl" />
             </view>
             <view class="recommend-card-body">
               <view class="recommend-card-top">
@@ -98,14 +104,16 @@
               </view>
             </view>
             <view class="recommend-card-arrow">
-              <icon name="arrow" size="sm" color="var(--text-hint)" />
+              <icon name="chevronRight" size="xs" tint="grey" />
             </view>
           </view>
         </view>
 
-        <!-- 空状态 -->
+        <!-- 空状态 - 花卉装饰 -->
         <view class="empty-state" wx:else>
-          <icon name="flower" size="xl" />
+          <view class="empty-flower-group">
+            <icon src="/images/icons/flower/a-023-cherryblossom.svg" size="xl" />
+          </view>
           <text class="empty-title">暂无推荐</text>
           <text class="empty-text">快去探索花卉百科吧</text>
           <view class="empty-action">

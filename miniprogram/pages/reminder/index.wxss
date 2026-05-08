@@ -1,4 +1,6 @@
 /* pages/reminder/index.wxss - 养护提醒页样式 */
+@import '/styles/animation.wxss';
+
 .reminder-page {
   padding: 24rpx 24rpx 48rpx;
 }

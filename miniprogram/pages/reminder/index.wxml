@@ -18,7 +18,7 @@
   </view>
 
   <!-- 提醒列表 (Timeline 样式) -->
-  <view class="timeline-list" wx:if="{{filteredList.length}}">
+  <view class="timeline-list anim-fade-in-up anim-delay-2" wx:if="{{filteredList.length}}">
     <view class="timeline-item {{item.done ? 'item-done' : ''}}" wx:for="{{filteredList}}" wx:key="_id">
       <!-- 时间线 -->
       <view class="timeline-left">
@@ -42,7 +42,7 @@
             </view>
           </view>
           <view class="check-circle {{item.done ? 'checked' : ''}}" bindtap="onComplete" data-id="{{item._id}}">
-            <text wx:if="{{item.done}}">✓</text>
+            <icon wx:if="{{item.done}}" name="check" size="xs" />
           </view>
         </view>
       </view>
@@ -51,7 +51,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!loading && !filteredList.length}}">
-    <text class="empty-icon">🔔</text>
+    <icon name="lavender" size="xl" />
     <text class="empty-text">暂无提醒</text>
     <text class="empty-subtext">添加植物后会自动生成养护提醒哦</text>
   </view>

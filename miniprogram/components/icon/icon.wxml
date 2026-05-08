@@ -1,5 +1,13 @@
-<!--components/icon/icon.wxml - 统一图标组件-->
+<!--components/icon/icon.wxml - 统一图标组件（支持 SVG文件 + Emoji 双模式）-->
 <view wx:if="{{wrapCls}}" class="icon-wrap {{wrapCls}} {{sizeCls}}">
-  <text class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>
+  <!-- SVG 图片文件模式 -->
+  <image wx:if="{{mode === 'image'}}" class="icon-img {{sizeCls}} {{tintCls}}" src="{{imgSrc}}" mode="aspectFit" />
+  <!-- Emoji 文本模式 -->
+  <text wx:else class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>
 </view>
-<text wx:else class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>
+<block wx:else>
+  <!-- SVG 图片文件模式 -->
+  <image wx:if="{{mode === 'image'}}" class="icon-img {{sizeCls}} {{tintCls}}" src="{{imgSrc}}" mode="aspectFit" />
+  <!-- Emoji 文本模式 -->
+  <text wx:else class="icon-text {{sizeCls}}" style="{{customSize ? 'font-size:' + customSize : ''}}{{color ? ';color:' + color : ''}}">{{displayIcon}}</text>
+</block>

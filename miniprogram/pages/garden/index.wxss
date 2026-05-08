@@ -1,4 +1,6 @@
 /* pages/garden/index.wxss - 花园页样式 */
+@import '/styles/animation.wxss';
+
 .garden-page {
   padding: 0 24rpx 48rpx;
 }
@@ -199,6 +201,7 @@
   box-shadow: var(--shadow-sm);
   padding: 24rpx;
   border-left: 6rpx solid transparent;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 .plant-card:active {
@@ -289,6 +292,12 @@
 .plant-meta-row {
   display: flex;
   gap: 24rpx;
+}
+
+.plant-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
 }
 
 .plant-days,

@@ -1,0 +1,110 @@
+<!--components/skeleton/skeleton.wxml - 骨架屏组件-->
+<view class="skeleton {{animate ? 'skeleton-animate' : ''}}" wx:if="{{loading}}">
+
+  <!-- 首页骨架屏 -->
+  <block wx:if="{{type === 'home'}}">
+    <!-- 搜索栏占位 -->
+    <view class="sk-search">
+      <view class="sk-block sk-search-bar"></view>
+    </view>
+    <!-- 贴士卡片占位 -->
+    <view class="sk-tip-card">
+      <view class="sk-block sk-circle-sm"></view>
+      <view class="sk-tip-body">
+        <view class="sk-block sk-text sk-w40"></view>
+        <view class="sk-block sk-text sk-w80"></view>
+        <view class="sk-block sk-text sk-w60"></view>
+      </view>
+    </view>
+    <!-- 季节养护网格占位 -->
+    <view class="sk-section">
+      <view class="sk-block sk-text sk-w30"></view>
+      <view class="sk-grid">
+        <view class="sk-block sk-grid-item" wx:for="{{4}}" wx:key="*this"></view>
+      </view>
+    </view>
+    <!-- 推荐列表占位 -->
+    <view class="sk-section">
+      <view class="sk-block sk-text sk-w30"></view>
+      <view class="sk-card-list">
+        <view class="sk-recommend-card" wx:for="{{3}}" wx:key="*this">
+          <view class="sk-block sk-thumb"></view>
+          <view class="sk-card-body">
+            <view class="sk-block sk-text sk-w50"></view>
+            <view class="sk-block sk-text sk-w80"></view>
+            <view class="sk-block sk-text sk-w40"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 列表骨架屏（百科列表等） -->
+  <block wx:elif="{{type === 'list'}}">
+    <!-- 搜索栏占位 -->
+    <view class="sk-search">
+      <view class="sk-block sk-search-bar"></view>
+    </view>
+    <!-- 分类标签占位 -->
+    <view class="sk-tags">
+      <view class="sk-block sk-tag" wx:for="{{5}}" wx:key="*this"></view>
+    </view>
+    <!-- 列表项占位 -->
+    <view class="sk-card-list">
+      <view class="sk-recommend-card" wx:for="{{rows}}" wx:key="*this">
+        <view class="sk-block sk-thumb"></view>
+        <view class="sk-card-body">
+          <view class="sk-block sk-text sk-w50"></view>
+          <view class="sk-block sk-text sk-w80"></view>
+          <view class="sk-block sk-text sk-w30"></view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 花园页骨架屏 -->
+  <block wx:elif="{{type === 'garden'}}">
+    <!-- 今日待办占位 -->
+    <view class="sk-section">
+      <view class="sk-block sk-text sk-w30"></view>
+      <view class="sk-reminder-list">
+        <view class="sk-reminder-item" wx:for="{{2}}" wx:key="*this">
+          <view class="sk-block sk-circle-sm"></view>
+          <view class="sk-block sk-text sk-w60"></view>
+        </view>
+      </view>
+    </view>
+    <!-- 植物列表占位 -->
+    <view class="sk-section">
+      <view class="sk-block sk-text sk-w30"></view>
+      <view class="sk-plant-grid">
+        <view class="sk-plant-card" wx:for="{{4}}" wx:key="*this">
+          <view class="sk-block sk-plant-img"></view>
+          <view class="sk-block sk-text sk-w60"></view>
+          <view class="sk-block sk-text sk-w40"></view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 详情页骨架屏 -->
+  <block wx:elif="{{type === 'detail'}}">
+    <!-- 顶部大图占位 -->
+    <view class="sk-block sk-hero"></view>
+    <!-- 标题区域 -->
+    <view class="sk-detail-header">
+      <view class="sk-block sk-text sk-text-lg sk-w60"></view>
+      <view class="sk-block sk-text sk-w40"></view>
+    </view>
+    <!-- 内容段落 -->
+    <view class="sk-detail-body">
+      <view class="sk-block sk-text sk-w80"></view>
+      <view class="sk-block sk-text sk-w100"></view>
+      <view class="sk-block sk-text sk-w90"></view>
+      <view class="sk-block sk-text sk-w70"></view>
+      <view class="sk-block sk-text sk-w100"></view>
+      <view class="sk-block sk-text sk-w50"></view>
+    </view>
+  </block>
+
+</view>

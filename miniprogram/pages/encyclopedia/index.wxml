@@ -3,25 +3,28 @@
   <!-- 公共标题组件 -->
   <custom-header></custom-header>
 
+  <!-- 骨架屏 -->
+  <skeleton type="list" rows="{{4}}" loading="{{loading}}" />
+
   <!-- 可滚动内容区 -->
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top wx:if="{{!loading}}">
     <view class="encyclopedia-page">
       <!-- 搜索栏 -->
-      <view class="search-bar">
+      <view class="search-bar anim-fade-in-down">
         <view class="search-icon-wrap">
-          <text class="search-icon-text">🔍</text>
+          <icon name="search" size="sm" tint="grey" />
         </view>
         <input class="search-input" placeholder="搜索花卉名称..." value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
       </view>
 
       <!-- 分类筛选 -->
-      <scroll-view class="category-scroll" scroll-x enable-flex>
-        <view class="category-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryTap" data-category="">全部</view>
-        <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}">{{item}}</view>
+      <scroll-view class="category-scroll anim-fade-in-up anim-delay-1" scroll-x enable-flex>
+        <view class="category-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryTap" data-category="" hover-class="hover-tag" hover-stay-time="100">全部</view>
+        <view class="category-item {{currentCategory === item ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="*this" bindtap="onCategoryTap" data-category="{{item}}" hover-class="hover-tag" hover-stay-time="100">{{item}}</view>
       </scroll-view>
 
       <!-- 花卉数量统计 -->
-      <view class="list-count" wx:if="{{flowerList.length}}">
+      <view class="list-count anim-fade-in anim-delay-2" wx:if="{{flowerList.length}}">
         <icon name="plant" size="sm" />
         <text class="list-count-text">共 <text class="list-count-num">{{flowerList.length}}</text> 种花卉</text>
       </view>
@@ -29,13 +32,13 @@
       <!-- 花卉列表 -->
       <view class="flower-list">
         <view class="empty-state" wx:if="{{!loading && !flowerList.length}}">
-          <text class="empty-icon">🔍</text>
+          <icon name="daisy" size="xl" />
           <text class="empty-text">没有找到相关花卉</text>
         </view>
-        <view class="flower-card" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+        <view class="flower-card anim-fade-in-up anim-delay-{{index < 8 ? index + 1 : 8}}" wx:for="{{flowerList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}" hover-class="hover-card" hover-stay-time="100">
           <view class="flower-thumb {{item.coverImage && !item.imgError ? '' : 'thumb-placeholder'}}">
             <image wx:if="{{item.coverImage && !item.imgError}}" src="{{item.coverImage}}" mode="aspectFill" class="thumb-img" binderror="onImageError" data-id="{{item._id}}" />
-            <text wx:else class="thumb-emoji">🌿</text>
+            <icon wx:else name="leaf" size="lg" />
           </view>
           <view class="flower-info">
             <view class="flower-name-row">
@@ -49,7 +52,7 @@
               <text class="star empty" wx:for="{{5 - item.difficulty}}" wx:for-item="s" wx:key="*this">☆</text>
             </view>
           </view>
-          <text class="flower-arrow">›</text>
+          <icon name="chevronRight" size="sm" color="var(--text-hint)" />
         </view>
       </view>
     </view>

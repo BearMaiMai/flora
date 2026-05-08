@@ -2,6 +2,7 @@
   "navigationStyle": "custom",
   "disableScroll": true,
   "usingComponents": {
-    "custom-header": "/components/custom-header/custom-header"
+    "custom-header": "/components/custom-header/custom-header",
+    "skeleton": "/components/skeleton/skeleton"
   }
 }
