@@ -54,9 +54,6 @@
   "usingComponents": {
     "icon": "/components/icon/icon"
   },
-  "usingComponents": {
-    "icon": "/components/icon/icon"
-  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }
