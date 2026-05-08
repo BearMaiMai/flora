@@ -77,9 +77,6 @@
     "icon": "/components/icon/icon",
     "empty-state": "/components/empty-state/empty-state"
   },
-  "usingComponents": {
-    "icon": "/components/icon/icon"
-  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }
