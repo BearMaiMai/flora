@@ -3,8 +3,11 @@
   <!-- 公共标题组件 -->
   <custom-header></custom-header>
 
+  <!-- 骨架屏 -->
+  <skeleton type="garden" loading="{{loading}}" />
+
   <!-- 可滚动内容区 -->
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top wx:if="{{!loading}}">
     <view class="garden-page">
 
   <!-- 今日待办 -->
@@ -17,7 +20,7 @@
       <view class="tasks-badge">{{todayReminders.length}}</view>
     </view>
     <view class="tasks-list">
-      <view class="task-item" wx:for="{{todayReminders}}" wx:key="_id">
+      <view class="task-item anim-fade-in-up anim-delay-{{index + 1}}" wx:for="{{todayReminders}}" wx:key="_id">
         <view class="task-left">
           <view class="task-plant-avatar">
             <icon emoji="{{item.icon}}" size="md" />
@@ -27,22 +30,22 @@
             <text class="task-type-time">{{item.type}} · {{item.time}}</text>
           </view>
         </view>
-        <view class="task-check-btn {{item.done ? 'checked' : ''}}" bindtap="onCompleteReminder" data-id="{{item._id}}">
-          <text>✓</text>
+        <view class="task-check-btn {{item.done ? 'checked anim-check-bounce' : ''}}" bindtap="onCompleteReminder" data-id="{{item._id}}" hover-class="hover-icon" hover-stay-time="100">
+          <icon name="check" size="xs" />
         </view>
       </view>
     </view>
   </view>
 
   <!-- 我的植物 -->
-  <view class="section">
+  <view class="section anim-fade-in-up anim-delay-2">
     <view class="section-header flex-between">
       <view class="section-title-row">
         <text class="section-title">我的植物</text>
         <view class="count-badge" wx:if="{{plantList.length}}">{{plantList.length}}</view>
       </view>
       <view class="add-btn" bindtap="goToAddPlant">
-        <text class="add-icon">+</text>
+        <icon name="add" size="sm" color="var(--color-primary)" />
         <text class="add-text">添加</text>
       </view>
     </view>
@@ -61,8 +64,14 @@
           </view>
           <text class="plant-flower-name">{{item.flowerName}} · {{item.location}}</text>
           <view class="plant-meta-row">
-            <text class="plant-days">🗓️ 养了 {{item.days}} 天</text>
-            <text class="plant-water">💧 {{item.lastWatered}}</text>
+            <view class="plant-meta-item">
+              <icon src="/images/icons/common/date.svg" size="xs" />
+              <text class="plant-days">养了 {{item.days}} 天</text>
+            </view>
+            <view class="plant-meta-item">
+              <icon emoji="💧" size="xs" />
+              <text class="plant-water">{{item.lastWatered}}</text>
+            </view>
           </view>
         </view>
       </view>

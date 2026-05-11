@@ -1,0 +1,188 @@
+/* components/skeleton/skeleton.wxss - 骨架屏样式 */
+
+.skeleton {
+  padding: var(--spacing-md);
+}
+
+/* ==================== 动画 ==================== */
+.skeleton-animate .sk-block {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(
+    90deg,
+    var(--bg-grey) 25%,
+    #f5f9f2 50%,
+    var(--bg-grey) 75%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==================== 基础块 ==================== */
+.sk-block {
+  background-color: var(--bg-grey);
+  border-radius: var(--border-radius-sm);
+}
+
+.sk-text {
+  height: 28rpx;
+  margin-bottom: 16rpx;
+  border-radius: 8rpx;
+}
+
+.sk-text-lg {
+  height: 40rpx;
+}
+
+/* 宽度工具类 */
+.sk-w30 { width: 30%; }
+.sk-w40 { width: 40%; }
+.sk-w50 { width: 50%; }
+.sk-w60 { width: 60%; }
+.sk-w70 { width: 70%; }
+.sk-w80 { width: 80%; }
+.sk-w90 { width: 90%; }
+.sk-w100 { width: 100%; }
+
+.sk-circle-sm {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ==================== 搜索栏 ==================== */
+.sk-search {
+  margin-bottom: var(--spacing-lg);
+}
+
+.sk-search-bar {
+  height: 72rpx;
+  border-radius: 36rpx;
+  width: 100%;
+}
+
+/* ==================== 贴士卡片 ==================== */
+.sk-tip-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.sk-tip-body {
+  flex: 1;
+}
+
+/* ==================== 分类标签 ==================== */
+.sk-tags {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.sk-tag {
+  width: 120rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  flex-shrink: 0;
+}
+
+/* ==================== 区块标题 ==================== */
+.sk-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ==================== 网格 ==================== */
+.sk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.sk-grid-item {
+  height: 160rpx;
+  border-radius: var(--border-radius-md);
+}
+
+/* ==================== 推荐卡片列表 ==================== */
+.sk-card-list {
+  margin-top: var(--spacing-md);
+}
+
+.sk-recommend-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.sk-thumb {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: var(--border-radius-md);
+  flex-shrink: 0;
+}
+
+.sk-card-body {
+  flex: 1;
+}
+
+/* ==================== 花园页 ==================== */
+.sk-reminder-list {
+  margin-top: var(--spacing-md);
+}
+
+.sk-reminder-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.sk-plant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.sk-plant-card {
+  padding: var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+}
+
+.sk-plant-img {
+  width: 100%;
+  height: 200rpx;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ==================== 详情页 ==================== */
+.sk-hero {
+  width: 100%;
+  height: 400rpx;
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.sk-detail-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.sk-detail-body .sk-text {
+  margin-bottom: 20rpx;
+}

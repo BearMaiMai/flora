@@ -1,6 +1,6 @@
 /* components/icon/icon.wxss - 图标组件样式 */
 
-/* 容器 */
+/* ===== 容器 ===== */
 .icon-wrap {
   display: inline-flex;
   align-items: center;
@@ -8,20 +8,51 @@
   flex-shrink: 0;
 }
 
-/* 文本 */
+/* ===== Emoji 文本模式 ===== */
 .icon-text {
   line-height: 1;
   text-align: center;
 }
 
-/* ===== 尺寸 ===== */
-.icon-size-xs { font-size: var(--font-sm); }
-.icon-size-sm { font-size: var(--icon-sm); }
-.icon-size-md { font-size: var(--icon-md); }
-.icon-size-lg { font-size: var(--icon-lg); }
-.icon-size-xl { font-size: var(--icon-xl); }
+/* ===== SVG 图片模式 ===== */
+.icon-img {
+  display: inline-block;
+  flex-shrink: 0;
+}
 
-/* 圆形容器尺寸跟随 */
+/* ===== 色调滤镜 ===== */
+/* 绿色主题 — 将纯黑SVG变为 #4CAF50 绿色 */
+.icon-tint-primary {
+  filter: invert(58%) sepia(56%) saturate(520%) hue-rotate(80deg) brightness(92%) contrast(87%);
+}
+
+/* 灰色 — 将纯黑SVG变为浅灰色 */
+.icon-tint-grey {
+  filter: invert(60%) sepia(0%) saturate(0%) brightness(100%);
+  opacity: 0.6;
+}
+
+/* 白色 — 纯反转 */
+.icon-tint-white {
+  filter: invert(100%);
+}
+
+/* ===== 尺寸 ===== */
+/* Emoji 文本尺寸 */
+.icon-text.icon-size-xs { font-size: 28rpx; }
+.icon-text.icon-size-sm { font-size: 36rpx; }
+.icon-text.icon-size-md { font-size: 44rpx; }
+.icon-text.icon-size-lg { font-size: 56rpx; }
+.icon-text.icon-size-xl { font-size: 72rpx; }
+
+/* SVG 图片尺寸 */
+.icon-img.icon-size-xs { width: 28rpx; height: 28rpx; }
+.icon-img.icon-size-sm { width: 36rpx; height: 36rpx; }
+.icon-img.icon-size-md { width: 44rpx; height: 44rpx; }
+.icon-img.icon-size-lg { width: 56rpx; height: 56rpx; }
+.icon-img.icon-size-xl { width: 72rpx; height: 72rpx; }
+
+/* ===== 圆形容器尺寸 ===== */
 .icon-circle.icon-size-xs { width: 44rpx; height: 44rpx; border-radius: 50%; }
 .icon-circle.icon-size-sm { width: 56rpx; height: 56rpx; border-radius: 50%; }
 .icon-circle.icon-size-md { width: 72rpx; height: 72rpx; border-radius: 50%; }

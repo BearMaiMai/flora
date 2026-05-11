@@ -52,9 +52,19 @@ Page({
 
   onCompleteReminder(e) {
     const { id } = e.currentTarget.dataset
-    const todayReminders = this.data.todayReminders.filter(r => r._id !== id)
+    // 先播放完成动画 + 振动反馈
+    wx.vibrateShort({ type: 'light' })
+    // 标记为已完成
+    const todayReminders = this.data.todayReminders.map((r) =>
+      r._id === id ? { ...r, done: true } : r
+    )
     this.setData({ todayReminders })
-    wx.showToast({ title: '已完成', icon: 'success' })
+    // 延迟后移除
+    setTimeout(() => {
+      const updatedReminders = this.data.todayReminders.filter((r) => r._id !== id)
+      this.setData({ todayReminders: updatedReminders })
+      wx.showToast({ title: '已完成', icon: 'success' })
+    }, 500)
   },
 
   goToPlantDetail(e) {

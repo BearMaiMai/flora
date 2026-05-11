@@ -10,7 +10,7 @@ Page({
     dailyTip: '',
     recommendList: [],
     seasonTips: [
-      { icon: '🚿', title: '浇水技巧', desc: '保持土壤微湿', gradient: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
+      { icon: '💧', title: '浇水技巧', desc: '保持土壤微湿', gradient: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
       { icon: '☀️', title: '光照管理', desc: '日照6小时', gradient: 'linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%)' },
       { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', gradient: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
       { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', gradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },

@@ -1,4 +1,6 @@
 /* pages/garden/plant-detail.wxss - 植物详情页样式 */
+@import '/styles/animation.wxss';
+
 .plant-detail-page {
   min-height: 100vh;
   padding: 32rpx;
@@ -74,6 +76,9 @@
 }
 
 .info-pill {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
   background-color: var(--bg-card);
   border-radius: var(--border-radius-round);
   padding: 10rpx 20rpx;

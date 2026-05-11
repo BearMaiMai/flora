@@ -4,7 +4,9 @@
   <view class="image-grid mt-md">
     <view class="image-item" wx:for="{{images}}" wx:key="*this">
       <image src="{{item}}" mode="aspectFill" />
-      <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">×</view>
+      <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">
+        <icon name="close" size="xs" />
+      </view>
     </view>
     <view class="image-add" bindtap="chooseImage" wx:if="{{images.length < maxImageCount}}">
       <icon name="add" size="xl" color="var(--text-hint)" />

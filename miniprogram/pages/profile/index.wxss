@@ -1,4 +1,6 @@
 /* pages/profile/index.wxss - 个人中心样式 */
+@import '/styles/animation.wxss';
+
 .profile-page {
   background-color: var(--bg-page);
   padding-bottom: env(safe-area-inset-bottom);
@@ -76,6 +78,13 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 8rpx;
+}
+
+.user-motto-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  justify-content: center;
 }
 
 .user-motto {

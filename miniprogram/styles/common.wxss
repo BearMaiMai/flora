@@ -541,6 +541,17 @@
   padding: 160rpx 48rpx;
 }
 
+.empty-flower-group {
+  width: 160rpx;
+  height: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(232, 245, 233, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  margin-bottom: var(--spacing-md);
+}
+
 .empty-icon {
   font-size: 100rpx;
   margin-bottom: var(--spacing-md);

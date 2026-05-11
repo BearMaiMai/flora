@@ -1,4 +1,6 @@
 /* pages/guide/index.wxss - 种植指南样式 */
+@import '/styles/animation.wxss';
+
 .guide-page {
   min-height: 100vh;
   padding: 24rpx;
@@ -9,6 +11,12 @@
 /* 页面头部 */
 .guide-header {
   margin-bottom: 24rpx;
+}
+
+.guide-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
 }
 
 .guide-page-title {

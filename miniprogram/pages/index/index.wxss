@@ -73,6 +73,17 @@
   background: rgba(76, 175, 80, 0.05);
 }
 
+.tip-icon-circle {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(76, 175, 80, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .tip-card-body {
   flex: 1;
   z-index: var(--z-base);
@@ -103,7 +114,7 @@
   position: absolute;
   right: var(--spacing-md);
   bottom: var(--spacing-sm);
-  opacity: 0.2;
+  opacity: 0.15;
   z-index: 0;
   animation: float 4s ease-in-out infinite;
 }
@@ -136,6 +147,14 @@
   border-radius: var(--border-radius-round);
   background-color: var(--bg-green-light);
   transition: all var(--transition-fast);
+}
+
+.more-arrow {
+  font-size: 28rpx;
+  font-weight: 400;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-left: 2rpx;
 }
 
 .section-more-btn:active {
@@ -300,4 +319,11 @@
 .recommend-card-arrow {
   flex-shrink: 0;
   padding-left: var(--spacing-xs);
+}
+
+.card-arrow-text {
+  font-size: 28rpx;
+  color: var(--border-color);
+  font-weight: 300;
+  line-height: 1;
 }

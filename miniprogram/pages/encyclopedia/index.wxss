@@ -1,4 +1,6 @@
 /* pages/encyclopedia/index.wxss - 花卉百科列表页样式 */
+@import '/styles/animation.wxss';
+
 .encyclopedia-page {
   padding: 0 24rpx 48rpx;
 }
@@ -88,7 +90,7 @@
   border-radius: var(--border-radius-lg);
   padding: 20rpx;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 .flower-card:active {

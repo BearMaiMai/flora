@@ -1,5 +1,6 @@
 /* app.wxss - 全局样式入口 */
 @import './styles/variables.wxss';
+@import './styles/fonts.wxss';
 @import './styles/common.wxss';
 
 /* ==================== 全局基础样式 ==================== */
@@ -85,4 +86,85 @@ button::after {
 
 .hover-opacity:active {
   opacity: 0.7;
+}
+
+/* ==================== hover-class 按压态 ==================== */
+/* 卡片按压 - 轻缩 + 阴影加深 */
+.hover-card {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-lg);
+  opacity: 0.95;
+}
+
+/* 按钮按压 - 明显缩放 */
+.hover-btn {
+  transform: scale(0.95);
+  opacity: 0.85;
+}
+
+/* 列表项按压 - 轻微缩进 + 背景色 */
+.hover-list-item {
+  background-color: var(--bg-grey);
+  transform: scale(0.99);
+}
+
+/* 图标/小元素按压 */
+.hover-icon {
+  transform: scale(0.9);
+  opacity: 0.7;
+}
+
+/* 标签/筛选按压 */
+.hover-tag {
+  transform: scale(0.93);
+  opacity: 0.8;
+}
+
+/* ==================== 交互动画状态 ==================== */
+
+/* 完成动画 - 打勾弹跳 */
+@keyframes checkBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  50% { transform: scale(0.9); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.anim-check-bounce {
+  animation: checkBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+}
+
+/* 点赞/收藏心跳 */
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.3); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.2); }
+  60% { transform: scale(1); }
+}
+
+.anim-heart-beat {
+  animation: heartBeat 0.6s ease both;
+}
+
+/* 滑入删除提示 */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.anim-slide-in-right {
+  animation: slideInRight 0.3s ease both;
+}
+
+/* 成功确认动画 */
+@keyframes successPop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-success-pop {
+  animation: successPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
 }

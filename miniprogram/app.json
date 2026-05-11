@@ -48,7 +48,8 @@
     "navigationBarBackgroundColor": "#F8FBF5",
     "navigationBarTitleText": "养花呀",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F8FBF5"
+    "backgroundColor": "#F8FBF5",
+    "animationDuration": 300
   },
   "usingComponents": {
     "icon": "/components/icon/icon"

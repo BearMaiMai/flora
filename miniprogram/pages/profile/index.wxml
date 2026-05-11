@@ -8,7 +8,7 @@
     <view class="profile-page">
 
   <!-- 顶部渐变背景区域 -->
-  <view class="profile-header">
+  <view class="profile-header anim-fade-in">
     <view class="header-bg"></view>
     
     <!-- 用户信息 -->
@@ -22,7 +22,10 @@
         </view>
       </view>
       <text class="username">{{userInfo.nickName}}</text>
-      <text class="user-motto">用心养花，静待花开 🌸</text>
+      <view class="user-motto-row">
+        <text class="user-motto">用心养花，静待花开</text>
+        <icon src="/images/icons/flower/a-023-cherryblossom.svg" size="sm" />
+      </view>
     </view>
     <view class="user-section login-section" wx:else bindtap="onLogin">
       <view class="avatar-container">
@@ -39,81 +42,81 @@
   <!-- 统计数据 -->
   <view class="stats-card">
     <view class="stat-item">
-      <text class="stat-num">{{stats.plantCount}}</text>
+      <text class="stat-num font-number">{{stats.plantCount}}</text>
       <text class="stat-label">我的植物</text>
     </view>
     <view class="stat-divider"></view>
     <view class="stat-item">
-      <text class="stat-num">{{stats.diaryCount}}</text>
+      <text class="stat-num font-number">{{stats.diaryCount}}</text>
       <text class="stat-label">成长日记</text>
     </view>
     <view class="stat-divider"></view>
     <view class="stat-item">
-      <text class="stat-num">{{stats.favoriteCount}}</text>
+      <text class="stat-num font-number">{{stats.favoriteCount}}</text>
       <text class="stat-label">我的收藏</text>
     </view>
   </view>
 
   <!-- 菜单列表 -->
   <view class="menu-card">
-    <view class="menu-item" bindtap="goToReminder">
+    <view class="menu-item" bindtap="goToReminder" hover-class="hover-list-item" hover-stay-time="100">
       <view class="menu-left">
         <view class="menu-icon-wrap icon-bell">
-          <text class="menu-icon-text">🔔</text>
+          <icon name="bell" size="sm" />
         </view>
         <text class="menu-label">养护提醒</text>
       </view>
       <view class="menu-right">
         <view class="notification-badge" wx:if="{{reminderCount > 0}}">{{reminderCount}}</view>
-        <text class="menu-arrow">›</text>
+        <icon name="chevronRight" size="sm" color="var(--text-hint)" />
       </view>
     </view>
 
-    <view class="menu-item" bindtap="goToFavorites">
+    <view class="menu-item" bindtap="goToFavorites" hover-class="hover-list-item" hover-stay-time="100">
       <view class="menu-left">
         <view class="menu-icon-wrap icon-heart">
-          <text class="menu-icon-text">❤️</text>
+          <icon name="heart" size="sm" />
         </view>
         <text class="menu-label">我的收藏</text>
       </view>
       <view class="menu-right">
-        <text class="menu-arrow">›</text>
+        <icon name="chevronRight" size="sm" color="var(--text-hint)" />
       </view>
     </view>
 
-    <view class="menu-item" bindtap="goToGuide">
+    <view class="menu-item" bindtap="goToGuide" hover-class="hover-list-item" hover-stay-time="100">
       <view class="menu-left">
         <view class="menu-icon-wrap icon-book">
-          <text class="menu-icon-text">📖</text>
+          <icon name="book" size="sm" />
         </view>
         <text class="menu-label">种植指南</text>
       </view>
       <view class="menu-right">
-        <text class="menu-arrow">›</text>
+        <icon name="chevronRight" size="sm" color="var(--text-hint)" />
       </view>
     </view>
 
-    <view class="menu-item" bindtap="goToSettings">
+    <view class="menu-item" bindtap="goToSettings" hover-class="hover-list-item" hover-stay-time="100">
       <view class="menu-left">
         <view class="menu-icon-wrap icon-settings">
-          <icon name="gear" size="md" />
+          <icon name="gear" size="sm" />
         </view>
         <text class="menu-label">设置</text>
       </view>
       <view class="menu-right">
-        <text class="menu-arrow">›</text>
+        <icon name="chevronRight" size="sm" color="var(--text-hint)" />
       </view>
     </view>
 
-    <view class="menu-item" bindtap="goToAbout">
+    <view class="menu-item" bindtap="goToAbout" hover-class="hover-list-item" hover-stay-time="100">
       <view class="menu-left">
         <view class="menu-icon-wrap icon-info">
-          <text class="menu-icon-text">ℹ️</text>
+          <icon name="info" size="sm" />
         </view>
         <text class="menu-label">关于养花呀</text>
       </view>
       <view class="menu-right">
-        <text class="menu-arrow">›</text>
+        <icon name="chevronRight" size="sm" color="var(--text-hint)" />
       </view>
     </view>
   </view>
