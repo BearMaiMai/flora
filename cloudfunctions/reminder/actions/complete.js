@@ -1,7 +1,8 @@
-// cloudfunctions/reminder/actions/complete.js
+const errorCodes = require('../../utils/error-codes')
+
 module.exports = async (event, context, { db }) => {
   const { id } = event
-  if (!id) return { code: -1, message: '缺少提醒 ID' }
+  if (!id) return errorCodes.MISSING_PARAM
   await db.collection('reminders').doc(id).update({
     data: { status: 'completed', completedAt: db.serverDate() },
   })

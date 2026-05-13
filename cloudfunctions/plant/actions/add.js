@@ -1,7 +1,10 @@
-// cloudfunctions/plant/actions/add.js
+const errorCodes = require('../../utils/error-codes')
+
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
   const { flowerId, flowerName, nickname, location, imageUrl } = event
+
+  if (!flowerId) return errorCodes.MISSING_PARAM
 
   const res = await db.collection('plants').add({
     data: {
