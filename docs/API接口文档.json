@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-15T05:44:31.121Z",
+  "updateTime": "2026-05-15T06:26:09.763Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -61,7 +61,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await commonService.getHomeData()"
         },
         {
           "name": "getDailyTip",
@@ -98,7 +98,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await commonService.getDailyTip()"
         }
       ]
     },
@@ -188,7 +188,7 @@
           "errorCodes": [
             1002
           ],
-          "example": ""
+          "example": "const res = await diaryService.add({ plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: ['cloud://xxx.jpg'] })"
         },
         {
           "name": "getList",
@@ -273,7 +273,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await diaryService.getList('plant-abc123')\nconst res = await diaryService.getList()"
         },
         {
           "name": "remove",
@@ -312,7 +312,7 @@
           "errorCodes": [
             1002
           ],
-          "example": ""
+          "example": "const res = await diaryService.remove('diary-abc123')"
         }
       ]
     },
@@ -1020,43 +1020,61 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "- 提醒列表数据",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data",
+              "path": "data.list",
               "description": "- 提醒列表",
-              "example": ""
+              "example": "-"
+            },
+            {
+              "type": "Number",
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "5"
             },
             {
               "type": "String",
-              "path": "data[]._id",
+              "path": "data.list[]._id",
               "description": "- 提醒 ID",
-              "example": ""
+              "example": "\"reminder-abc123\""
             },
             {
               "type": "String",
-              "path": "data[].plantId",
+              "path": "data.list[].plantId",
               "description": "- 关联植物 ID",
-              "example": ""
+              "example": "\"plant-abc123\""
             },
             {
               "type": "String",
-              "path": "data[].type",
+              "path": "data.list[].type",
               "description": "- 提醒类型",
-              "example": ""
-            },
-            {
-              "type": "Date",
-              "path": "data[].remindAt",
-              "description": "- 提醒时间",
-              "example": ""
+              "example": "\"water\""
             },
             {
               "type": "String",
-              "path": "data[].status",
+              "path": "data.list[].remindAt",
+              "description": "- 提醒时间",
+              "example": "\"2026-05-20 09:00\""
+            },
+            {
+              "type": "String",
+              "path": "data.list[].status",
               "description": "- 状态（pending=待处理）",
-              "example": ""
+              "example": "\"pending\""
             }
           ],
           "errorCodes": [],
@@ -1076,10 +1094,10 @@
               "name": "id",
               "default": "",
               "description": "提醒 ID",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"reminder-abc123\"",
+              "note": "必填"
             }
           ],
           "returns": [
@@ -1087,19 +1105,19 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
             },
             {
               "type": "String",
               "path": "message",
               "description": "- 提示信息",
-              "example": ""
+              "example": "\"已完成\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await reminderService.complete('reminder-id-123')"
+          "example": "const res = await reminderService.complete('reminder-abc123')"
         }
       ]
     },
@@ -1212,7 +1230,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await userService.login()\nconst res = await userService.login({ nickName: '花友', avatarUrl: 'https://...' })"
         },
         {
           "name": "updateInfo",
@@ -1271,7 +1289,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await userService.updateInfo({ nickName: '新昵称' })"
         },
         {
           "name": "toggleFavorite",
@@ -1322,7 +1340,7 @@
           "errorCodes": [
             2001
           ],
-          "example": ""
+          "example": "const res = await userService.toggleFavorite(\"1\")"
         },
         {
           "name": "getFavorites",
@@ -1365,7 +1383,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await userService.getFavorites()"
         },
         {
           "name": "getStats",
@@ -1414,7 +1432,7 @@
             }
           ],
           "errorCodes": [],
-          "example": ""
+          "example": "const res = await userService.getStats()"
         }
       ]
     }

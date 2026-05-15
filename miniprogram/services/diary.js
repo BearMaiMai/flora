@@ -15,6 +15,8 @@ const diaryService = {
    * @returns {String} returns.message - 提示信息 | 示例："添加成功"
    * @returns {Object} returns.data - 创建结果 | 示例：-
    * @returns {String} returns.data._id - 新日记的 ID | 示例："diary-abc123"
+   * @example
+   * const res = await diaryService.add({ plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: ['cloud://xxx.jpg'] })
    */
   add(data) {
     return callFunction('diary', { action: 'add', ...data })
@@ -34,6 +36,9 @@ const diaryService = {
    * @returns {String} returns.data.list[].content - 日记内容 | 示例："今天给绿萝浇了水"
    * @returns {Array} returns.data.list[].images - 图片 URL 数组 | 示例：["cloud://xxx.jpg"]
    * @returns {String} returns.data.list[].createdAt - 创建时间 | 示例："2026-05-15 14:00"
+   * @example
+   * const res = await diaryService.getList('plant-abc123')
+   * const res = await diaryService.getList()
    */
   getList(plantId) {
     return callFunction('diary', { action: 'list', plantId })
@@ -45,6 +50,8 @@ const diaryService = {
    * @returns {Object} 返回结果 | 示例：-
    * @returns {Number} returns.code - 状态码（0=成功） | 示例：0
    * @returns {String} returns.message - 提示信息 | 示例："删除成功"
+   * @example
+   * const res = await diaryService.remove('diary-abc123')
    */
   remove(id) {
     return callFunction('diary', { action: 'delete', id })

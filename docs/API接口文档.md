@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/15 13:44:31
+> **生成时间**：2026/5/15 14:26:09
 >
 > **文档版本**：1.0.0
 >
@@ -175,6 +175,12 @@ wx.cloud.callFunction({
 }
 ```
 
+**调用示例**：
+
+```javascript
+const res = await commonService.getHomeData()
+```
+
 ---
 
 ### getDailyTip
@@ -222,6 +228,12 @@ wx.cloud.callFunction({
   "message": "success",
   "data": { ... }
 }
+```
+
+**调用示例**：
+
+```javascript
+const res = await commonService.getDailyTip()
 ```
 
 ---
@@ -289,6 +301,12 @@ wx.cloud.callFunction({
 |--------|----------|------|
 | 1002 | 缺少必填参数 | |
 
+**调用示例**：
+
+```javascript
+const res = await diaryService.add({ plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: ['cloud://xxx.jpg'] })
+```
+
 ---
 
 ### getList
@@ -348,6 +366,13 @@ wx.cloud.callFunction({
 }
 ```
 
+**调用示例**：
+
+```javascript
+const res = await diaryService.getList('plant-abc123')
+const res = await diaryService.getList()
+```
+
 ---
 
 ### remove
@@ -404,6 +429,12 @@ wx.cloud.callFunction({
 | 错误码 | 错误信息 | 含义 |
 |--------|----------|------|
 | 1002 | 缺少必填参数 | |
+
+**调用示例**：
+
+```javascript
+const res = await diaryService.remove('diary-abc123')
+```
 
 ---
 
@@ -980,13 +1011,16 @@ const res = await plantService.remove('1')
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
-| data | Array | - | - 提醒列表 | - | - |
-| data[]._id | String | - | - 提醒 ID | - | - |
-| data[].plantId | String | - | - 关联植物 ID | - | - |
-| data[].type | String | - | - 提醒类型 | - | - |
-| data[].remindAt | Date | - | - 提醒时间 | - | - |
-| data[].status | String | - | - 状态（pending=待处理） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
+| data | Object | - | - 提醒列表数据 | - | - |
+| data.list | Array | - | - 提醒列表 | - | - |
+| data.total | Number | - | - 总数 | - | 5 |
+| data.list[]._id | String | - | - 提醒 ID | - | "reminder-abc123" |
+| data.list[].plantId | String | - | - 关联植物 ID | - | "plant-abc123" |
+| data.list[].type | String | - | - 提醒类型 | - | "water" |
+| data.list[].remindAt | String | - | - 提醒时间 | - | "2026-05-20 09:00" |
+| data.list[].status | String | - | - 状态（pending=待处理） | - | "pending" |
 
 **正确返回示例**：
 
@@ -1020,7 +1054,7 @@ const res = await reminderService.getList()
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | - | "reminder-abc123" | 必填 |
 
 **响应说明**：
 
@@ -1042,8 +1076,8 @@ const res = await reminderService.getList()
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
-| message | String | - | - 提示信息 | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "已完成" |
 
 **正确返回示例**：
 
@@ -1064,7 +1098,7 @@ const res = await reminderService.getList()
 **调用示例**：
 
 ```javascript
-const res = await reminderService.complete('reminder-id-123')
+const res = await reminderService.complete('reminder-abc123')
 ```
 
 ---
@@ -1131,6 +1165,13 @@ const res = await reminderService.complete('reminder-id-123')
 }
 ```
 
+**调用示例**：
+
+```javascript
+const res = await userService.login()
+const res = await userService.login({ nickName: '花友', avatarUrl: 'https://...' })
+```
+
 ---
 
 ### updateInfo
@@ -1181,6 +1222,12 @@ const res = await reminderService.complete('reminder-id-123')
   "message": "success",
   "data": { ... }
 }
+```
+
+**调用示例**：
+
+```javascript
+const res = await userService.updateInfo({ nickName: '新昵称' })
 ```
 
 ---
@@ -1242,6 +1289,12 @@ const res = await reminderService.complete('reminder-id-123')
 |--------|----------|------|
 | 2001 | 用户不存在 | |
 
+**调用示例**：
+
+```javascript
+const res = await userService.toggleFavorite("1")
+```
+
 ---
 
 ### getFavorites
@@ -1290,6 +1343,12 @@ const res = await reminderService.complete('reminder-id-123')
   "message": "success",
   "data": { ... }
 }
+```
+
+**调用示例**：
+
+```javascript
+const res = await userService.getFavorites()
 ```
 
 ---
@@ -1341,6 +1400,12 @@ const res = await reminderService.complete('reminder-id-123')
   "message": "success",
   "data": { ... }
 }
+```
+
+**调用示例**：
+
+```javascript
+const res = await userService.getStats()
 ```
 
 ---
