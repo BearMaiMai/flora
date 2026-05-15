@@ -13,6 +13,8 @@ const commonService = {
    * @returns {String} returns.data.dailyTip - 每日养护贴士 | 示例："今天是立夏，气温升高..."
    * @returns {Array} returns.data.recommendList - 推荐花卉列表 | 示例：-
    * @returns {Number} returns.data.recommendTotal - 推荐总数 | 示例：6
+   * @example
+   * const res = await commonService.getHomeData()
    */
   getHomeData() {
     return callFunction('common', { action: 'getHomeData' })
@@ -25,6 +27,8 @@ const commonService = {
    * @returns {String} returns.message - 提示信息 | 示例："success"
    * @returns {Object} returns.data - 贴士数据 | 示例：-
    * @returns {String} returns.data.content - 贴士内容 | 示例："今天是立夏，气温升高..."
+   * @example
+   * const res = await commonService.getDailyTip()
    */
   getDailyTip() {
     return callFunction('common', { action: 'getDailyTip' })

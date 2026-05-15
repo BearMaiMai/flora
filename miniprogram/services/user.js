@@ -20,6 +20,9 @@ const userService = {
    * @returns {Array} returns.data.favorites - 收藏的花卉 ID 数组 | 示例：["1","2"]
    * @returns {String} returns.data.createdAt - 创建时间 | 示例："2026-05-15 14:00"
    * @returns {String} returns.data.lastLoginAt - 最后登录时间 | 示例："2026-05-15 14:00"
+   * @example
+   * const res = await userService.login()
+   * const res = await userService.login({ nickName: '花友', avatarUrl: 'https://...' })
    */
   login(userInfo) {
     return callFunction('user', { action: 'login', userInfo })
@@ -33,6 +36,8 @@ const userService = {
    * @returns {Object} 返回结果 | 示例：-
    * @returns {Number} returns.code - 状态码（0=成功） | 示例：0
    * @returns {String} returns.message - 提示信息 | 示例："更新成功"
+   * @example
+   * const res = await userService.updateInfo({ nickName: '新昵称' })
    */
   updateInfo(data) {
     return callFunction('user', { action: 'updateInfo', ...data })
@@ -46,6 +51,8 @@ const userService = {
    * @returns {String} returns.message - 提示信息 | 示例："收藏成功"
    * @returns {Object} returns.data - 收藏状态 | 示例：-
    * @returns {Boolean} returns.data.isFavorite - 当前是否已收藏 | 示例：true
+   * @example
+   * const res = await userService.toggleFavorite("1")
    */
   toggleFavorite(flowerId) {
     return callFunction('user', { action: 'toggleFavorite', flowerId })
@@ -59,6 +66,8 @@ const userService = {
    * @returns {Object} returns.data - 收藏数据 | 示例：-
    * @returns {Array} returns.data.list - 收藏的花卉列表 | 示例：-
    * @returns {Number} returns.data.total - 收藏总数 | 示例：5
+   * @example
+   * const res = await userService.getFavorites()
    */
   getFavorites() {
     return callFunction('user', { action: 'getFavorites' })
@@ -73,6 +82,8 @@ const userService = {
    * @returns {Number} returns.data.plantCount - 植物数量 | 示例：3
    * @returns {Number} returns.data.diaryCount - 日记数量 | 示例：10
    * @returns {Number} returns.data.favoriteCount - 收藏数量 | 示例：5
+   * @example
+   * const res = await userService.getStats()
    */
   getStats() {
     return callFunction('user', { action: 'getStats' })
