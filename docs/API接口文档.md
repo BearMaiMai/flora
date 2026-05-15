@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/15 13:03:06
+> **生成时间**：2026/5/15 13:44:31
 >
 > **文档版本**：1.0.0
 >
@@ -158,10 +158,12 @@ wx.cloud.callFunction({
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
 | data | Object | - | - 首页数据 | - | - |
-| data.dailyTip | String | - | - 每日养护贴士 | - | - |
+| data.dailyTip | String | - | - 每日养护贴士 | - | "今天是立夏，气温升高..." |
 | data.recommendList | Array | - | - 推荐花卉列表 | - | - |
+| data.recommendTotal | Number | - | - 推荐总数 | - | 6 |
 
 **正确返回示例**：
 
@@ -171,12 +173,6 @@ wx.cloud.callFunction({
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await commonService.getHomeData()
 ```
 
 ---
@@ -213,9 +209,10 @@ const res = await commonService.getHomeData()
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
 | data | Object | - | - 贴士数据 | - | - |
-| data.content | String | - | - 贴士内容 | - | - |
+| data.content | String | - | - 贴士内容 | - | "今天是立夏，气温升高..." |
 
 **正确返回示例**：
 
@@ -225,12 +222,6 @@ const res = await commonService.getHomeData()
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await commonService.getDailyTip()
 ```
 
 ---
@@ -253,9 +244,9 @@ const res = await commonService.getDailyTip()
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| data.plantId | String | 是 | - | - | - | - | - |
-| data.content | String | 是 | - | - | - | - | - |
-| data.images | Array | 否 | [] | - | - | - | - |
+| data.plantId | String | 是 | - | - | - | "plant-abc123" | 必填 |
+| data.content | String | 是 | - | - | - | "今天给绿萝浇了水" | 必填 |
+| data.images | Array | 否 | [] | - | - | ["cloud://xxx.jpg"] | 可选 |
 
 **响应说明**：
 
@@ -277,9 +268,10 @@ const res = await commonService.getDailyTip()
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "添加成功" |
 | data | Object | - | - 创建结果 | - | - |
-| data._id | String | - | - 新日记的 ID | - | - |
+| data._id | String | - | - 新日记的 ID | - | "diary-abc123" |
 
 **正确返回示例**：
 
@@ -297,16 +289,6 @@ const res = await commonService.getDailyTip()
 |--------|----------|------|
 | 1002 | 缺少必填参数 | |
 
-**调用示例**：
-
-```javascript
-const res = await diaryService.add({
-plantId: 'plant-id-123',
-content: '今天给绿萝浇了水，叶子很绿',
-images: ['cloud://xxx.jpg']
-})
-```
-
 ---
 
 ### getList
@@ -323,7 +305,7 @@ images: ['cloud://xxx.jpg']
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| plantId | String | 否 | - | - | - | - | - |
+| plantId | String | 否 | - | - | - | "plant-abc123" | 可选 |
 
 **响应说明**：
 
@@ -345,13 +327,16 @@ images: ['cloud://xxx.jpg']
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
-| data | Array | - | - 日记列表 | - | - |
-| data[]._id | String | - | - 日记 ID | - | - |
-| data[].plantId | String | - | - 关联植物 ID | - | - |
-| data[].content | String | - | - 日记内容 | - | - |
-| data[].images | Array | - | - 图片 URL 数组 | - | - |
-| data[].createdAt | Date | - | - 创建时间 | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
+| data | Object | - | - 日记列表数据 | - | - |
+| data.list | Array | - | - 日记列表 | - | - |
+| data.total | Number | - | - 总数 | - | 10 |
+| data.list[]._id | String | - | - 日记 ID | - | "diary-abc123" |
+| data.list[].plantId | String | - | - 关联植物 ID | - | "plant-abc123" |
+| data.list[].content | String | - | - 日记内容 | - | "今天给绿萝浇了水" |
+| data.list[].images | Array | - | - 图片 URL 数组 | - | ["cloud://xxx.jpg"] |
+| data.list[].createdAt | String | - | - 创建时间 | - | "2026-05-15 14:00" |
 
 **正确返回示例**：
 
@@ -361,13 +346,6 @@ images: ['cloud://xxx.jpg']
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await diaryService.getList('plant-id-123')
-const res = await diaryService.getList()
 ```
 
 ---
@@ -386,7 +364,7 @@ const res = await diaryService.getList()
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | - | "diary-abc123" | 必填 |
 
 **响应说明**：
 
@@ -408,8 +386,8 @@ const res = await diaryService.getList()
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
-| message | String | - | - 提示信息 | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "删除成功" |
 
 **正确返回示例**：
 
@@ -426,12 +404,6 @@ const res = await diaryService.getList()
 | 错误码 | 错误信息 | 含义 |
 |--------|----------|------|
 | 1002 | 缺少必填参数 | |
-
-**调用示例**：
-
-```javascript
-const res = await diaryService.remove('diary-id-123')
-```
 
 ---
 
@@ -1115,8 +1087,8 @@ const res = await reminderService.complete('reminder-id-123')
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| userInfo.nickName | String | 否 | - | - | - | - | - |
-| userInfo.avatarUrl | String | 否 | - | - | - | - | - |
+| userInfo.nickName | String | 否 | - | - | - | "花友" | 可选 |
+| userInfo.avatarUrl | String | 否 | - | - | - | "https://..." | 可选 |
 
 **响应说明**：
 
@@ -1138,15 +1110,16 @@ const res = await reminderService.complete('reminder-id-123')
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "登录成功" |
 | data | Object | - | - 用户信息 | - | - |
-| data._id | String | - | - 用户 ID | - | - |
-| data._openid | String | - | - 微信 OpenID | - | - |
-| data.nickName | String | - | - 昵称 | - | - |
-| data.avatarUrl | String | - | - 头像 URL | - | - |
-| data.favorites | Array | - | - 收藏的花卉 ID 数组 | - | - |
-| data.createdAt | Date | - | - 创建时间 | - | - |
-| data.lastLoginAt | Date | - | - 最后登录时间 | - | - |
+| data._id | String | - | - 用户 ID | - | "user-abc123" |
+| data._openid | String | - | - 微信 OpenID | - | "oLZ5Y123..." |
+| data.nickName | String | - | - 昵称 | - | "花友" |
+| data.avatarUrl | String | - | - 头像 URL | - | "https://..." |
+| data.favorites | Array | - | - 收藏的花卉 ID 数组 | - | ["1","2"] |
+| data.createdAt | String | - | - 创建时间 | - | "2026-05-15 14:00" |
+| data.lastLoginAt | String | - | - 最后登录时间 | - | "2026-05-15 14:00" |
 
 **正确返回示例**：
 
@@ -1156,13 +1129,6 @@ const res = await reminderService.complete('reminder-id-123')
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await userService.login()
-const res = await userService.login({ nickName: '花友', avatarUrl: 'https://...' })
 ```
 
 ---
@@ -1181,8 +1147,8 @@ const res = await userService.login({ nickName: '花友', avatarUrl: 'https://..
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| data.nickName | String | 否 | - | - | - | - | - |
-| data.avatarUrl | String | 否 | - | - | - | - | - |
+| data.nickName | String | 否 | - | - | - | "新昵称" | 可选 |
+| data.avatarUrl | String | 否 | - | - | - | "https://..." | 可选 |
 
 **响应说明**：
 
@@ -1204,8 +1170,8 @@ const res = await userService.login({ nickName: '花友', avatarUrl: 'https://..
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
-| message | String | - | - 提示信息 | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "更新成功" |
 
 **正确返回示例**：
 
@@ -1215,12 +1181,6 @@ const res = await userService.login({ nickName: '花友', avatarUrl: 'https://..
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await userService.updateInfo({ nickName: '新昵称' })
 ```
 
 ---
@@ -1239,7 +1199,7 @@ const res = await userService.updateInfo({ nickName: '新昵称' })
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| flowerId | String | 是 | - | - | - | - | - |
+| flowerId | String | 是 | - | - | - | "1" | 必填 |
 
 **响应说明**：
 
@@ -1261,9 +1221,10 @@ const res = await userService.updateInfo({ nickName: '新昵称' })
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "收藏成功" |
 | data | Object | - | - 收藏状态 | - | - |
-| data.isFavorite | Boolean | - | - 当前是否已收藏 | - | - |
+| data.isFavorite | Boolean | - | - 当前是否已收藏 | - | true |
 
 **正确返回示例**：
 
@@ -1280,13 +1241,6 @@ const res = await userService.updateInfo({ nickName: '新昵称' })
 | 错误码 | 错误信息 | 含义 |
 |--------|----------|------|
 | 2001 | 用户不存在 | |
-
-**调用示例**：
-
-```javascript
-const res = await userService.toggleFavorite('flower-id-123')
-console.log(res.data.isFavorite) // true/false
-```
 
 ---
 
@@ -1322,10 +1276,11 @@ console.log(res.data.isFavorite) // true/false
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
 | data | Object | - | - 收藏数据 | - | - |
 | data.list | Array | - | - 收藏的花卉列表 | - | - |
-| data.total | Number | - | - 收藏总数 | - | - |
+| data.total | Number | - | - 收藏总数 | - | 5 |
 
 **正确返回示例**：
 
@@ -1335,14 +1290,6 @@ console.log(res.data.isFavorite) // true/false
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await userService.getFavorites()
-console.log(res.data.list)
-console.log(res.data.total)
 ```
 
 ---
@@ -1379,11 +1326,12 @@ console.log(res.data.total)
 
 | 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
 |----------|----------|----------|----------|----------|--------|
-| code | Number | - | - 状态码（0=成功） | - | - |
+| code | Number | - | - 状态码（0=成功） | - | 0 |
+| message | String | - | - 提示信息 | - | "success" |
 | data | Object | - | - 统计数据 | - | - |
-| data.plantCount | Number | - | - 植物数量 | - | - |
-| data.diaryCount | Number | - | - 日记数量 | - | - |
-| data.favoriteCount | Number | - | - 收藏数量 | - | - |
+| data.plantCount | Number | - | - 植物数量 | - | 3 |
+| data.diaryCount | Number | - | - 日记数量 | - | 10 |
+| data.favoriteCount | Number | - | - 收藏数量 | - | 5 |
 
 **正确返回示例**：
 
@@ -1393,12 +1341,6 @@ console.log(res.data.total)
   "message": "success",
   "data": { ... }
 }
-```
-
-**调用示例**：
-
-```javascript
-const res = await userService.getStats()
 ```
 
 ---

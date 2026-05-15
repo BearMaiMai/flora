@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-15T05:03:06.298Z",
+  "updateTime": "2026-05-15T05:44:31.121Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -27,29 +27,41 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 首页数据",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data.dailyTip",
               "description": "- 每日养护贴士",
-              "example": ""
+              "example": "\"今天是立夏，气温升高...\""
             },
             {
               "type": "Array",
               "path": "data.recommendList",
               "description": "- 推荐花卉列表",
-              "example": ""
+              "example": "-"
+            },
+            {
+              "type": "Number",
+              "path": "data.recommendTotal",
+              "description": "- 推荐总数",
+              "example": "6"
             }
           ],
           "errorCodes": [],
-          "example": "const res = await commonService.getHomeData()"
+          "example": ""
         },
         {
           "name": "getDailyTip",
@@ -64,23 +76,29 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 贴士数据",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data.content",
               "description": "- 贴士内容",
-              "example": ""
+              "example": "\"今天是立夏，气温升高...\""
             }
           ],
           "errorCodes": [],
-          "example": "const res = await commonService.getDailyTip()"
+          "example": ""
         }
       ]
     },
@@ -102,32 +120,32 @@
               "name": "data",
               "default": "",
               "description": "日记信息",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "必填"
             },
             {
               "type": "String",
               "isRequired": true,
               "name": "data.plantId",
               "default": "",
-              "description": "植物 ID（必填）",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "description": "植物 ID",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"plant-abc123\"",
+              "note": "必填"
             },
             {
               "type": "String",
               "isRequired": true,
               "name": "data.content",
               "default": "",
-              "description": "日记内容（必填）",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "description": "日记内容",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"今天给绿萝浇了水\"",
+              "note": "必填"
             },
             {
               "type": "Array",
@@ -135,10 +153,10 @@
               "name": "data.images",
               "default": "[]",
               "description": "图片 URL 数组",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "[\"cloud://xxx.jpg\"]",
+              "note": "可选"
             }
           ],
           "returns": [
@@ -146,25 +164,31 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"添加成功\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 创建结果",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data._id",
               "description": "- 新日记的 ID",
-              "example": ""
+              "example": "\"diary-abc123\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await diaryService.add({\nplantId: 'plant-id-123',\ncontent: '今天给绿萝浇了水，叶子很绿',\nimages: ['cloud://xxx.jpg']\n})"
+          "example": ""
         },
         {
           "name": "getList",
@@ -180,10 +204,10 @@
               "name": "plantId",
               "default": "",
               "description": "植物 ID（可选，不传则返回全部日记）",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"plant-abc123\"",
+              "note": "可选"
             }
           ],
           "returns": [
@@ -191,47 +215,65 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
             },
             {
-              "type": "Array",
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
               "path": "data",
-              "description": "- 日记列表",
-              "example": ""
-            },
-            {
-              "type": "String",
-              "path": "data[]._id",
-              "description": "- 日记 ID",
-              "example": ""
-            },
-            {
-              "type": "String",
-              "path": "data[].plantId",
-              "description": "- 关联植物 ID",
-              "example": ""
-            },
-            {
-              "type": "String",
-              "path": "data[].content",
-              "description": "- 日记内容",
-              "example": ""
+              "description": "- 日记列表数据",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data[].images",
-              "description": "- 图片 URL 数组",
-              "example": ""
+              "path": "data.list",
+              "description": "- 日记列表",
+              "example": "-"
             },
             {
-              "type": "Date",
-              "path": "data[].createdAt",
+              "type": "Number",
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "10"
+            },
+            {
+              "type": "String",
+              "path": "data.list[]._id",
+              "description": "- 日记 ID",
+              "example": "\"diary-abc123\""
+            },
+            {
+              "type": "String",
+              "path": "data.list[].plantId",
+              "description": "- 关联植物 ID",
+              "example": "\"plant-abc123\""
+            },
+            {
+              "type": "String",
+              "path": "data.list[].content",
+              "description": "- 日记内容",
+              "example": "\"今天给绿萝浇了水\""
+            },
+            {
+              "type": "Array",
+              "path": "data.list[].images",
+              "description": "- 图片 URL 数组",
+              "example": "[\"cloud://xxx.jpg\"]"
+            },
+            {
+              "type": "String",
+              "path": "data.list[].createdAt",
               "description": "- 创建时间",
-              "example": ""
+              "example": "\"2026-05-15 14:00\""
             }
           ],
           "errorCodes": [],
-          "example": "const res = await diaryService.getList('plant-id-123')\nconst res = await diaryService.getList()"
+          "example": ""
         },
         {
           "name": "remove",
@@ -247,10 +289,10 @@
               "name": "id",
               "default": "",
               "description": "日记 ID",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"diary-abc123\"",
+              "note": "必填"
             }
           ],
           "returns": [
@@ -258,19 +300,19 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
             },
             {
               "type": "String",
               "path": "message",
               "description": "- 提示信息",
-              "example": ""
+              "example": "\"删除成功\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await diaryService.remove('diary-id-123')"
+          "example": ""
         }
       ]
     },
@@ -1079,10 +1121,10 @@
               "name": "userInfo",
               "default": "",
               "description": "用户信息",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "可选"
             },
             {
               "type": "String",
@@ -1090,10 +1132,10 @@
               "name": "userInfo.nickName",
               "default": "",
               "description": "昵称",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"花友\"",
+              "note": "可选"
             },
             {
               "type": "String",
@@ -1101,10 +1143,10 @@
               "name": "userInfo.avatarUrl",
               "default": "",
               "description": "头像 URL",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"https://...\"",
+              "note": "可选"
             }
           ],
           "returns": [
@@ -1112,59 +1154,65 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"登录成功\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 用户信息",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data._id",
               "description": "- 用户 ID",
-              "example": ""
+              "example": "\"user-abc123\""
             },
             {
               "type": "String",
               "path": "data._openid",
               "description": "- 微信 OpenID",
-              "example": ""
+              "example": "\"oLZ5Y123...\""
             },
             {
               "type": "String",
               "path": "data.nickName",
               "description": "- 昵称",
-              "example": ""
+              "example": "\"花友\""
             },
             {
               "type": "String",
               "path": "data.avatarUrl",
               "description": "- 头像 URL",
-              "example": ""
+              "example": "\"https://...\""
             },
             {
               "type": "Array",
               "path": "data.favorites",
               "description": "- 收藏的花卉 ID 数组",
-              "example": ""
+              "example": "[\"1\",\"2\"]"
             },
             {
-              "type": "Date",
+              "type": "String",
               "path": "data.createdAt",
               "description": "- 创建时间",
-              "example": ""
+              "example": "\"2026-05-15 14:00\""
             },
             {
-              "type": "Date",
+              "type": "String",
               "path": "data.lastLoginAt",
               "description": "- 最后登录时间",
-              "example": ""
+              "example": "\"2026-05-15 14:00\""
             }
           ],
           "errorCodes": [],
-          "example": "const res = await userService.login()\nconst res = await userService.login({ nickName: '花友', avatarUrl: 'https://...' })"
+          "example": ""
         },
         {
           "name": "updateInfo",
@@ -1180,10 +1228,10 @@
               "name": "data",
               "default": "",
               "description": "用户信息",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "传入即更新"
             },
             {
               "type": "String",
@@ -1191,10 +1239,10 @@
               "name": "data.nickName",
               "default": "",
               "description": "昵称",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"新昵称\"",
+              "note": "可选"
             },
             {
               "type": "String",
@@ -1202,10 +1250,10 @@
               "name": "data.avatarUrl",
               "default": "",
               "description": "头像 URL",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"https://...\"",
+              "note": "可选"
             }
           ],
           "returns": [
@@ -1213,17 +1261,17 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
             },
             {
               "type": "String",
               "path": "message",
               "description": "- 提示信息",
-              "example": ""
+              "example": "\"更新成功\""
             }
           ],
           "errorCodes": [],
-          "example": "const res = await userService.updateInfo({ nickName: '新昵称' })"
+          "example": ""
         },
         {
           "name": "toggleFavorite",
@@ -1239,10 +1287,10 @@
               "name": "flowerId",
               "default": "",
               "description": "花卉 ID",
-              "valueRange": "",
-              "format": "",
-              "example": "",
-              "note": ""
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"1\"",
+              "note": "必填"
             }
           ],
           "returns": [
@@ -1250,25 +1298,31 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"收藏成功\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 收藏状态",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "Boolean",
               "path": "data.isFavorite",
               "description": "- 当前是否已收藏",
-              "example": ""
+              "example": "true"
             }
           ],
           "errorCodes": [
             2001
           ],
-          "example": "const res = await userService.toggleFavorite('flower-id-123')\nconsole.log(res.data.isFavorite) // true/false"
+          "example": ""
         },
         {
           "name": "getFavorites",
@@ -1283,29 +1337,35 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 收藏数据",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "Array",
               "path": "data.list",
               "description": "- 收藏的花卉列表",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "Number",
               "path": "data.total",
               "description": "- 收藏总数",
-              "example": ""
+              "example": "5"
             }
           ],
           "errorCodes": [],
-          "example": "const res = await userService.getFavorites()\nconsole.log(res.data.list)\nconsole.log(res.data.total)"
+          "example": ""
         },
         {
           "name": "getStats",
@@ -1320,35 +1380,41 @@
               "type": "Number",
               "path": "code",
               "description": "- 状态码（0=成功）",
-              "example": ""
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
             },
             {
               "type": "Object",
               "path": "data",
               "description": "- 统计数据",
-              "example": ""
+              "example": "-"
             },
             {
               "type": "Number",
               "path": "data.plantCount",
               "description": "- 植物数量",
-              "example": ""
+              "example": "3"
             },
             {
               "type": "Number",
               "path": "data.diaryCount",
               "description": "- 日记数量",
-              "example": ""
+              "example": "10"
             },
             {
               "type": "Number",
               "path": "data.favoriteCount",
               "description": "- 收藏数量",
-              "example": ""
+              "example": "5"
             }
           ],
           "errorCodes": [],
-          "example": "const res = await userService.getStats()"
+          "example": ""
         }
       ]
     }
