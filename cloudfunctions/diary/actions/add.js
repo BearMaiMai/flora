@@ -1,7 +1,10 @@
-// cloudfunctions/diary/actions/add.js
+const errorCodes = require('../../utils/error-codes')
+
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
   const { plantId, content, images = [] } = event
+
+  if (!plantId || !content) return errorCodes.MISSING_PARAM
 
   const res = await db.collection('diaries').add({
     data: {
