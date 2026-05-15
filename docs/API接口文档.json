@@ -1,7 +1,14 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-13T16:10:06.738Z",
+  "updateTime": "2026-05-15T05:03:06.298Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
+  "changeLog": [
+    {
+      "date": "2026-05-14",
+      "desc": "创建接口文档 V2，支持完整 REST 风格文档（请求/响应参数全字段、错误码、安全说明、版本管理、请求头）",
+      "operator": "AI Assistant"
+    }
+  ],
   "services": [
     {
       "name": "commonService",
@@ -10,6 +17,8 @@
         {
           "name": "getHomeData",
           "description": "获取首页聚合数据（每日贴士 + 推荐花卉）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/common/getHomeData",
           "cloudFunction": "common",
           "action": "getHomeData",
           "params": [],
@@ -17,22 +26,26 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "首页数据"
+              "description": "- 首页数据",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data.dailyTip",
-              "description": "每日养护贴士"
+              "description": "- 每日养护贴士",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data.recommendList",
-              "description": "推荐花卉列表"
+              "description": "- 推荐花卉列表",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -41,6 +54,8 @@
         {
           "name": "getDailyTip",
           "description": "获取每日养花小贴士",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/common/getDailyTip",
           "cloudFunction": "common",
           "action": "getDailyTip",
           "params": [],
@@ -48,17 +63,20 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "贴士数据"
+              "description": "- 贴士数据",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data.content",
-              "description": "贴士内容"
+              "description": "- 贴士内容",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -73,53 +91,74 @@
         {
           "name": "add",
           "description": "添加植物生长日记",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/diary/add",
           "cloudFunction": "diary",
           "action": "add",
           "params": [
             {
               "type": "Object",
-              "optional": false,
+              "isRequired": true,
               "name": "data",
               "default": "",
-              "description": "日记信息"
+              "description": "日记信息",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "data.plantId",
               "default": "",
-              "description": "植物 ID（必填）"
+              "description": "植物 ID（必填）",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "data.content",
               "default": "",
-              "description": "日记内容（必填）"
+              "description": "日记内容（必填）",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "Array",
-              "optional": true,
+              "isRequired": false,
               "name": "data.images",
               "default": "[]",
-              "description": "图片 URL 数组"
+              "description": "图片 URL 数组",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "创建结果"
+              "description": "- 创建结果",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data._id",
-              "description": "新日记的 ID"
+              "description": "- 新日记的 ID",
+              "example": ""
             }
           ],
           "errorCodes": [
@@ -130,52 +169,65 @@
         {
           "name": "getList",
           "description": "获取日记列表",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/diary/list",
           "cloudFunction": "diary",
           "action": "list",
           "params": [
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "plantId",
               "default": "",
-              "description": "植物 ID（可选，不传则返回全部日记）"
+              "description": "植物 ID（可选，不传则返回全部日记）",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data",
-              "description": "日记列表"
+              "description": "- 日记列表",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[]._id",
-              "description": "日记 ID"
+              "description": "- 日记 ID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[].plantId",
-              "description": "关联植物 ID"
+              "description": "- 关联植物 ID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[].content",
-              "description": "日记内容"
+              "description": "- 日记内容",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data[].images",
-              "description": "图片 URL 数组"
+              "description": "- 图片 URL 数组",
+              "example": ""
             },
             {
               "type": "Date",
               "path": "data[].createdAt",
-              "description": "创建时间"
+              "description": "- 创建时间",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -184,27 +236,35 @@
         {
           "name": "remove",
           "description": "删除日记",
+          "httpMethod": "DELETE",
+          "apiPath": "/cloud/diary/delete",
           "cloudFunction": "diary",
           "action": "delete",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "id",
               "default": "",
-              "description": "日记 ID"
+              "description": "日记 ID",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "String",
               "path": "message",
-              "description": "提示信息"
+              "description": "- 提示信息",
+              "example": ""
             }
           ],
           "errorCodes": [
@@ -221,83 +281,128 @@
         {
           "name": "getList",
           "description": "获取花卉列表（支持分页和分类筛选）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/flower/list",
           "cloudFunction": "flower",
           "action": "list",
           "params": [
             {
               "type": "Object",
-              "optional": false,
+              "isRequired": true,
               "name": "params",
               "default": "",
-              "description": "查询参数"
+              "description": "查询参数",
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "传入即按条件筛选"
             },
             {
               "type": "Number",
-              "optional": true,
+              "isRequired": false,
               "name": "params.page",
               "default": "1",
-              "description": "页码，默认 1"
+              "description": "页码，默认 1",
+              "valueRange": "取值范围：1-10000",
+              "format": "正整数",
+              "example": "1",
+              "note": "与 pageSize 配合做分页"
             },
             {
               "type": "Number",
-              "optional": true,
+              "isRequired": false,
               "name": "params.pageSize",
               "default": "20",
-              "description": "每页数量，默认 20"
+              "description": "每页数量，默认 20",
+              "valueRange": "取值范围：1-100",
+              "format": "正整数",
+              "example": "20",
+              "note": "最大100"
             },
             {
               "type": "Number",
-              "optional": true,
+              "isRequired": false,
               "name": "params.category",
               "default": "",
-              "description": "分类筛选（1=观叶 2=观花 3=多肉 4=果蔬）"
+              "description": "分类筛选（1=观叶 2=观花 3=多肉 4=果蔬）",
+              "valueRange": "取值范围：1-4",
+              "format": "枚举整数",
+              "example": "2",
+              "note": "不传则返回全部分类"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
             },
             {
-              "type": "Array",
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
               "path": "data",
-              "description": "花卉列表"
-            },
-            {
-              "type": "String",
-              "path": "data[]._id",
-              "description": "花卉 ID"
-            },
-            {
-              "type": "String",
-              "path": "data[].name",
-              "description": "花卉名称"
+              "description": "- 花卉列表数据",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data[].alias",
-              "description": "别名数组"
+              "path": "data.list",
+              "description": "- 花卉列表",
+              "example": "-"
             },
             {
               "type": "Number",
-              "path": "data[].category",
-              "description": "分类（1=观叶 2=观花 3=多肉 4=果蔬）"
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "120"
+            },
+            {
+              "type": "String",
+              "path": "data.list[]._id",
+              "description": "- 花卉 ID",
+              "example": "\"1\""
+            },
+            {
+              "type": "String",
+              "path": "data.list[].name",
+              "description": "- 花卉名称",
+              "example": "\"月季\""
+            },
+            {
+              "type": "Array",
+              "path": "data.list[].alias",
+              "description": "- 别名数组",
+              "example": "[\"玫瑰\",\"刺玫\"]"
             },
             {
               "type": "Number",
-              "path": "data[].difficulty",
-              "description": "养护难度（1-5）"
+              "path": "data.list[].category",
+              "description": "- 分类（1=观叶 2=观花 3=多肉 4=果蔬）",
+              "example": "2"
+            },
+            {
+              "type": "Number",
+              "path": "data.list[].difficulty",
+              "description": "- 养护难度（1-5）",
+              "example": "3"
             },
             {
               "type": "String",
-              "path": "data[].coverImage",
-              "description": "封面图 URL"
+              "path": "data.list[].coverImage",
+              "description": "- 封面图 URL",
+              "example": "\"\""
             },
             {
               "type": "String",
-              "path": "data[].description",
-              "description": "描述"
+              "path": "data.list[].description",
+              "description": "- 描述",
+              "example": "\"喜阴耐旱\""
             }
           ],
           "errorCodes": [],
@@ -306,123 +411,176 @@
         {
           "name": "getDetail",
           "description": "获取花卉详情",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/flower/detail",
           "cloudFunction": "flower",
           "action": "detail",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "id",
               "default": "",
-              "description": "花卉 ID"
+              "description": "花卉 ID",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"1\"",
+              "note": "必填"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "花卉详情"
+              "description": "- 花卉详情",
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data._id",
-              "description": "花卉 ID"
+              "description": "- 花卉 ID",
+              "example": "\"1\""
             },
             {
               "type": "String",
               "path": "data.name",
-              "description": "花卉名称"
+              "description": "- 花卉名称",
+              "example": "\"月季\""
             },
             {
               "type": "Array",
               "path": "data.alias",
-              "description": "别名数组"
+              "description": "- 别名数组",
+              "example": "[\"玫瑰\"]"
             },
             {
               "type": "Number",
               "path": "data.category",
-              "description": "分类（1=观叶 2=观花 3=多肉 4=果蔬）"
+              "description": "- 分类（1=观叶 2=观花 3=多肉 4=果蔬）",
+              "example": "2"
             },
             {
               "type": "Number",
               "path": "data.difficulty",
-              "description": "养护难度（1-5）"
+              "description": "- 养护难度（1-5）",
+              "example": "3"
             },
             {
               "type": "Number",
               "path": "data.waterDays",
-              "description": "浇水间隔天数"
+              "description": "- 浇水间隔天数",
+              "example": "7"
             },
             {
               "type": "Number",
               "path": "data.fertilizeDays",
-              "description": "施肥间隔天数"
+              "description": "- 施肥间隔天数",
+              "example": "30"
             },
             {
               "type": "String",
               "path": "data.light",
-              "description": "光照需求"
+              "description": "- 光照需求",
+              "example": "\"半阴\""
             },
             {
               "type": "String",
               "path": "data.soil",
-              "description": "土壤要求"
+              "description": "- 土壤要求",
+              "example": "\"疏松透气\""
             },
             {
               "type": "String",
               "path": "data.temperature",
-              "description": "温度范围"
+              "description": "- 温度范围",
+              "example": "\"15-25℃\""
             },
             {
               "type": "String",
               "path": "data.coverImage",
-              "description": "封面图 URL"
+              "description": "- 封面图 URL",
+              "example": "\"\""
             },
             {
               "type": "String",
               "path": "data.description",
-              "description": "描述"
+              "description": "- 描述",
+              "example": "\"喜阴耐旱\""
             },
             {
               "type": "Array",
               "path": "data.tips",
-              "description": "养护技巧数组"
+              "description": "- 养护技巧数组",
+              "example": "[\"定期浇水\",\"避免暴晒\"]"
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await flowerService.getDetail('flower-id-123')"
+          "example": "const res = await flowerService.getDetail('1')"
         },
         {
           "name": "search",
           "description": "搜索花卉（按名称或别名匹配）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/flower/search",
           "cloudFunction": "flower",
           "action": "search",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "keyword",
               "default": "",
-              "description": "搜索关键词"
+              "description": "搜索关键词",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"月季\"",
+              "note": "为空则返回空数组"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "- 搜索结果",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data",
-              "description": "匹配的花卉列表，空关键词返回空数组"
+              "path": "data.list",
+              "description": "- 匹配的花卉列表",
+              "example": "-"
+            },
+            {
+              "type": "Number",
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "5"
             }
           ],
           "errorCodes": [],
@@ -431,6 +589,8 @@
         {
           "name": "getRecommend",
           "description": "获取推荐花卉（随机 6 条）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/flower/recommend",
           "cloudFunction": "flower",
           "action": "recommend",
           "params": [],
@@ -438,12 +598,32 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "- 推荐数据",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data",
-              "description": "推荐花卉列表"
+              "path": "data.list",
+              "description": "- 推荐花卉列表",
+              "example": "-"
+            },
+            {
+              "type": "Number",
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "6"
             }
           ],
           "errorCodes": [],
@@ -458,77 +638,114 @@
         {
           "name": "add",
           "description": "添加植物到我的花园",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/plant/add",
           "cloudFunction": "plant",
           "action": "add",
           "params": [
             {
               "type": "Object",
-              "optional": false,
+              "isRequired": true,
               "name": "data",
               "default": "",
-              "description": "植物信息"
+              "description": "植物信息",
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "必填字段见下"
             },
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "data.flowerId",
               "default": "",
-              "description": "花卉 ID（必填）"
+              "description": "花卉 ID（必填）",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"1\"",
+              "note": "关联花卉表"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.flowerName",
               "default": "",
-              "description": "花卉名称"
+              "description": "花卉名称",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"月季\"",
+              "note": "可选，不传则使用花卉表名称"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.nickname",
               "default": "",
-              "description": "昵称，默认使用花卉名称"
+              "description": "昵称，默认使用花卉名称",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"客厅的绿萝\"",
+              "note": "方便用户自定义"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.location",
               "default": "",
-              "description": "位置（如\"客厅\"）"
+              "description": "位置（如\"客厅\"）",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"客厅\"",
+              "note": "可选"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.imageUrl",
               "default": "",
-              "description": "照片 URL"
+              "description": "照片 URL",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"\"",
+              "note": "可选，上传后获取"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"添加成功\""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "创建结果"
+              "description": "- 创建结果",
+              "example": "-"
             },
             {
               "type": "String",
               "path": "data._id",
-              "description": "新植物的 ID"
+              "description": "- 新植物的 ID",
+              "example": "\"1\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await plantService.add({\nflowerId: 'flower-id-123',\nnickname: '客厅的绿萝',\nlocation: '客厅'\n})"
+          "example": "const res = await plantService.add({\nflowerId: '1',\nnickname: '客厅的绿萝',\nlocation: '客厅'\n})"
         },
         {
           "name": "getList",
           "description": "获取我的植物列表",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/plant/list",
           "cloudFunction": "plant",
           "action": "list",
           "params": [],
@@ -536,57 +753,74 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
+            },
+            {
+              "type": "String",
+              "path": "message",
+              "description": "- 提示信息",
+              "example": "\"success\""
+            },
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "- 植物列表数据",
+              "example": "-"
             },
             {
               "type": "Array",
-              "path": "data",
-              "description": "植物列表"
+              "path": "data.list",
+              "description": "- 植物列表",
+              "example": "-"
+            },
+            {
+              "type": "Number",
+              "path": "data.total",
+              "description": "- 总数",
+              "example": "10"
             },
             {
               "type": "String",
               "path": "data[]._id",
-              "description": "植物 ID"
+              "description": "- 植物 ID",
+              "example": "\"1\""
             },
             {
               "type": "String",
               "path": "data[].flowerId",
-              "description": "关联花卉 ID"
+              "description": "- 关联花卉 ID",
+              "example": "\"1\""
             },
             {
               "type": "String",
               "path": "data[].flowerName",
-              "description": "花卉名称"
+              "description": "- 花卉名称",
+              "example": "\"绿萝\""
             },
             {
               "type": "String",
               "path": "data[].nickname",
-              "description": "昵称"
+              "description": "- 昵称",
+              "example": "\"客厅的绿萝\""
             },
             {
               "type": "String",
               "path": "data[].location",
-              "description": "位置"
+              "description": "- 位置",
+              "example": "\"客厅\""
             },
             {
               "type": "String",
               "path": "data[].imageUrl",
-              "description": "照片 URL"
+              "description": "- 照片 URL",
+              "example": "\"\""
             },
             {
               "type": "String",
               "path": "data[].status",
-              "description": "状态（healthy=健康）"
-            },
-            {
-              "type": "Date",
-              "path": "data[].createdAt",
-              "description": "创建时间"
-            },
-            {
-              "type": "Date",
-              "path": "data[].updatedAt",
-              "description": "更新时间"
+              "description": "- 状态（healthy=健康）",
+              "example": "\"healthy\""
             }
           ],
           "errorCodes": [],
@@ -595,99 +829,135 @@
         {
           "name": "update",
           "description": "更新植物信息",
+          "httpMethod": "PUT",
+          "apiPath": "/cloud/plant/update",
           "cloudFunction": "plant",
           "action": "update",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "id",
               "default": "",
-              "description": "植物 ID"
+              "description": "植物 ID",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"1\"",
+              "note": "必填"
             },
             {
               "type": "Object",
-              "optional": false,
+              "isRequired": true,
               "name": "data",
               "default": "",
-              "description": "更新字段"
+              "description": "更新字段",
+              "valueRange": "-",
+              "format": "-",
+              "example": "-",
+              "note": "可选字段见下"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.nickname",
               "default": "",
-              "description": "昵称"
+              "description": "昵称",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"阳台的月季\"",
+              "note": "可选"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.location",
               "default": "",
-              "description": "位置"
+              "description": "位置",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"阳台\"",
+              "note": "可选"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.imageUrl",
               "default": "",
-              "description": "照片 URL"
+              "description": "照片 URL",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"\"",
+              "note": "可选"
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.status",
               "default": "",
-              "description": "状态"
+              "description": "状态",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"healthy\"",
+              "note": "可选"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
             },
             {
               "type": "String",
               "path": "message",
-              "description": "提示信息"
+              "description": "- 提示信息",
+              "example": "\"更新成功\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await plantService.update('plant-id-123', { nickname: '阳台的月季' })"
+          "example": "const res = await plantService.update('1', { nickname: '阳台的月季' })"
         },
         {
           "name": "remove",
           "description": "删除植物",
+          "httpMethod": "DELETE",
+          "apiPath": "/cloud/plant/remove",
           "cloudFunction": "plant",
           "action": "remove",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "id",
               "default": "",
-              "description": "植物 ID"
+              "description": "植物 ID",
+              "valueRange": "-",
+              "format": "-",
+              "example": "\"1\"",
+              "note": "必填"
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": "0"
             },
             {
               "type": "String",
               "path": "message",
-              "description": "提示信息"
+              "description": "- 提示信息",
+              "example": "\"删除成功\""
             }
           ],
           "errorCodes": [
             1002
           ],
-          "example": "const res = await plantService.remove('plant-id-123')"
+          "example": "const res = await plantService.remove('1')"
         }
       ]
     },
@@ -698,6 +968,8 @@
         {
           "name": "getList",
           "description": "获取提醒列表（待处理的提醒）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/reminder/list",
           "cloudFunction": "reminder",
           "action": "list",
           "params": [],
@@ -705,37 +977,44 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data",
-              "description": "提醒列表"
+              "description": "- 提醒列表",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[]._id",
-              "description": "提醒 ID"
+              "description": "- 提醒 ID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[].plantId",
-              "description": "关联植物 ID"
+              "description": "- 关联植物 ID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[].type",
-              "description": "提醒类型"
+              "description": "- 提醒类型",
+              "example": ""
             },
             {
               "type": "Date",
               "path": "data[].remindAt",
-              "description": "提醒时间"
+              "description": "- 提醒时间",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data[].status",
-              "description": "状态（pending=待处理）"
+              "description": "- 状态（pending=待处理）",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -744,27 +1023,35 @@
         {
           "name": "complete",
           "description": "完成提醒（标记为已完成）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/reminder/complete",
           "cloudFunction": "reminder",
           "action": "complete",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "id",
               "default": "",
-              "description": "提醒 ID"
+              "description": "提醒 ID",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "String",
               "path": "message",
-              "description": "提示信息"
+              "description": "- 提示信息",
+              "example": ""
             }
           ],
           "errorCodes": [
@@ -781,76 +1068,99 @@
         {
           "name": "login",
           "description": "用户登录/注册（自动创建用户记录）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/user/login",
           "cloudFunction": "user",
           "action": "login",
           "params": [
             {
               "type": "Object",
-              "optional": true,
+              "isRequired": false,
               "name": "userInfo",
               "default": "",
-              "description": "用户信息"
+              "description": "用户信息",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "userInfo.nickName",
               "default": "",
-              "description": "昵称"
+              "description": "昵称",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "userInfo.avatarUrl",
               "default": "",
-              "description": "头像 URL"
+              "description": "头像 URL",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "用户信息"
+              "description": "- 用户信息",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data._id",
-              "description": "用户 ID"
+              "description": "- 用户 ID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data._openid",
-              "description": "微信 OpenID"
+              "description": "- 微信 OpenID",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data.nickName",
-              "description": "昵称"
+              "description": "- 昵称",
+              "example": ""
             },
             {
               "type": "String",
               "path": "data.avatarUrl",
-              "description": "头像 URL"
+              "description": "- 头像 URL",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data.favorites",
-              "description": "收藏的花卉 ID 数组"
+              "description": "- 收藏的花卉 ID 数组",
+              "example": ""
             },
             {
               "type": "Date",
               "path": "data.createdAt",
-              "description": "创建时间"
+              "description": "- 创建时间",
+              "example": ""
             },
             {
               "type": "Date",
               "path": "data.lastLoginAt",
-              "description": "最后登录时间"
+              "description": "- 最后登录时间",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -859,41 +1169,57 @@
         {
           "name": "updateInfo",
           "description": "更新用户昵称和头像",
+          "httpMethod": "PUT",
+          "apiPath": "/cloud/user/updateInfo",
           "cloudFunction": "user",
           "action": "updateInfo",
           "params": [
             {
               "type": "Object",
-              "optional": false,
+              "isRequired": true,
               "name": "data",
               "default": "",
-              "description": "用户信息"
+              "description": "用户信息",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.nickName",
               "default": "",
-              "description": "昵称"
+              "description": "昵称",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             },
             {
               "type": "String",
-              "optional": true,
+              "isRequired": false,
               "name": "data.avatarUrl",
               "default": "",
-              "description": "头像 URL"
+              "description": "头像 URL",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "String",
               "path": "message",
-              "description": "提示信息"
+              "description": "- 提示信息",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -902,32 +1228,41 @@
         {
           "name": "toggleFavorite",
           "description": "切换收藏状态（已收藏则取消，未收藏则添加）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/user/toggleFavorite",
           "cloudFunction": "user",
           "action": "toggleFavorite",
           "params": [
             {
               "type": "String",
-              "optional": false,
+              "isRequired": true,
               "name": "flowerId",
               "default": "",
-              "description": "花卉 ID"
+              "description": "花卉 ID",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
             }
           ],
           "returns": [
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "收藏状态"
+              "description": "- 收藏状态",
+              "example": ""
             },
             {
               "type": "Boolean",
               "path": "data.isFavorite",
-              "description": "当前是否已收藏"
+              "description": "- 当前是否已收藏",
+              "example": ""
             }
           ],
           "errorCodes": [
@@ -938,6 +1273,8 @@
         {
           "name": "getFavorites",
           "description": "获取我的收藏列表（返回完整花卉对象）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/user/getFavorites",
           "cloudFunction": "user",
           "action": "getFavorites",
           "params": [],
@@ -945,22 +1282,26 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "收藏数据"
+              "description": "- 收藏数据",
+              "example": ""
             },
             {
               "type": "Array",
               "path": "data.list",
-              "description": "收藏的花卉列表"
+              "description": "- 收藏的花卉列表",
+              "example": ""
             },
             {
               "type": "Number",
               "path": "data.total",
-              "description": "收藏总数"
+              "description": "- 收藏总数",
+              "example": ""
             }
           ],
           "errorCodes": [],
@@ -969,6 +1310,8 @@
         {
           "name": "getStats",
           "description": "获取用户统计（植物数、日记数、收藏数）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/user/getStats",
           "cloudFunction": "user",
           "action": "getStats",
           "params": [],
@@ -976,27 +1319,32 @@
             {
               "type": "Number",
               "path": "code",
-              "description": "状态码（0=成功）"
+              "description": "- 状态码（0=成功）",
+              "example": ""
             },
             {
               "type": "Object",
               "path": "data",
-              "description": "统计数据"
+              "description": "- 统计数据",
+              "example": ""
             },
             {
               "type": "Number",
               "path": "data.plantCount",
-              "description": "植物数量"
+              "description": "- 植物数量",
+              "example": ""
             },
             {
               "type": "Number",
               "path": "data.diaryCount",
-              "description": "日记数量"
+              "description": "- 日记数量",
+              "example": ""
             },
             {
               "type": "Number",
               "path": "data.favoriteCount",
-              "description": "收藏数量"
+              "description": "- 收藏数量",
+              "example": ""
             }
           ],
           "errorCodes": [],
