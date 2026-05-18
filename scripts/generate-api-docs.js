@@ -160,13 +160,13 @@ function parseJSDoc(jsdocText) {
       }
     } else if (line.startsWith('@returns') || line.startsWith('@return')) {
       inExample = false
-      // 解析：@returns {Type} path - 描述 | 参数格式 | 取值范围 | 示例值
+      // 解析：@returns {Type} data.field - 描述 | 类型 | 示例值 | 备注
       const returnLine = line.replace(/@returns?\s+/, '').trim()
       const typeMatch = returnLine.match(/^\{([^}]+)\}/)
       if (typeMatch) {
         const type = typeMatch[1]
         const rest = returnLine.slice(typeMatch[0].length).trim()
-        // rest: "path - 描述 | 参数格式 | 取值范围 | 示例值"
+        // rest: "data.field - 描述 | 类型 | 示例值 | 备注"
         const dashIdx = rest.indexOf(' - ')
         let path, descPart
         if (dashIdx > 0) {
@@ -177,14 +177,19 @@ function parseJSDoc(jsdocText) {
           path = rest.slice(0, firstSpace > 0 ? firstSpace : rest.length).trim()
           descPart = firstSpace > 0 ? rest.slice(firstSpace).replace(/^-\s*/, '') : ''
         }
-        const extra = parseExtraFromDescription(descPart, ['format', 'valueRange', 'example'])
+        // 按 | 分割 descPart: 描述 | 类型 | 示例值 | 备注
+        const parts = descPart.split('|').map(s => s.trim())
+        const description = parts[0] || ''
+        const fieldType = parts[1] || '-'
+        const example = parts[2] || '-'
+        const note = parts[3] || '-'
         result.returns.push({
           type,
           path: path.replace(/^returns\./, ''),
-          description: extra.description,
-          format: extra.format || '-',
-          valueRange: extra.valueRange || '-',
-          example: extra.example || '-'
+          description,
+          fieldType,
+          example,
+          note
         })
       }
     } else if (line.startsWith('@example')) {
@@ -503,12 +508,12 @@ function generateMarkdown(docs, errorCodesMap) {
       // 响应参数表格
       if (method.returns.length > 0) {
         md += '**响应参数（`data` 结构）**：\n\n'
-        md += '| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |\n'
-        md += '|----------|----------|----------|----------|----------|--------|\n'
+        md += '| 参数名称 | 参数类型 | 参数说明 | 示例值 | 备注 |\n'
+        md += '|----------|----------|----------|----------|--------|\n'
         method.returns.forEach(r => {
           const example = r.example || '-'
-          const valueRange = r.valueRange || '-'
-          md += `| ${r.path} | ${r.type} | - | ${r.description} | ${valueRange} | ${example} |\n`
+          const note = r.note || '-'
+          md += `| ${r.path} | ${r.type} | ${r.description} | ${example} | ${note} |\n`
         })
         md += '\n'
       }

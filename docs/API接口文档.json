@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-18T04:12:19.897Z",
+  "updateTime": "2026-05-18T06:21:53.853Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -32,9 +32,9 @@
               "type": "String",
               "path": "data.content",
               "description": "贴士内容",
-              "format": "String",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "String",
+              "example": "-",
+              "note": "-"
             }
           ],
           "errorCodes": [],
@@ -53,17 +53,17 @@
               "type": "String",
               "path": "data.dailyTip",
               "description": "每日贴士内容",
-              "format": "String",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "String",
+              "example": "-",
+              "note": "-"
             },
             {
               "type": "Array",
               "path": "data.recommendList",
               "description": "推荐花卉数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "-"
             }
           ],
           "errorCodes": [],
@@ -122,9 +122,9 @@
               "type": "String",
               "path": "data._id",
               "description": "新日记ID",
-              "format": "String",
-              "valueRange": "-",
-              "example": "diary-abc123"
+              "fieldType": "String",
+              "example": "-",
+              "note": "diary-abc123"
             }
           ],
           "errorCodes": [
@@ -159,6 +159,90 @@
           "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'delete', id: 'diary-abc123' }\n})"
         },
         {
+          "name": "detail",
+          "description": "获取单条日记详情",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/diary/detail",
+          "cloudFunction": "diary",
+          "action": "detail",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "日记ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "diary-abc123",
+              "note": "必填"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "日记ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "diary-abc123"
+            },
+            {
+              "type": "String",
+              "path": "data.plantId",
+              "description": "植物ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123"
+            },
+            {
+              "type": "String",
+              "path": "data.content",
+              "description": "日记内容",
+              "fieldType": "String",
+              "example": "-",
+              "note": "今天给绿萝浇了水"
+            },
+            {
+              "type": "Array",
+              "path": "data.images",
+              "description": "图片列表",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "-"
+            },
+            {
+              "type": "Array",
+              "path": "data.careActions",
+              "description": "养护操作",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"浇水\"]"
+            },
+            {
+              "type": "String",
+              "path": "data.weather",
+              "description": "天气",
+              "fieldType": "String",
+              "example": "-",
+              "note": "晴"
+            },
+            {
+              "type": "String",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-20T10:30:00.000Z"
+            }
+          ],
+          "errorCodes": [
+            1002,
+            3001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'detail', id: 'diary-abc123' }\n})"
+        },
+        {
           "name": "list",
           "description": "获取日记列表（可按植物筛选）",
           "httpMethod": "GET",
@@ -183,13 +267,79 @@
               "type": "Array",
               "path": "data",
               "description": "日记对象数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "-"
             }
           ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'list', plantId: 'plant-abc123' }\n})"
+        },
+        {
+          "name": "update",
+          "description": "编辑日记",
+          "httpMethod": "PUT",
+          "apiPath": "/cloud/diary/update",
+          "cloudFunction": "diary",
+          "action": "update",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "日记ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "diary-abc123",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "content",
+              "default": "",
+              "description": "日记内容",
+              "valueRange": "-",
+              "format": "String",
+              "example": "今天给绿萝浇了水",
+              "note": "可选"
+            },
+            {
+              "type": "Array",
+              "isRequired": false,
+              "name": "images",
+              "default": "",
+              "description": "图片列表",
+              "valueRange": "-",
+              "format": "Array<String>",
+              "example": "[]",
+              "note": "可选"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data.content",
+              "description": "日记内容",
+              "fieldType": "String",
+              "example": "-",
+              "note": "今天给绿萝浇了水"
+            },
+            {
+              "type": "Array",
+              "path": "data.images",
+              "description": "图片列表",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "-"
+            }
+          ],
+          "errorCodes": [
+            1002,
+            3001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'update', id: 'diary-abc123', content: '更新后的内容' }\n})"
         }
       ]
     },
@@ -219,18 +369,207 @@
           ],
           "returns": [
             {
-              "type": "Object",
-              "path": "data",
-              "description": "花卉对象",
-              "format": "Object",
-              "valueRange": "-",
-              "example": "含所有花卉字段"
+              "type": "String",
+              "path": "data._id",
+              "description": "花卉ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "flower_001"
+            },
+            {
+              "type": "String",
+              "path": "data.name",
+              "description": "花卉名称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "绿萝"
+            },
+            {
+              "type": "String",
+              "path": "data.scientificName",
+              "description": "学名",
+              "fieldType": "String",
+              "example": "-",
+              "note": "Epipremnum aureum"
+            },
+            {
+              "type": "Array",
+              "path": "data.alias",
+              "description": "别名列表",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"魔鬼藤\",\"黄金葛\"]"
+            },
+            {
+              "type": "String",
+              "path": "data.family",
+              "description": "科属",
+              "fieldType": "String",
+              "example": "-",
+              "note": "天南星科"
+            },
+            {
+              "type": "String",
+              "path": "data.coverImage",
+              "description": "封面图",
+              "fieldType": "String",
+              "example": "-",
+              "note": "cloud://..."
+            },
+            {
+              "type": "Number",
+              "path": "data.category",
+              "description": "分类",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬"
+            },
+            {
+              "type": "String",
+              "path": "data.plantType",
+              "description": "植物类型",
+              "fieldType": "String",
+              "example": "-",
+              "note": "藤本"
+            },
+            {
+              "type": "Number",
+              "path": "data.difficulty",
+              "description": "养护难度",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "1~5"
+            },
+            {
+              "type": "String",
+              "path": "data.light",
+              "description": "光照需求",
+              "fieldType": "String",
+              "example": "-",
+              "note": "耐阴，散射光"
+            },
+            {
+              "type": "String",
+              "path": "data.temperature",
+              "description": "适宜温度",
+              "fieldType": "String",
+              "example": "-",
+              "note": "15-30°C"
+            },
+            {
+              "type": "Number",
+              "path": "data.waterDays",
+              "description": "浇水间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "5"
+            },
+            {
+              "type": "Number",
+              "path": "data.fertilizeDays",
+              "description": "施肥间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "20"
+            },
+            {
+              "type": "Array",
+              "path": "data.season",
+              "description": "适宜季节",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"春\",\"夏\",\"秋\"]"
+            },
+            {
+              "type": "Boolean",
+              "path": "data.isIndoor",
+              "description": "是否室内",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "true"
+            },
+            {
+              "type": "String",
+              "path": "data.description",
+              "description": "描述",
+              "fieldType": "String",
+              "example": "-",
+              "note": "绿萝属于麒麟叶属植物..."
+            },
+            {
+              "type": "String",
+              "path": "data.flowerLanguage",
+              "description": "花语",
+              "fieldType": "String",
+              "example": "-",
+              "note": "守望幸福"
+            },
+            {
+              "type": "Array",
+              "path": "data.tags",
+              "description": "标签",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"室内\",\"耐阴\",\"净化空气\"]"
+            },
+            {
+              "type": "Boolean",
+              "path": "data.isPublished",
+              "description": "是否发布",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "true"
+            },
+            {
+              "type": "Number",
+              "path": "data.sortOrder",
+              "description": "排序权重",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "1"
             }
           ],
           "errorCodes": [
             1002
           ],
           "example": "const res = await wx.cloud.callFunction({\nname: 'flower',\ndata: { action: 'detail', id: 'flower_001' }\n})"
+        },
+        {
+          "name": "getCategories",
+          "description": "获取花卉分类列表",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/flower/getCategories",
+          "cloudFunction": "flower",
+          "action": "getCategories",
+          "params": [],
+          "returns": [
+            {
+              "type": "Array",
+              "path": "data",
+              "description": "分类数组",
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "固定4个分类"
+            },
+            {
+              "type": "Number",
+              "path": "data[].id",
+              "description": "分类ID",
+              "fieldType": "Number",
+              "example": "1",
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬"
+            },
+            {
+              "type": "String",
+              "path": "data[].name",
+              "description": "分类名称",
+              "fieldType": "String",
+              "example": "观叶",
+              "note": "-"
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'flower',\ndata: { action: 'getCategories' }\n})"
         },
         {
           "name": "list",
@@ -271,7 +610,7 @@
               "valueRange": "1~4",
               "format": "整数",
               "example": "2",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬；不传则返回全部分类"
+              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬；不传则返回全部分类"
             }
           ],
           "returns": [
@@ -279,17 +618,17 @@
               "type": "Array",
               "path": "data.list",
               "description": "花卉对象数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "是"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "是"
             },
             {
               "type": "Number",
               "path": "data.total",
               "description": "符合条件的总数",
-              "format": "≥0",
-              "valueRange": "整数",
-              "example": "100"
+              "fieldType": "≥0",
+              "example": "整数",
+              "note": "100"
             }
           ],
           "errorCodes": [],
@@ -308,9 +647,9 @@
               "type": "Array",
               "path": "data",
               "description": "推荐花卉数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "6条随机花卉"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "6条随机花卉"
             }
           ],
           "errorCodes": [],
@@ -341,9 +680,9 @@
               "type": "Array",
               "path": "data",
               "description": "匹配的花卉数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "-"
             }
           ],
           "errorCodes": [],
@@ -424,15 +763,131 @@
               "type": "String",
               "path": "data._id",
               "description": "新植物ID",
-              "format": "String",
-              "valueRange": "-",
-              "example": "plant-abc123"
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123"
             }
           ],
           "errorCodes": [
             1002
           ],
           "example": "const res = await wx.cloud.callFunction({\nname: 'plant',\ndata: { action: 'add', flowerId: 'flower_001', flowerName: '绿萝', nickname: '小绿', location: '客厅' }\n})"
+        },
+        {
+          "name": "detail",
+          "description": "获取我的单棵植物详情",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/plant/detail",
+          "cloudFunction": "plant",
+          "action": "detail",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "植物ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "plant-abc123",
+              "note": "必填"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "植物ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123"
+            },
+            {
+              "type": "String",
+              "path": "data.flowerId",
+              "description": "花卉ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "flower_001"
+            },
+            {
+              "type": "String",
+              "path": "data.nickName",
+              "description": "昵称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "小绿"
+            },
+            {
+              "type": "String",
+              "path": "data.status",
+              "description": "状态",
+              "fieldType": "String",
+              "example": "-",
+              "note": "healthy"
+            },
+            {
+              "type": "String",
+              "path": "data.location",
+              "description": "放置位置",
+              "fieldType": "String",
+              "example": "-",
+              "note": "客厅窗台"
+            },
+            {
+              "type": "Number",
+              "path": "data.waterDays",
+              "description": "浇水间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "5"
+            },
+            {
+              "type": "Number",
+              "path": "data.fertilizeDays",
+              "description": "施肥间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "20"
+            },
+            {
+              "type": "String",
+              "path": "data.lastWateredAt",
+              "description": "最后浇水时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-28T08:00:00.000Z"
+            },
+            {
+              "type": "String",
+              "path": "data.lastFertilizedAt",
+              "description": "最后施肥时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-10T08:00:00.000Z"
+            },
+            {
+              "type": "String",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-03-01T10:00:00.000Z"
+            },
+            {
+              "type": "String",
+              "path": "data.updatedAt",
+              "description": "更新时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-28T08:00:00.000Z"
+            }
+          ],
+          "errorCodes": [
+            1002,
+            3001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'plant',\ndata: { action: 'detail', id: 'plant-abc123' }\n})"
         },
         {
           "name": "list",
@@ -447,9 +902,9 @@
               "type": "Array",
               "path": "data",
               "description": "植物对象数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "含所有植物字段"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "含所有植物字段"
             }
           ],
           "errorCodes": [],
@@ -525,6 +980,85 @@
       "file": "cloudfunctions/reminder/actions/*.js",
       "methods": [
         {
+          "name": "add",
+          "description": "添加提醒",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/reminder/add",
+          "cloudFunction": "reminder",
+          "action": "add",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "plantId",
+              "default": "",
+              "description": "植物ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "plant-abc123",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "type",
+              "default": "",
+              "description": "提醒类型",
+              "valueRange": "water,fertilize",
+              "format": "String",
+              "example": "water",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "title",
+              "default": "",
+              "description": "提醒标题",
+              "valueRange": "-",
+              "format": "String",
+              "example": "给小绿浇水",
+              "note": "必填"
+            },
+            {
+              "type": "Number",
+              "isRequired": true,
+              "name": "intervalDays",
+              "default": "",
+              "description": "间隔天数",
+              "valueRange": "1~365",
+              "format": "Number",
+              "example": "5",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "remindAt",
+              "default": "",
+              "description": "提醒时间",
+              "valueRange": "-",
+              "format": "String",
+              "example": "2026-05-03T08:00:00.000Z",
+              "note": "可选，不传则自动计算"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "新提醒ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "reminder-abc123"
+            }
+          ],
+          "errorCodes": [
+            1002
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'add', plantId: 'plant-abc123', type: 'water', title: '给小绿浇水', intervalDays: 5 }\n})"
+        },
+        {
           "name": "complete",
           "description": "完成提醒（标记为已完成）",
           "httpMethod": "POST",
@@ -551,6 +1085,42 @@
           "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'complete', id: 'reminder-abc123' }\n})"
         },
         {
+          "name": "delete",
+          "description": "删除提醒",
+          "httpMethod": "DELETE",
+          "apiPath": "/cloud/reminder/delete",
+          "cloudFunction": "reminder",
+          "action": "delete",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "提醒ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "reminder-abc123",
+              "note": "必填"
+            }
+          ],
+          "returns": [
+            {
+              "type": "Null",
+              "path": "data",
+              "description": "无返回数据",
+              "fieldType": "Null",
+              "example": "-",
+              "note": "-"
+            }
+          ],
+          "errorCodes": [
+            1002,
+            3001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'delete', id: 'reminder-abc123' }\n})"
+        },
+        {
           "name": "list",
           "description": "获取提醒列表（待处理的提醒）",
           "httpMethod": "GET",
@@ -563,9 +1133,9 @@
               "type": "Array",
               "path": "data",
               "description": "提醒对象数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "含_id,plantId,type,remindAt,status"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "含_id,plantId,type,remindAt,status"
             }
           ],
           "errorCodes": [],
@@ -584,13 +1154,60 @@
               "type": "Array",
               "path": "data",
               "description": "提醒对象数组（仅用于说明结构）",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "-"
             }
           ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'push' }\n})"
+        },
+        {
+          "name": "update",
+          "description": "修改提醒时间",
+          "httpMethod": "PUT",
+          "apiPath": "/cloud/reminder/update",
+          "cloudFunction": "reminder",
+          "action": "update",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "提醒ID",
+              "valueRange": "-",
+              "format": "String",
+              "example": "reminder-abc123",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "nextRemindAt",
+              "default": "",
+              "description": "新提醒时间",
+              "valueRange": "-",
+              "format": "String",
+              "example": "2026-05-03T08:00:00.000Z",
+              "note": "必填"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data.nextRemindAt",
+              "description": "更新后的提醒时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-05-03T08:00:00.000Z"
+            }
+          ],
+          "errorCodes": [
+            1002,
+            3001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'update', id: 'reminder-abc123', nextRemindAt: '2026-05-03T08:00:00.000Z' }\n})"
         }
       ]
     },
@@ -611,21 +1228,92 @@
               "type": "Array",
               "path": "data.list",
               "description": "收藏花卉数组",
-              "format": "Array<Object>",
-              "valueRange": "-",
-              "example": "-"
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "-"
             },
             {
               "type": "Number",
               "path": "data.total",
               "description": "收藏总数",
-              "format": "≥0",
-              "valueRange": "整数",
-              "example": "-"
+              "fieldType": "≥0",
+              "example": "整数",
+              "note": "-"
             }
           ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'getFavorites' }\n})"
+        },
+        {
+          "name": "getInfo",
+          "description": "获取当前用户信息",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/user/getInfo",
+          "cloudFunction": "user",
+          "action": "getInfo",
+          "params": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "用户记录ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "user-abc123"
+            },
+            {
+              "type": "String",
+              "path": "data.nickName",
+              "description": "昵称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "花卉达人"
+            },
+            {
+              "type": "String",
+              "path": "data.avatarUrl",
+              "description": "头像URL",
+              "fieldType": "String",
+              "example": "-",
+              "note": "-"
+            },
+            {
+              "type": "Object",
+              "path": "data.stats",
+              "description": "统计数据",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "{plantCount:3,diaryCount:5,reminderCount:5}"
+            },
+            {
+              "type": "Array",
+              "path": "data.favoriteFlowerIds",
+              "description": "收藏花卉ID列表",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"flower_001\"]"
+            },
+            {
+              "type": "String",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-01T08:00:00.000Z"
+            },
+            {
+              "type": "String",
+              "path": "data.updatedAt",
+              "description": "更新时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-30T10:00:00.000Z"
+            }
+          ],
+          "errorCodes": [
+            2001
+          ],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'getInfo' }\n})"
         },
         {
           "name": "getStats",
@@ -640,25 +1328,25 @@
               "type": "Number",
               "path": "data.plantCount",
               "description": "植物数量",
-              "format": "≥0",
-              "valueRange": "整数",
-              "example": "5"
+              "fieldType": "≥0",
+              "example": "整数",
+              "note": "5"
             },
             {
               "type": "Number",
               "path": "data.diaryCount",
               "description": "日记数量",
-              "format": "≥0",
-              "valueRange": "整数",
-              "example": "12"
+              "fieldType": "≥0",
+              "example": "整数",
+              "note": "12"
             },
             {
               "type": "Number",
               "path": "data.favoriteCount",
               "description": "收藏数量",
-              "format": "≥0",
-              "valueRange": "整数",
-              "example": "3"
+              "fieldType": "≥0",
+              "example": "整数",
+              "note": "3"
             }
           ],
           "errorCodes": [],
@@ -711,9 +1399,9 @@
               "type": "Object",
               "path": "data",
               "description": "用户对象",
-              "format": "Object",
-              "valueRange": "-",
-              "example": "含所有用户字段"
+              "fieldType": "Object",
+              "example": "-",
+              "note": "含所有用户字段"
             }
           ],
           "errorCodes": [],
@@ -744,9 +1432,9 @@
               "type": "Boolean",
               "path": "data.isFavorite",
               "description": "当前是否已收藏",
-              "format": "Boolean",
-              "valueRange": "true/false",
-              "example": "是"
+              "fieldType": "Boolean",
+              "example": "true/false",
+              "note": "是"
             }
           ],
           "errorCodes": [
