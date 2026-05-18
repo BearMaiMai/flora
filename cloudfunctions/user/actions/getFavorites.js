@@ -1,5 +1,7 @@
 /**
  * 获取用户收藏列表
+ * @returns {Array} data.list - 收藏花卉数组 | Array<Object> | - | -
+ * @returns {Number} data.total - 收藏总数 | ≥0 | 整数 | -
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'user',

@@ -1,5 +1,6 @@
 /**
  * 获取每日养花小贴士
+ * @returns {String} data.content - 贴士内容 | String | - | - | 每日养花技巧内容
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'common',

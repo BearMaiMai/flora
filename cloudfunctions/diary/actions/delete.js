@@ -2,6 +2,7 @@ const errorCodes = require('../../utils/error-codes')
 
 /**
  * 删除日记
+ * @param {String} id - 日记ID | - | String | diary-abc123 | 必填
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'diary',

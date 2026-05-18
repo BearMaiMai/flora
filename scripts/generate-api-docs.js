@@ -69,9 +69,9 @@ function loadErrorCodes() {
   return codes
 }
 
-/** 从文件顶部提取 JSDoc */
+/** 从文件内容中提取第一个 JSDoc（不限位置） */
 function extractTopJSDoc(content) {
-  const match = content.match(/^\s*\/\*\*([\s\S]*?)\*\//)
+  const match = content.match(/\/\*\*([\s\S]*?)\*\//)
   if (match) return match[1]
   return ''
 }
@@ -160,16 +160,31 @@ function parseJSDoc(jsdocText) {
       }
     } else if (line.startsWith('@returns') || line.startsWith('@return')) {
       inExample = false
-      const returnMatch = line.match(/@returns?\s+\{([^}]+)\}\s+([\w.[\]]+)\s*(.*)/)
-      if (returnMatch) {
-        const descPart = returnMatch[3]
-        const extra = parseExtraFromDescription(descPart, ['example'])
-
+      // 解析：@returns {Type} path - 描述 | 参数格式 | 取值范围 | 示例值
+      const returnLine = line.replace(/@returns?\s+/, '').trim()
+      const typeMatch = returnLine.match(/^\{([^}]+)\}/)
+      if (typeMatch) {
+        const type = typeMatch[1]
+        const rest = returnLine.slice(typeMatch[0].length).trim()
+        // rest: "path - 描述 | 参数格式 | 取值范围 | 示例值"
+        const dashIdx = rest.indexOf(' - ')
+        let path, descPart
+        if (dashIdx > 0) {
+          path = rest.slice(0, dashIdx).trim()
+          descPart = rest.slice(dashIdx + 3)
+        } else {
+          const firstSpace = rest.indexOf(' ')
+          path = rest.slice(0, firstSpace > 0 ? firstSpace : rest.length).trim()
+          descPart = firstSpace > 0 ? rest.slice(firstSpace).replace(/^-\s*/, '') : ''
+        }
+        const extra = parseExtraFromDescription(descPart, ['format', 'valueRange', 'example'])
         result.returns.push({
-          type: returnMatch[1],
-          path: returnMatch[2].replace(/^returns\./, ''),
+          type,
+          path: path.replace(/^returns\./, ''),
           description: extra.description,
-          example: extra.example
+          format: extra.format || '-',
+          valueRange: extra.valueRange || '-',
+          example: extra.example || '-'
         })
       }
     } else if (line.startsWith('@example')) {
@@ -515,10 +530,10 @@ function generateMarkdown(docs, errorCodesMap) {
       // 错误码表格
       if (method.errors.length > 0) {
         md += '**可能返回的错误码**：\n\n'
-        md += '| 错误码 | 错误信息 | 含义 |\n'
-        md += '|--------|----------|------|\n'
+        md += '| 错误码 | 错误信息 |\n'
+        md += '|--------|----------|\n'
         method.errors.forEach(e => {
-          md += `| ${e.code} | ${e.message} | |\n`
+          md += `| ${e.code} | ${e.message} |\n`
         })
         md += '\n'
       }
@@ -537,11 +552,11 @@ function generateMarkdown(docs, errorCodesMap) {
 
   // ========== 错误码总表 ==========
   md += '## 错误码总表\n\n'
-  md += '| 错误码 | 错误信息 | 含义 |\n'
-  md += '|--------|----------|------|\n'
+  md += '| 错误码 | 错误信息 |\n'
+  md += '|--------|----------|\n'
   Object.values(errorCodesMap).forEach(ec => {
     if (ec.code !== 0) {
-      md += `| ${ec.code} | ${ec.message} | |\n`
+      md += `| ${ec.code} | ${ec.message} |\n`
     }
   })
   md += '\n'

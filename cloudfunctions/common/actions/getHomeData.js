@@ -1,5 +1,7 @@
 /**
  * 获取首页聚合数据（每日贴士 + 推荐花草）
+ * @returns {String} data.dailyTip - 每日贴士内容 | String | - | - | 今日养花小贴士
+ * @returns {Array} data.recommendList - 推荐花卉数组 | Array<Object> | - | - | 6条随机花卉
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'common',

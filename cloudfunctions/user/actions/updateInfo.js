@@ -1,5 +1,7 @@
 /**
  * 更新用户信息（昵称、头像）
+ * @param {String} [nickName] - 昵称 | - | String | 新昵称 | 可选
+ * @param {String} [avatarUrl] - 头像URL | - | URL | - | 可选
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'user',

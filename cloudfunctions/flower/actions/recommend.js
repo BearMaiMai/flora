@@ -1,5 +1,6 @@
 /**
  * 获取推荐花卉（随机返回6条）
+ * @returns {Array} data - 推荐花卉数组 | Array<Object> | - | 6条随机花卉
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'flower',

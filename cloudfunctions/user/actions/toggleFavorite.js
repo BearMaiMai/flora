@@ -2,6 +2,8 @@ const errorCodes = require('../../utils/error-codes')
 
 /**
  * 切换花卉收藏状态（收藏/取消收藏）
+ * @param {String} flowerId - 花卉ID | - | String | flower_001 | 必填
+ * @returns {Boolean} data.isFavorite - 当前是否已收藏 | Boolean | true/false | 是
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'user',

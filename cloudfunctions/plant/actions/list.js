@@ -1,5 +1,6 @@
 /**
  * 获取我的植物列表
+ * @returns {Array} data - 植物对象数组 | Array<Object> | - | 含所有植物字段
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'plant',

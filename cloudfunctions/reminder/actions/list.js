@@ -1,5 +1,6 @@
 /**
  * 获取提醒列表（待处理的提醒）
+ * @returns {Array} data - 提醒对象数组 | Array<Object> | - | 含_id,plantId,type,remindAt,status
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'reminder',

@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/18 10:44:05
+> **生成时间**：2026/5/18 12:12:19
 >
 > **文档版本**：1.0.0
 >
@@ -156,13 +156,19 @@ wx.cloud.callFunction({
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.content | String | - | 贴士内容 | - | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -205,13 +211,20 @@ data: { action: 'getDailyTip' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.dailyTip | String | - | 每日贴士内容 | - | - |
+| data.recommendList | Array | - | 推荐花卉数组 | - | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -232,7 +245,7 @@ data: { action: 'getHomeData' }
 
 ### add
 
-**功能**：add
+**功能**：添加植物生长日记
 
 **接口地址**：`/cloud/diary/add`
 
@@ -244,9 +257,9 @@ data: { action: 'getHomeData' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| plantId | String | 是 | - | - | - | - | - |
-| content | String | 是 | - | - | - | - | - |
-| images | Array | 否 | [] | - | - | - | - |
+| plantId | String | 是 | - | - | String | plant-abc123 | 必填 |
+| content | String | 是 | - | - | String | 今天给绿萝浇了水 | 必填 |
+| images | Array | 否 | - | - | Array<String> | [] | 可选，默认[] |
 
 **响应说明**：
 
@@ -264,27 +277,42 @@ data: { action: 'getHomeData' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data._id | String | - | 新日记ID | - | diary-abc123 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'diary',
+data: { action: 'add', plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: [] }
+})
+```
 
 ---
 
 ### delete
 
-**功能**：delete
+**功能**：删除日记
 
 **接口地址**：`/cloud/diary/delete`
 
@@ -296,7 +324,7 @@ data: { action: 'getHomeData' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | String | diary-abc123 | 必填 |
 
 **响应说明**：
 
@@ -326,9 +354,18 @@ data: { action: 'getHomeData' }
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'diary',
+data: { action: 'delete', id: 'diary-abc123' }
+})
+```
 
 ---
 
@@ -346,7 +383,7 @@ data: { action: 'getHomeData' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| plantId | String | 是 | - | - | - | - | - |
+| plantId | String | 否 | - | - | String | plant-abc123 | 可选，不传则返回全部 |
 
 **响应说明**：
 
@@ -364,13 +401,19 @@ data: { action: 'getHomeData' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 日记对象数组 | - | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -391,7 +434,7 @@ data: { action: 'list', plantId: 'plant-abc123' }
 
 ### detail
 
-**功能**：detail
+**功能**：获取花卉详情
 
 **接口地址**：`/cloud/flower/detail`
 
@@ -403,7 +446,7 @@ data: { action: 'list', plantId: 'plant-abc123' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | String | flower_001 | 必填 |
 
 **响应说明**：
 
@@ -421,21 +464,36 @@ data: { action: 'list', plantId: 'plant-abc123' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Object | - | 花卉对象 | - | 含所有花卉字段 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'flower',
+data: { action: 'detail', id: 'flower_001' }
+})
+```
 
 ---
 
@@ -453,9 +511,9 @@ data: { action: 'list', plantId: 'plant-abc123' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| page | Number | 否 | 1 | - | - | - | - |
-| pageSize | Number | 否 | 20 | - | - | - | - |
-| category | String | 是 | - | - | - | - | - |
+| page | Number | 是 | - | 1~100 | 整数 | 1 | 默认第1页 |
+| pageSize | Number | 是 | - | 1~100 | 整数 | 20 | 默认20条 |
+| category | Number | 否 | - | 1~4 | 整数 | 2 | 1=观叶,2=观花,3=多肉,4=果蔬；不传则返回全部分类 |
 
 **响应说明**：
 
@@ -473,13 +531,20 @@ data: { action: 'list', plantId: 'plant-abc123' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.list | Array | - | 花卉对象数组 | - | 是 |
+| data.total | Number | - | 符合条件的总数 | 整数 | 100 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -522,13 +587,19 @@ data: { action: 'list', page: 1, pageSize: 20, category: 2 }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 推荐花卉数组 | - | 6条随机花卉 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -557,7 +628,7 @@ data: { action: 'recommend' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| keyword | String | 否 | '' | - | - | - | - |
+| keyword | String | 是 | - | - | String | 绿萝 | 必填 |
 
 **响应说明**：
 
@@ -575,13 +646,19 @@ data: { action: 'recommend' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 匹配的花卉数组 | - | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -602,7 +679,7 @@ data: { action: 'search', keyword: '绿萝' }
 
 ### add
 
-**功能**：add
+**功能**：添加我的植物
 
 **接口地址**：`/cloud/plant/add`
 
@@ -614,11 +691,11 @@ data: { action: 'search', keyword: '绿萝' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| flowerId | String | 是 | - | - | - | - | - |
-| flowerName | String | 是 | - | - | - | - | - |
-| nickname | String | 是 | - | - | - | - | - |
-| location | String | 是 | - | - | - | - | - |
-| imageUrl | String | 是 | - | - | - | - | - |
+| flowerId | String | 是 | - | - | String | flower_001 | 必填 |
+| flowerName | String | 是 | - | - | String | 绿萝 | 必填 |
+| nickname | String | 否 | - | - | String | 小绿 | 可选，默认同 flowerName |
+| location | String | 否 | - | - | String | 客厅 | 可选 |
+| imageUrl | String | 否 | - | - | URL | - | 可选 |
 
 **响应说明**：
 
@@ -636,21 +713,36 @@ data: { action: 'search', keyword: '绿萝' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data._id | String | - | 新植物ID | - | plant-abc123 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'plant',
+data: { action: 'add', flowerId: 'flower_001', flowerName: '绿萝', nickname: '小绿', location: '客厅' }
+})
+```
 
 ---
 
@@ -682,13 +774,19 @@ data: { action: 'search', keyword: '绿萝' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 植物对象数组 | - | 含所有植物字段 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -705,7 +803,7 @@ data: { action: 'list' }
 
 ### remove
 
-**功能**：remove
+**功能**：删除我的植物
 
 **接口地址**：`/cloud/plant/remove`
 
@@ -717,7 +815,7 @@ data: { action: 'list' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | String | plant-abc123 | 必填 |
 
 **响应说明**：
 
@@ -747,15 +845,24 @@ data: { action: 'list' }
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'plant',
+data: { action: 'remove', id: 'plant-abc123' }
+})
+```
 
 ---
 
 ### update
 
-**功能**：update
+**功能**：更新植物信息
 
 **接口地址**：`/cloud/plant/update`
 
@@ -767,8 +874,8 @@ data: { action: 'list' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
-| updateData | Object | 否 | - | - | - | - | - |
+| id | String | 是 | - | - | String | plant-abc123 | 必填 |
+| ...updateData | Object | 否 | - | - | Object | - | 可选，含 nickname/location/imageUrl/status |
 
 **响应说明**：
 
@@ -798,9 +905,18 @@ data: { action: 'list' }
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'plant',
+data: { action: 'update', id: 'plant-abc123', nickname: '新昵称' }
+})
+```
 
 ---
 
@@ -810,7 +926,7 @@ data: { action: 'list' }
 
 ### complete
 
-**功能**：complete
+**功能**：完成提醒（标记为已完成）
 
 **接口地址**：`/cloud/reminder/complete`
 
@@ -822,7 +938,7 @@ data: { action: 'list' }
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| id | String | 是 | - | - | - | - | - |
+| id | String | 是 | - | - | String | reminder-abc123 | 必填 |
 
 **响应说明**：
 
@@ -852,9 +968,18 @@ data: { action: 'list' }
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1002 | 缺少必填参数 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1002 | 缺少必填参数 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'reminder',
+data: { action: 'complete', id: 'reminder-abc123' }
+})
+```
 
 ---
 
@@ -886,13 +1011,19 @@ data: { action: 'list' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 提醒对象数组 | - | 含_id,plantId,type,remindAt,status |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -935,13 +1066,19 @@ data: { action: 'list' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Array | - | 提醒对象数组（仅用于说明结构） | - | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -988,13 +1125,20 @@ data: { action: 'push' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.list | Array | - | 收藏花卉数组 | - | - |
+| data.total | Number | - | 收藏总数 | 整数 | - |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -1037,13 +1181,21 @@ data: { action: 'getFavorites' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.plantCount | Number | - | 植物数量 | 整数 | 5 |
+| data.diaryCount | Number | - | 日记数量 | 整数 | 12 |
+| data.favoriteCount | Number | - | 收藏数量 | 整数 | 3 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -1060,15 +1212,21 @@ data: { action: 'getStats' }
 
 ### login
 
-**功能**：用户登录/注册（自动获取微信openid）
+**功能**：用户登录/注册（自动获取微信open_id）
 
 **接口地址**：`/cloud/user/login`
 
 **请求方法**：`POST`
 
-> 实际调用：`wx.cloud.callFunction({ name: 'user', data: { action: 'login' })`
+> 实际调用：`wx.cloud.callFunction({ name: 'user', data: { action: 'login', ...params })`
 
-**请求参数**：无
+**请求参数**：
+
+| 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
+|--------|------|----------|--------|----------|----------|------------|------|
+| userInfo | Object | 否 | - | - | Object | {nickName:'花友',avatarUrl:'...'} | 可选 |
+| userInfo.nickName | String | 否 | - | - | String | 花友 | 可选，默认'花友' |
+| userInfo.avatarUrl | String | 否 | - | - | URL | - | 可选 |
 
 **响应说明**：
 
@@ -1086,13 +1244,19 @@ data: { action: 'getStats' }
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data | Object | - | 用户对象 | - | 含所有用户字段 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
@@ -1101,7 +1265,7 @@ data: { action: 'getStats' }
 ```javascript
 const res = await wx.cloud.callFunction({
 name: 'user',
-data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...' } }
+data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: '' } }
 })
 ```
 
@@ -1109,7 +1273,7 @@ data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...
 
 ### toggleFavorite
 
-**功能**：toggleFavorite
+**功能**：切换花卉收藏状态（收藏/取消收藏）
 
 **接口地址**：`/cloud/user/toggleFavorite`
 
@@ -1121,7 +1285,7 @@ data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| flowerId | String | 是 | - | - | - | - | - |
+| flowerId | String | 是 | - | - | String | flower_001 | 必填 |
 
 **响应说明**：
 
@@ -1139,21 +1303,36 @@ data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...
 - `message`：提示信息，成功时为 `"success"`，失败时为错误描述
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
+**响应参数（`data` 结构）**：
+
+| 参数名称 | 参数类型 | 参数格式 | 参数说明 | 取值范围 | 示例值 |
+|----------|----------|----------|----------|----------|--------|
+| data.isFavorite | Boolean | - | 当前是否已收藏 | true/false | 是 |
+
 **正确返回示例**：
 
 ```json
 {
   "code": 0,
   "message": "success",
-  "data": null
+  "data": { ... }
 }
 ```
 
 **可能返回的错误码**：
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 2001 | 用户不存在 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 2001 | 用户不存在 |
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'user',
+data: { action: 'toggleFavorite', flowerId: 'flower_001' }
+})
+```
 
 ---
 
@@ -1171,8 +1350,8 @@ data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...
 
 | 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |
 |--------|------|----------|--------|----------|----------|------------|------|
-| nickName | String | 是 | - | - | - | - | - |
-| avatarUrl | String | 是 | - | - | - | - | - |
+| nickName | String | 否 | - | - | String | 新昵称 | 可选 |
+| avatarUrl | String | 否 | - | - | URL | - | 可选 |
 
 **响应说明**：
 
@@ -1213,19 +1392,19 @@ data: { action: 'updateInfo', nickName: '新昵称', avatarUrl: 'https://...' }
 
 ## 错误码总表
 
-| 错误码 | 错误信息 | 含义 |
-|--------|----------|------|
-| 1001 | 参数错误 | |
-| 1002 | 缺少必填参数 | |
-| 1003 | 参数格式不正确 | |
-| 1004 | ID格式不正确 | |
-| 2001 | 用户不存在 | |
-| 2002 | 用户未登录 | |
-| 3001 | 数据不存在 | |
-| 3002 | 数据已存在 | |
-| 3003 | 未找到符合条件的数据 | |
-| 4001 | 数据库访问出错 | |
-| 4002 | 数据写入失败 | |
-| 5001 | 未知操作 | |
-| 5002 | 未知错误 | |
+| 错误码 | 错误信息 |
+|--------|----------|
+| 1001 | 参数错误 |
+| 1002 | 缺少必填参数 |
+| 1003 | 参数格式不正确 |
+| 1004 | ID格式不正确 |
+| 2001 | 用户不存在 |
+| 2002 | 用户未登录 |
+| 3001 | 数据不存在 |
+| 3002 | 数据已存在 |
+| 3003 | 未找到符合条件的数据 |
+| 4001 | 数据库访问出错 |
+| 4002 | 数据写入失败 |
+| 5001 | 未知操作 |
+| 5002 | 未知错误 |
 
