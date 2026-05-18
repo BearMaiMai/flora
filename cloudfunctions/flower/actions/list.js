@@ -1,4 +1,11 @@
-// cloudfunctions/flower/actions/list.js
+/**
+ * 获取花卉列表（支持分页和分类筛选）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'flower',
+ *   data: { action: 'list', page: 1, pageSize: 20, category: 2 }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   const { page = 1, pageSize = 20, category } = event
   const skip = (page - 1) * pageSize

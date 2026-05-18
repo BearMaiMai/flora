@@ -1,4 +1,11 @@
-// cloudfunctions/common/actions/getHomeData.js
+/**
+ * 获取首页聚合数据（每日贴士 + 推荐花草）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'common',
+ *   data: { action: 'getHomeData' }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   // 获取首页聚合数据
   const [tip, recommend] = await Promise.all([

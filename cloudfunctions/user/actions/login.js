@@ -1,4 +1,11 @@
-// cloudfunctions/user/actions/login.js
+/**
+ * 用户登录/注册（自动获取微信openid）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'user',
+ *   data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: 'https://...' } }
+ * })
+ */
 module.exports = async (event, context, { db, cloud }) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID

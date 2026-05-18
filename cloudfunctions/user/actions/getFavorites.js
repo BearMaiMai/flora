@@ -1,4 +1,11 @@
-// cloudfunctions/user/actions/getFavorites.js
+/**
+ * 获取用户收藏列表
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'user',
+ *   data: { action: 'getFavorites' }
+ * })
+ */
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
   const { data: users } = await db.collection('users').where({ _openid: openid }).get()

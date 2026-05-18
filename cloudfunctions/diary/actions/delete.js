@@ -1,5 +1,13 @@
 const errorCodes = require('../../utils/error-codes')
 
+/**
+ * 删除日记
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'diary',
+ *   data: { action: 'delete', id: 'diary-abc123' }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   const { id } = event
   if (!id) return errorCodes.MISSING_PARAM

@@ -1,15 +1,16 @@
 /**
- * API 文档自动生成脚本 V2
- * 从 service 文件的 JSDoc 注释提取信息，生成专业 REST 风格的接口文档
+ * API 文档自动生成脚本 V3
+ * 从后端云函数代码提取信息，生成专业 REST 风格的接口文档
  *
- * JSDoc 扩展格式（用 | 分隔附加信息）：
- *   @param {Type} [name=default] - 描述 | 取值范围 | 格式 | 示例值 | 备注
- *   @returns {Type} path - 描述 | 必填 | 示例值
+ * 扫描源：cloudfunctions/{function}/actions/{action}.js
+ * 提取方式：
+ *   - 文件顶部 JSDoc（描述、@example）
+ *   - event 解构参数（const { ... } = event）
+ *   - errorCodes 引用
  */
 const fs = require('fs')
 const path = require('path')
 
-const SERVICES_DIR = path.join(__dirname, '..', 'miniprogram', 'services')
 const CLOUDFUNCTIONS_DIR = path.join(__dirname, '..', 'cloudfunctions')
 const DOCS_DIR = path.join(__dirname, '..', 'docs')
 const ERROR_CODES_FILE = path.join(CLOUDFUNCTIONS_DIR, 'utils', 'error-codes.js')
@@ -17,7 +18,8 @@ const ERROR_CODES_FILE = path.join(CLOUDFUNCTIONS_DIR, 'utils', 'error-codes.js'
 // ==================== 文档版本与变更记录 ====================
 const DOC_VERSION = '1.0.0'
 const DOC_CHANGE_LOG = [
-  { date: '2026-05-14', desc: '创建接口文档 V2，支持完整 REST 风格文档（请求/响应参数全字段、错误码、安全说明、版本管理、请求头）', operator: 'AI Assistant' }
+  { date: '2026-05-14', desc: '创建接口文档 V2，支持完整 REST 风格文档', operator: 'AI Assistant' },
+  { date: '2026-05-18', desc: '脚本改为扫描后端云函数，前端代码零改动', operator: 'AI Assistant' }
 ]
 
 // ==================== HTTP 方法推断 ====================
@@ -34,7 +36,7 @@ function inferHttpMethod(actionName) {
 
 // ==================== JSDoc 解析 ====================
 
-/** 清洗中文前缀（示例：/取值：/格式：/备注：等） */
+/** 清洗中文前缀 */
 function cleanPrefix(val) {
   return val.replace(/^(示例|取值|格式|备注)[:：]\s*/, '').trim()
 }
@@ -67,33 +69,14 @@ function loadErrorCodes() {
   return codes
 }
 
-/** 从 service 文件中提取所有带 JSDoc 的方法 */
-function extractMethods(content) {
-  const methods = []
-  const jsdocRegex = /\/\*\*([\s\S]*?)\*\//g
-  let match
-
-  while ((match = jsdocRegex.exec(content)) !== null) {
-    const jsdocText = match[1]
-    const endIndex = match.index + match[0].length
-    const afterText = content.slice(endIndex)
-
-    const cleanAfter = afterText.replace(/^\s*\/\/.*$/gm, '').trim()
-    const methodMatch = cleanAfter.match(/^(\w+)\s*\(([^)]*)\)\s*\{/)
-
-    if (methodMatch) {
-      methods.push({
-        jsdoc: jsdocText,
-        name: methodMatch[1],
-        paramsSig: methodMatch[2].trim()
-      })
-    }
-  }
-
-  return methods
+/** 从文件顶部提取 JSDoc */
+function extractTopJSDoc(content) {
+  const match = content.match(/^\s*\/\*\*([\s\S]*?)\*\//)
+  if (match) return match[1]
+  return ''
 }
 
-/** 解析 JSDoc 文本（支持 | 分隔的附加信息） */
+/** 解析 JSDoc 文本 */
 function parseJSDoc(jsdocText) {
   const result = {
     description: '',
@@ -202,38 +185,131 @@ function parseJSDoc(jsdocText) {
   return result
 }
 
-/** 从方法体中提取 callFunction 调用信息 */
-function extractCallFunction(content, methodName) {
-  const methodRegex = new RegExp(`${methodName}\\s*\\([^)]*\\)\\s*\\{`)
-  const match = content.match(methodRegex)
-  if (!match) return null
+// ==================== 云函数参数自动提取 ====================
 
-  const startBraceIndex = match.index + match[0].length - 1
-  let braceCount = 0
-  let endIndex = startBraceIndex
+/** 从值推断类型 */
+function inferTypeFromValue(val) {
+  val = val.trim()
+  if (val === '' || /^['"].*['"]$/.test(val)) return 'String'
+  if (/^\d+$/.test(val)) return 'Number'
+  if (val === 'true' || val === 'false') return 'Boolean'
+  if (val.startsWith('[') && val.endsWith(']')) return 'Array'
+  if (val.startsWith('{') && val.endsWith('}')) return 'Object'
+  return 'String'
+}
 
-  for (let i = startBraceIndex; i < content.length; i++) {
-    if (content[i] === '{') {
-      braceCount++
-    } else if (content[i] === '}') {
-      braceCount--
-      if (braceCount === 0) {
-        endIndex = i
-        break
-      }
+/** 从 event 解构中提取参数 */
+function extractEventParams(content) {
+  const params = []
+
+  // 匹配 const { page = 1, pageSize = 20, category } = event
+  const destructMatch = content.match(/const\s*\{\s*([^}]+)\}\s*=\s*event/)
+  if (!destructMatch) return params
+
+  const raw = destructMatch[1]
+  // 按逗号分割，但要处理对象字面量中的逗号
+  const items = splitDestructItems(raw)
+
+  for (const item of items) {
+    const trimmed = item.trim()
+    if (!trimmed || trimmed.startsWith('//')) continue
+
+    // 处理展开运算符: ...updateData
+    if (trimmed.startsWith('...')) {
+      const name = trimmed.slice(3).trim()
+      params.push({
+        type: 'Object',
+        isRequired: false,
+        name,
+        default: '',
+        description: '扩展参数字段',
+        valueRange: '',
+        format: '',
+        example: '',
+        note: ''
+      })
+      continue
+    }
+
+    // 处理默认值: name = value
+    const eqIdx = trimmed.indexOf('=')
+    if (eqIdx > 0) {
+      const name = trimmed.slice(0, eqIdx).trim()
+      const defaultVal = trimmed.slice(eqIdx + 1).trim()
+      params.push({
+        type: inferTypeFromValue(defaultVal),
+        isRequired: false,
+        name,
+        default: defaultVal,
+        description: '',
+        valueRange: '',
+        format: '',
+        example: '',
+        note: ''
+      })
+    } else {
+      // 无默认值: 必填
+      params.push({
+        type: 'String',
+        isRequired: true,
+        name: trimmed,
+        default: '',
+        description: '',
+        valueRange: '',
+        format: '',
+        example: '',
+        note: ''
+      })
     }
   }
 
-  const methodBody = content.slice(startBraceIndex, endIndex + 1)
-  const callMatch = methodBody.match(/callFunction\s*\(\s*['"]([^'"]+)['"]\s*,\s*\{\s*action:\s*['"]([^'"]+)['"]/)
+  return params
+}
 
-  if (callMatch) {
-    return {
-      cloudFunction: callMatch[1],
-      action: callMatch[2]
+/** 安全分割解构项（处理嵌套对象） */
+function splitDestructItems(raw) {
+  const items = []
+  let depth = 0
+  let current = ''
+
+  for (const ch of raw) {
+    if (ch === '{' || ch === '[') depth++
+    else if (ch === '}' || ch === ']') depth--
+
+    if (ch === ',' && depth === 0) {
+      items.push(current)
+      current = ''
+    } else {
+      current += ch
     }
   }
-  return null
+  if (current.trim()) items.push(current)
+  return items
+}
+
+/** 扫描所有云函数 action 文件 */
+function scanCloudFunctions(dir) {
+  const actionFiles = []
+  const entries = fs.readdirSync(dir, { withFileTypes: true })
+
+  for (const entry of entries) {
+    if (!entry.isDirectory() || entry.name === 'node_modules') continue
+
+    const actionsDir = path.join(dir, entry.name, 'actions')
+    if (!fs.existsSync(actionsDir)) continue
+
+    const files = fs.readdirSync(actionsDir).filter(f => f.endsWith('.js'))
+    files.forEach(f => {
+      actionFiles.push({
+        cloudFunction: entry.name,
+        action: f.replace('.js', ''),
+        filePath: path.join(actionsDir, f),
+        relativePath: `cloudfunctions/${entry.name}/actions/${f}`
+      })
+    })
+  }
+
+  return actionFiles
 }
 
 /** 从 action 文件中提取错误码 */
@@ -367,17 +443,14 @@ function generateMarkdown(docs, errorCodesMap) {
       const apiPath = buildApiPath(method.cloudFunction, method.action)
 
       md += `### ${method.name}\n\n`
-      md += `**功能**：${method.description}\n\n`
+      md += `**功能**：${method.description || '（暂无描述）'}\n\n`
       md += `**接口地址**：\`${apiPath}\`\n\n`
       md += `**请求方法**：\`${httpMethod}\`\n\n`
       md += `> 实际调用：\`wx.cloud.callFunction({ name: '${method.cloudFunction}', data: { action: '${method.action}'${method.params.length > 0 ? ', ...params' : ''} })\`\n\n`
 
       // 请求参数表格
-      const leafParams = method.params.filter(p => p.name.includes('.'))
-      const parentNames = new Set(leafParams.map(p => p.name.split('.')[0]))
       const displayParams = method.params.filter(p => {
-        if (p.type === 'Object' && parentNames.has(p.name)) return false
-        return true
+        return p.name && p.name !== 'action'
       })
 
       if (displayParams.length > 0) {
@@ -506,50 +579,64 @@ function generateJSON(docs, errorCodesMap) {
 // ==================== 主函数 ====================
 
 function main() {
-  console.log('📝 正在生成 API 文档 V2...\n')
+  console.log('📝 正在生成 API 文档 V3（后端扫描模式）...\n')
 
   const errorCodesMap = loadErrorCodes()
   console.log(`✅ 加载 ${Object.keys(errorCodesMap).length} 个错误码\n`)
 
-  const serviceFiles = fs.readdirSync(SERVICES_DIR).filter(f => f.endsWith('.js'))
-  const docs = []
+  const actionFiles = scanCloudFunctions(CLOUDFUNCTIONS_DIR)
+  console.log(`📁 扫描到 ${actionFiles.length} 个云函数 action 文件\n`)
 
-  serviceFiles.forEach(file => {
-    const filePath = path.join(SERVICES_DIR, file)
+  // 按 cloudFunction 分组
+  const serviceMap = {}
+
+  actionFiles.forEach(({ cloudFunction, action, filePath, relativePath }) => {
     const content = fs.readFileSync(filePath, 'utf8')
-    const methods = extractMethods(content)
-    const serviceName = file.replace('.js', '') + 'Service'
 
-    console.log(`📄 解析 ${file}，找到 ${methods.length} 个方法`)
+    // 提取顶部 JSDoc
+    const jsdocText = extractTopJSDoc(content)
+    const jsdoc = parseJSDoc(jsdocText)
 
-    const parsedMethods = methods.map(m => {
-      const jsdoc = parseJSDoc(m.jsdoc)
-      const callInfo = extractCallFunction(content, m.name)
+    // 自动提取 event 参数
+    const autoParams = extractEventParams(content)
 
-      let errors = []
-      if (callInfo) {
-        errors = extractActionErrors(callInfo.cloudFunction, callInfo.action, errorCodesMap)
+    // 合并参数：JSDoc 中的参数优先，自动提取的参数补充
+    const mergedParams = jsdoc.params.length > 0
+      ? jsdoc.params
+      : autoParams
+
+    // 过滤掉 action 参数（这是内部调用标记，不是前端传的）
+    const filteredParams = mergedParams.filter(p => p.name !== 'action')
+
+    // 提取错误码
+    const errors = extractActionErrors(cloudFunction, action, errorCodesMap)
+
+    // 构建 service 分组
+    const serviceName = cloudFunction + 'Service'
+    if (!serviceMap[serviceName]) {
+      serviceMap[serviceName] = {
+        serviceName,
+        filePath: `cloudfunctions/${cloudFunction}/actions/*.js`,
+        methods: []
       }
+    }
 
-      return {
-        name: m.name,
-        description: jsdoc.description,
-        httpMethod: jsdoc.httpMethod,
-        params: jsdoc.params,
-        returns: jsdoc.returns,
-        example: jsdoc.example,
-        cloudFunction: callInfo ? callInfo.cloudFunction : '',
-        action: callInfo ? callInfo.action : '',
-        errors
-      }
+    serviceMap[serviceName].methods.push({
+      name: action,
+      description: jsdoc.description || action,
+      httpMethod: jsdoc.httpMethod,
+      params: filteredParams,
+      returns: jsdoc.returns,
+      example: jsdoc.example,
+      cloudFunction,
+      action,
+      errors
     })
 
-    docs.push({
-      serviceName,
-      filePath: `miniprogram/services/${file}`,
-      methods: parsedMethods
-    })
+    console.log(`📄 解析 ${relativePath}：${filteredParams.length} 个参数，${errors.length} 个错误码`)
   })
+
+  const docs = Object.values(serviceMap)
 
   console.log('\n📝 生成 Markdown 文档...')
   const mdContent = generateMarkdown(docs, errorCodesMap)
@@ -559,7 +646,7 @@ function main() {
   const jsonContent = generateJSON(docs, errorCodesMap)
   fs.writeFileSync(path.join(DOCS_DIR, 'API接口文档.json'), jsonContent, 'utf8')
 
-  console.log('\n✅ API 文档 V2 已生成：')
+  console.log('\n✅ API 文档 V3 已生成：')
   console.log('   📄 docs/API接口文档.md')
   console.log('   📄 docs/API接口文档.json')
 }

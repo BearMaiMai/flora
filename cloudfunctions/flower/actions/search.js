@@ -1,4 +1,11 @@
-// cloudfunctions/flower/actions/search.js
+/**
+ * 搜索花卉（按名称或别名模糊匹配）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'flower',
+ *   data: { action: 'search', keyword: '绿萝' }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   const { keyword = '' } = event
   if (!keyword.trim()) return { code: 0, data: [] }

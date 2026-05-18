@@ -1,5 +1,13 @@
 const errorCodes = require('../../utils/error-codes')
 
+/**
+ * 切换花卉收藏状态（收藏/取消收藏）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'user',
+ *   data: { action: 'toggleFavorite', flowerId: 'flower_001' }
+ * })
+ */
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
   const { flowerId } = event

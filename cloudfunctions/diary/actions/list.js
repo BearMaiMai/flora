@@ -1,4 +1,11 @@
-// cloudfunctions/diary/actions/list.js
+/**
+ * 获取日记列表（可按植物筛选）
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'diary',
+ *   data: { action: 'list', plantId: 'plant-abc123' }
+ * })
+ */
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
   const { plantId } = event
