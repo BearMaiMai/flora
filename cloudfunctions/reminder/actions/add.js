@@ -1,4 +1,4 @@
-const errorCodes = require('../../utils/error-codes')
+const errorCodes = require('../utils/error-codes')
 
 /**
  * 添加提醒

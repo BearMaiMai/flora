@@ -1,12 +1,16 @@
-const errorCodes = require('../../utils/error-codes')
+const errorCodes = require('../utils/error-codes')
 
 /**
  * 编辑日记
  * @param {String} id - 日记ID | - | String | diary-abc123 | 必填
  * @param {String} [content] - 日记内容 | - | String | 今天给绿萝浇了水 | 可选
  * @param {Array} [images] - 图片列表 | - | Array<String> | [] | 可选
+ * @returns {String} data._id - 日记ID | String | - | diary-abc123
+ * @returns {String} data.plantId - 植物ID | String | - | plant-abc123
  * @returns {String} data.content - 日记内容 | String | - | 今天给绿萝浇了水
  * @returns {Array} data.images - 图片列表 | Array<String> | - | -
+ * @returns {Object} data.createdAt - 创建时间 | Object | - | 服务端时间对象
+ * @returns {Object} data.updatedAt - 更新时间 | Object | - | 服务端时间对象
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'diary',

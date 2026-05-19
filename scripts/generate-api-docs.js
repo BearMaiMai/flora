@@ -19,7 +19,8 @@ const ERROR_CODES_FILE = path.join(CLOUDFUNCTIONS_DIR, 'utils', 'error-codes.js'
 const DOC_VERSION = '1.0.0'
 const DOC_CHANGE_LOG = [
   { date: '2026-05-14', desc: '创建接口文档 V2，支持完整 REST 风格文档', operator: 'AI Assistant' },
-  { date: '2026-05-18', desc: '脚本改为扫描后端云函数，前端代码零改动', operator: 'AI Assistant' }
+  { date: '2026-05-18', desc: '脚本改为扫描后端云函数，前端代码零改动', operator: 'AI Assistant' },
+  { date: '2026-05-19', desc: '修复 reminder complete/list 字段名 bug；修正 plant/detail·diary/update·flower/recommend·user/getInfo·user/updateInfo JSDoc 与代码对齐', operator: 'AI Assistant' }
 ]
 
 // ==================== HTTP 方法推断 ====================
@@ -177,19 +178,25 @@ function parseJSDoc(jsdocText) {
           path = rest.slice(0, firstSpace > 0 ? firstSpace : rest.length).trim()
           descPart = firstSpace > 0 ? rest.slice(firstSpace).replace(/^-\s*/, '') : ''
         }
-        // 按 | 分割 descPart: 描述 | 类型 | 示例值 | 备注
-        const parts = descPart.split('|').map(s => s.trim())
-        const description = parts[0] || ''
-        const fieldType = parts[1] || '-'
-        const example = parts[2] || '-'
-        const note = parts[3] || '-'
+        // 按 | 分割 descPart: 描述 | 类型 | 示例值 | 备注 | 格式 | 取值范围 | 是否必填
+        const extra = parseExtraFromDescription(descPart, ['fieldType', 'example', 'note', 'format', 'valueRange', 'isRequired'])
+        const description = extra.description || ''
+        const fieldType = extra.fieldType || '-'
+        const example = extra.example || '-'
+        const note = extra.note || '-'
+        const format = extra.format || '-'
+        const valueRange = extra.valueRange || '-'
+        const isRequired = extra.isRequired !== '否'  // 默认为 true（一定返回）
         result.returns.push({
           type,
           path: path.replace(/^returns\./, ''),
           description,
           fieldType,
           example,
-          note
+          note,
+          format,
+          valueRange,
+          isRequired
         })
       }
     } else if (line.startsWith('@example')) {
@@ -475,16 +482,23 @@ function generateMarkdown(docs, errorCodesMap) {
 
       if (displayParams.length > 0) {
         md += '**请求参数**：\n\n'
-        md += '| 参数名 | 类型 | 是否必填 | 默认值 | 取值范围 | 参数格式 | 入参示例值 | 备注 |\n'
-        md += '|--------|------|----------|--------|----------|----------|------------|------|\n'
+        md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+        md += '|------|------|------|------|----------|\n'
         displayParams.forEach(p => {
           const isRequiredText = p.isRequired ? '是' : '否'
-          const defaultVal = p.default || '-'
-          const valueRange = p.valueRange || '-'
-          const format = p.format || '-'
-          const example = p.example || '-'
-          const note = p.note || '-'
-          md += `| ${p.name} | ${p.type} | ${isRequiredText} | ${defaultVal} | ${valueRange} | ${format} | ${example} | ${note} |\n`
+          const description = p.description || '-'
+          const type = p.type || 'String'
+          
+          // 备注列：合并默认值、取值范围、参数格式、示例值、特殊说明
+          const noteParts = []
+          if (p.default) noteParts.push(`默认值：${p.default}`)
+          if (p.valueRange && p.valueRange !== '-') noteParts.push(`取值范围：${p.valueRange}`)
+          if (p.format && p.format !== '-') noteParts.push(`格式：${p.format}`)
+          if (p.example && p.example !== '-') noteParts.push(`示例：${p.example}`)
+          if (p.note && p.note !== '-') noteParts.push(p.note)
+          const note = noteParts.length > 0 ? noteParts.join('；') : (description !== '-' ? description : '-')
+          
+          md += `| ${p.name} | ${description} | ${type} | ${note} | ${isRequiredText} |\n`
         })
         md += '\n'
       } else {
@@ -508,14 +522,82 @@ function generateMarkdown(docs, errorCodesMap) {
       // 响应参数表格
       if (method.returns.length > 0) {
         md += '**响应参数（`data` 结构）**：\n\n'
-        md += '| 参数名称 | 参数类型 | 参数说明 | 示例值 | 备注 |\n'
-        md += '|----------|----------|----------|----------|--------|\n'
-        method.returns.forEach(r => {
-          const example = r.example || '-'
-          const note = r.note || '-'
-          md += `| ${r.path} | ${r.type} | ${r.description} | ${example} | ${note} |\n`
-        })
-        md += '\n'
+        
+        // 判断是哪种返回结构
+        const hasList = method.returns.some(r => r.path.startsWith('data.list'))
+        const hasDataField = method.returns.some(r => 
+          r.path.startsWith('data.') && 
+          r.path !== 'data.list' && 
+          !r.path.startsWith('data.list.')
+        )
+        
+        if (hasList) {
+          // Case 3: 返回列表
+          // 只有当接口有 page/size 参数时才显示分页字段
+          const hasPagination = method.params.some(p => p.name === 'page' || p.name === 'size' || p.name === 'pageSize')
+          
+          if (hasPagination) {
+            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+            md += '|------|------|------|------|----------|\n'
+            md += '| data.page | 当前页 | Number | - | 是 |\n'
+            md += '| data.size | 每页条数 | Number | - | 是 |\n'
+            md += '| data.total | 总条数 | Number | - | 是 |\n'
+            md += '| data.totalPage | 总页数 | Number | - | 是 |\n'
+            md += '| data.list | 数据列表 | Array | - | 是 |\n\n'
+          } else {
+            // 非分页列表，只显示 data.list
+            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+            md += '|------|------|------|------|----------|\n'
+            md += '| data.list | 数据列表 | Array | - | 是 |\n\n'
+          }
+          
+          // 添加 list 元素的字段说明（支持 data.list.xxx 和 data.list[].xxx 两种格式）
+          const listFields = method.returns.filter(r => 
+            r.path.startsWith('data.list.') || 
+            r.path.match(/^data\.list\[\]\./)
+          )
+          if (listFields.length > 0) {
+            md += '**list 元素结构**：\n\n'
+            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+            md += '|------|------|------|------|----------|\n'
+            listFields.forEach(r => {
+              // 支持 data.list.xxx 和 data.list[].xxx 两种格式
+              const fieldName = r.path.replace('data.list.', '').replace('data.list[].', '')
+              const description = r.description || '-'
+              const fieldType = r.fieldType || 'String'
+              
+              // 备注列：合并示例值、特殊说明、取值范围、格式
+              const noteParts = []
+              if (r.format && r.format !== '-') noteParts.push(`格式：${r.format}`)
+              if (r.valueRange && r.valueRange !== '-') noteParts.push(`取值范围：${r.valueRange}`)
+              if (r.example && r.example !== '-') noteParts.push(`示例：${r.example}`)
+              if (r.note && r.note !== '-') noteParts.push(r.note)
+              const note = noteParts.length > 0 ? noteParts.join('；') : '-'
+              
+              md += `| ${fieldName} | ${description} | ${fieldType} | ${note} | ${r.isRequired ? '是' : '否'} |\n`
+            })
+            md += '\n'
+          }
+        } else if (hasDataField) {
+          // Case 2: 返回对象
+          md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+          md += '|------|------|------|------|----------|\n'
+          method.returns.forEach(r => {
+            const fieldName = r.path.replace('data.', '')
+            const description = r.description || '-'
+            const fieldType = r.fieldType || 'String'
+            
+            // 备注列：合并示例值、特殊说明
+            const noteParts = []
+            if (r.example && r.example !== '-') noteParts.push(`示例：${r.example}`)
+            if (r.note && r.note !== '-') noteParts.push(r.note)
+            const note = noteParts.length > 0 ? noteParts.join('；') : '-'
+            
+            md += `| ${fieldName} | ${description} | ${fieldType} | ${note} | 是 |\n`
+          })
+          md += '\n'
+        }
+        // Case 1: 只返回 code + message（无 returns，不显示表格）
       }
 
       // 正确返回示例
@@ -550,6 +632,40 @@ function generateMarkdown(docs, errorCodesMap) {
         md += method.example + '\n'
         md += '```\n\n'
       }
+
+      // 接口测试（方案A：简单调用示例）
+      md += '**接口测试**：\n\n'
+      md += '```javascript\n'
+      md += '// 在小程序页面 JS 中调用\n'
+      
+      // 构建调用参数：优先用 param.example，否则用占位符
+      const paramList = method.params.filter(p => p.name && p.name !== 'action')
+      if (paramList.length > 0) {
+        const paramStrs = paramList.map(p => {
+          let val = '（填测试值）'
+          if (p.example && p.example !== '-') {
+            // 根据类型决定是否需要引号
+            if (p.type === 'Number' || p.type === 'Boolean') {
+              val = p.example
+            } else {
+              val = `'${p.example}'`
+            }
+          } else if (p.default) {
+            if (p.type === 'Number' || p.type === 'Boolean') {
+              val = p.default
+            } else {
+              val = `'${p.default}'`
+            }
+          }
+          return `    ${p.name}: ${val}`
+        })
+        md += `wx.cloud.callFunction({\n  name: '${method.cloudFunction}',\n  data: {\n    action: '${method.action}',\n${paramStrs.join(',\n')}\n  }\n}).then(res => {\n  console.log('成功：', res.result)\n}).catch(err => {\n  console.error('失败：', err)\n})\n`
+      } else {
+        md += `wx.cloud.callFunction({\n  name: '${method.cloudFunction}',\n  data: {\n    action: '${method.action}'\n  }\n}).then(res => {\n  console.log('成功：', res.result)\n}).catch(err => {\n  console.error('失败：', err)\n})\n`
+      }
+      
+      md += '```\n\n'
+      md += '> **预期返回**：参考上方「正确返回示例」\n\n'
 
       md += '---\n\n'
     })

@@ -1,6 +1,6 @@
 /**
  * 获取每日养花小贴士
- * @returns {String} data.content - 贴士内容 | String | - | - | 每日养花技巧内容
+ * @returns {String} data.content - 贴士内容 | String | 每日养花技巧 | 绿萝喜欢湿润环境，夏季可每天浇水... | 从 daily_tips 集合读取最新一条
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'common',

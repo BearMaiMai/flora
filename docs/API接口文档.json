@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-18T06:21:53.853Z",
+  "updateTime": "2026-05-19T03:49:37.199Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -11,6 +11,11 @@
     {
       "date": "2026-05-18",
       "desc": "脚本改为扫描后端云函数，前端代码零改动",
+      "operator": "AI Assistant"
+    },
+    {
+      "date": "2026-05-19",
+      "desc": "修复 reminder complete/list 字段名 bug；修正 plant/detail·diary/update·flower/recommend·user/getInfo·user/updateInfo JSDoc 与代码对齐",
       "operator": "AI Assistant"
     }
   ],
@@ -33,8 +38,11 @@
               "path": "data.content",
               "description": "贴士内容",
               "fieldType": "String",
-              "example": "-",
-              "note": "-"
+              "example": "每日养花技巧",
+              "note": "绿萝喜欢湿润环境，夏季可每天浇水...",
+              "format": "从 daily_tips 集合读取最新一条",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -54,8 +62,11 @@
               "path": "data.dailyTip",
               "description": "每日贴士内容",
               "fieldType": "String",
-              "example": "-",
-              "note": "-"
+              "example": "今日养花小贴士",
+              "note": "绿萝喜欢湿润环境...",
+              "format": "从 daily_tips 集合读取",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -63,7 +74,10 @@
               "description": "推荐花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-"
+              "note": "[{\"_id\":\"flower_001\",\"name\":\"绿萝\",...}]",
+              "format": "6条花卉，category 字段已转为中文名称",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -124,7 +138,10 @@
               "description": "新日记ID",
               "fieldType": "String",
               "example": "-",
-              "note": "diary-abc123"
+              "note": "diary-abc123",
+              "format": "成功时返回",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -152,7 +169,30 @@
               "note": "必填"
             }
           ],
-          "returns": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "删除成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "删除成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Null",
+              "path": "data",
+              "description": "无返回数据",
+              "fieldType": "Null",
+              "example": "-",
+              "note": "null",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
           "errorCodes": [
             1002
           ],
@@ -185,7 +225,10 @@
               "description": "日记ID",
               "fieldType": "String",
               "example": "-",
-              "note": "diary-abc123"
+              "note": "diary-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -193,7 +236,10 @@
               "description": "植物ID",
               "fieldType": "String",
               "example": "-",
-              "note": "plant-abc123"
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -201,7 +247,10 @@
               "description": "日记内容",
               "fieldType": "String",
               "example": "-",
-              "note": "今天给绿萝浇了水"
+              "note": "今天给绿萝浇了水",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -209,31 +258,32 @@
               "description": "图片列表",
               "fieldType": "Array<String>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
-              "type": "Array",
-              "path": "data.careActions",
-              "description": "养护操作",
-              "fieldType": "Array<String>",
-              "example": "-",
-              "note": "[\"浇水\"]"
-            },
-            {
-              "type": "String",
-              "path": "data.weather",
-              "description": "天气",
-              "fieldType": "String",
-              "example": "-",
-              "note": "晴"
-            },
-            {
-              "type": "String",
+              "type": "Object",
               "path": "data.createdAt",
               "description": "创建时间",
-              "fieldType": "String",
+              "fieldType": "Object",
               "example": "-",
-              "note": "2026-04-20T10:30:00.000Z"
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Object",
+              "path": "data.updatedAt",
+              "description": "更新时间（编辑后才有）",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -269,7 +319,10 @@
               "description": "日记对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -320,11 +373,36 @@
           "returns": [
             {
               "type": "String",
+              "path": "data._id",
+              "description": "日记ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "diary-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.plantId",
+              "description": "植物ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
               "path": "data.content",
               "description": "日记内容",
               "fieldType": "String",
               "example": "-",
-              "note": "今天给绿萝浇了水"
+              "note": "今天给绿萝浇了水",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -332,7 +410,32 @@
               "description": "图片列表",
               "fieldType": "Array<String>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Object",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Object",
+              "path": "data.updatedAt",
+              "description": "更新时间",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -374,7 +477,10 @@
               "description": "花卉ID",
               "fieldType": "String",
               "example": "-",
-              "note": "flower_001"
+              "note": "flower_001",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -382,7 +488,10 @@
               "description": "花卉名称",
               "fieldType": "String",
               "example": "-",
-              "note": "绿萝"
+              "note": "绿萝",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -390,7 +499,10 @@
               "description": "学名",
               "fieldType": "String",
               "example": "-",
-              "note": "Epipremnum aureum"
+              "note": "Epipremnum aureum",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -398,7 +510,10 @@
               "description": "别名列表",
               "fieldType": "Array<String>",
               "example": "-",
-              "note": "[\"魔鬼藤\",\"黄金葛\"]"
+              "note": "[\"魔鬼藤\",\"黄金葛\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -406,7 +521,10 @@
               "description": "科属",
               "fieldType": "String",
               "example": "-",
-              "note": "天南星科"
+              "note": "天南星科",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -414,7 +532,10 @@
               "description": "封面图",
               "fieldType": "String",
               "example": "-",
-              "note": "cloud://..."
+              "note": "cloud://...",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -422,7 +543,10 @@
               "description": "分类",
               "fieldType": "Number",
               "example": "-",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬"
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -430,7 +554,10 @@
               "description": "植物类型",
               "fieldType": "String",
               "example": "-",
-              "note": "藤本"
+              "note": "藤本",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -438,7 +565,10 @@
               "description": "养护难度",
               "fieldType": "Number",
               "example": "-",
-              "note": "1~5"
+              "note": "1~5",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -446,7 +576,10 @@
               "description": "光照需求",
               "fieldType": "String",
               "example": "-",
-              "note": "耐阴，散射光"
+              "note": "耐阴，散射光",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -454,7 +587,10 @@
               "description": "适宜温度",
               "fieldType": "String",
               "example": "-",
-              "note": "15-30°C"
+              "note": "15-30°C",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -462,7 +598,10 @@
               "description": "浇水间隔天数",
               "fieldType": "Number",
               "example": "-",
-              "note": "5"
+              "note": "5",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -470,7 +609,10 @@
               "description": "施肥间隔天数",
               "fieldType": "Number",
               "example": "-",
-              "note": "20"
+              "note": "20",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -478,7 +620,10 @@
               "description": "适宜季节",
               "fieldType": "Array<String>",
               "example": "-",
-              "note": "[\"春\",\"夏\",\"秋\"]"
+              "note": "[\"春\",\"夏\",\"秋\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Boolean",
@@ -486,7 +631,10 @@
               "description": "是否室内",
               "fieldType": "Boolean",
               "example": "-",
-              "note": "true"
+              "note": "true",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -494,7 +642,10 @@
               "description": "描述",
               "fieldType": "String",
               "example": "-",
-              "note": "绿萝属于麒麟叶属植物..."
+              "note": "绿萝属于麒麟叶属植物...",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -502,7 +653,10 @@
               "description": "花语",
               "fieldType": "String",
               "example": "-",
-              "note": "守望幸福"
+              "note": "守望幸福",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Array",
@@ -510,7 +664,10 @@
               "description": "标签",
               "fieldType": "Array<String>",
               "example": "-",
-              "note": "[\"室内\",\"耐阴\",\"净化空气\"]"
+              "note": "[\"室内\",\"耐阴\",\"净化空气\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Boolean",
@@ -518,7 +675,10 @@
               "description": "是否发布",
               "fieldType": "Boolean",
               "example": "-",
-              "note": "true"
+              "note": "true",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -526,7 +686,10 @@
               "description": "排序权重",
               "fieldType": "Number",
               "example": "-",
-              "note": "1"
+              "note": "1",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -545,27 +708,36 @@
           "returns": [
             {
               "type": "Array",
-              "path": "data",
+              "path": "data.list",
               "description": "分类数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "固定4个分类"
+              "note": "固定4个分类",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
-              "path": "data[].id",
+              "path": "data.list[].id",
               "description": "分类ID",
               "fieldType": "Number",
               "example": "1",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬"
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
-              "path": "data[].name",
+              "path": "data.list[].name",
               "description": "分类名称",
               "fieldType": "String",
-              "example": "观叶",
-              "note": "-"
+              "example": "观叶植物",
+              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -616,19 +788,25 @@
           "returns": [
             {
               "type": "Array",
-              "path": "data.list",
+              "path": "data",
               "description": "花卉对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "是"
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
-              "type": "Number",
-              "path": "data.total",
-              "description": "符合条件的总数",
-              "fieldType": "≥0",
-              "example": "整数",
-              "note": "100"
+              "type": "String",
+              "path": "data[].category",
+              "description": "分类名称",
+              "fieldType": "String",
+              "example": "观花植物",
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -636,7 +814,7 @@
         },
         {
           "name": "recommend",
-          "description": "获取推荐花卉（随机返回6条）",
+          "description": "获取推荐花卉（返回前6条，按数据库自然顺序）",
           "httpMethod": "GET",
           "apiPath": "/cloud/flower/recommend",
           "cloudFunction": "flower",
@@ -649,7 +827,10 @@
               "description": "推荐花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "6条随机花卉"
+              "note": "6条花卉，字段同 flowers 集合",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -665,14 +846,14 @@
           "params": [
             {
               "type": "String",
-              "isRequired": true,
+              "isRequired": false,
               "name": "keyword",
               "default": "",
               "description": "搜索关键词",
               "valueRange": "-",
               "format": "String",
               "example": "绿萝",
-              "note": "必填"
+              "note": "可选，为空时返回空数组"
             }
           ],
           "returns": [
@@ -682,7 +863,10 @@
               "description": "匹配的花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -765,7 +949,10 @@
               "description": "新植物ID",
               "fieldType": "String",
               "example": "-",
-              "note": "plant-abc123"
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -800,7 +987,10 @@
               "description": "植物ID",
               "fieldType": "String",
               "example": "-",
-              "note": "plant-abc123"
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -808,15 +998,32 @@
               "description": "花卉ID",
               "fieldType": "String",
               "example": "-",
-              "note": "flower_001"
+              "note": "flower_001",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
-              "path": "data.nickName",
+              "path": "data.flowerName",
+              "description": "花卉名称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "绿萝",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.nickname",
               "description": "昵称",
               "fieldType": "String",
               "example": "-",
-              "note": "小绿"
+              "note": "小绿",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -824,7 +1031,10 @@
               "description": "状态",
               "fieldType": "String",
               "example": "-",
-              "note": "healthy"
+              "note": "healthy",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -832,55 +1042,43 @@
               "description": "放置位置",
               "fieldType": "String",
               "example": "-",
-              "note": "客厅窗台"
-            },
-            {
-              "type": "Number",
-              "path": "data.waterDays",
-              "description": "浇水间隔天数",
-              "fieldType": "Number",
-              "example": "-",
-              "note": "5"
-            },
-            {
-              "type": "Number",
-              "path": "data.fertilizeDays",
-              "description": "施肥间隔天数",
-              "fieldType": "Number",
-              "example": "-",
-              "note": "20"
+              "note": "客厅窗台",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
-              "path": "data.lastWateredAt",
-              "description": "最后浇水时间",
+              "path": "data.imageUrl",
+              "description": "植物图片URL",
               "fieldType": "String",
               "example": "-",
-              "note": "2026-04-28T08:00:00.000Z"
+              "note": "cloud://xxx",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
-              "type": "String",
-              "path": "data.lastFertilizedAt",
-              "description": "最后施肥时间",
-              "fieldType": "String",
-              "example": "-",
-              "note": "2026-04-10T08:00:00.000Z"
-            },
-            {
-              "type": "String",
+              "type": "Object",
               "path": "data.createdAt",
               "description": "创建时间",
-              "fieldType": "String",
+              "fieldType": "Object",
               "example": "-",
-              "note": "2026-03-01T10:00:00.000Z"
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
-              "type": "String",
+              "type": "Object",
               "path": "data.updatedAt",
               "description": "更新时间",
-              "fieldType": "String",
+              "fieldType": "Object",
               "example": "-",
-              "note": "2026-04-28T08:00:00.000Z"
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -904,7 +1102,10 @@
               "description": "植物对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "含所有植物字段"
+              "note": "含所有植物字段",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -930,7 +1131,30 @@
               "note": "必填"
             }
           ],
-          "returns": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "删除成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "删除成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Null",
+              "path": "data",
+              "description": "无返回数据",
+              "fieldType": "Null",
+              "example": "-",
+              "note": "null",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
           "errorCodes": [
             1002
           ],
@@ -956,18 +1180,63 @@
               "note": "必填"
             },
             {
-              "type": "Object",
+              "type": "String",
               "isRequired": false,
-              "name": "...updateData",
+              "name": "nickname",
               "default": "",
-              "description": "扩展更新字段",
+              "description": "昵称",
               "valueRange": "-",
-              "format": "Object",
-              "example": "-",
-              "note": "可选，含 nickname/location/imageUrl/status"
+              "format": "String",
+              "example": "小绿",
+              "note": "可选"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "location",
+              "default": "",
+              "description": "放置位置",
+              "valueRange": "-",
+              "format": "String",
+              "example": "客厅窗台",
+              "note": "可选"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "imageUrl",
+              "default": "",
+              "description": "植物图片URL",
+              "valueRange": "-",
+              "format": "String",
+              "example": "cloud://xxx",
+              "note": "可选"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "status",
+              "default": "",
+              "description": "状态",
+              "valueRange": "-",
+              "format": "String",
+              "example": "healthy",
+              "note": "可选"
             }
           ],
-          "returns": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "更新成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "更新成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
           "errorCodes": [
             1002
           ],
@@ -1050,7 +1319,10 @@
               "description": "新提醒ID",
               "fieldType": "String",
               "example": "-",
-              "note": "reminder-abc123"
+              "note": "reminder-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1078,7 +1350,19 @@
               "note": "必填"
             }
           ],
-          "returns": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "已完成",
+              "fieldType": "String",
+              "example": "-",
+              "note": "已完成",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
           "errorCodes": [
             1002
           ],
@@ -1106,12 +1390,26 @@
           ],
           "returns": [
             {
+              "type": "String",
+              "path": "message",
+              "description": "删除成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "删除成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
               "type": "Null",
               "path": "data",
               "description": "无返回数据",
               "fieldType": "Null",
               "example": "-",
-              "note": "-"
+              "note": "null",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1135,7 +1433,10 @@
               "description": "提醒对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "含_id,plantId,type,remindAt,status"
+              "note": "含_id,plantId,type,title,nextRemindAt,isCompleted,intervalDays,isPushed,completedAt,createdAt",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -1156,7 +1457,10 @@
               "description": "提醒对象数组（仅用于说明结构）",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -1200,7 +1504,10 @@
               "description": "更新后的提醒时间",
               "fieldType": "String",
               "example": "-",
-              "note": "2026-05-03T08:00:00.000Z"
+              "note": "2026-05-03T08:00:00.000Z",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1230,7 +1537,10 @@
               "description": "收藏花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -1238,7 +1548,10 @@
               "description": "收藏总数",
               "fieldType": "≥0",
               "example": "整数",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -1254,12 +1567,15 @@
           "params": [],
           "returns": [
             {
-              "type": "String",
-              "path": "data._id",
-              "description": "用户记录ID",
-              "fieldType": "String",
+              "type": "Array",
+              "path": "data.favorites",
+              "description": "收藏花卉ID列表",
+              "fieldType": "Array<String>",
               "example": "-",
-              "note": "user-abc123"
+              "note": "[\"flower_001\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -1267,7 +1583,10 @@
               "description": "昵称",
               "fieldType": "String",
               "example": "-",
-              "note": "花卉达人"
+              "note": "花卉达人",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "String",
@@ -1275,39 +1594,32 @@
               "description": "头像URL",
               "fieldType": "String",
               "example": "-",
-              "note": "-"
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Object",
-              "path": "data.stats",
-              "description": "统计数据",
-              "fieldType": "Object",
-              "example": "-",
-              "note": "{plantCount:3,diaryCount:5,reminderCount:5}"
-            },
-            {
-              "type": "Array",
-              "path": "data.favoriteFlowerIds",
-              "description": "收藏花卉ID列表",
-              "fieldType": "Array<String>",
-              "example": "-",
-              "note": "[\"flower_001\"]"
-            },
-            {
-              "type": "String",
               "path": "data.createdAt",
               "description": "创建时间",
-              "fieldType": "String",
+              "fieldType": "Object",
               "example": "-",
-              "note": "2026-04-01T08:00:00.000Z"
+              "note": "服务端时间",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
-              "type": "String",
-              "path": "data.updatedAt",
-              "description": "更新时间",
-              "fieldType": "String",
+              "type": "Object",
+              "path": "data.lastLoginAt",
+              "description": "最后登录时间",
+              "fieldType": "Object",
               "example": "-",
-              "note": "2026-04-30T10:00:00.000Z"
+              "note": "服务端时间",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1330,7 +1642,10 @@
               "description": "植物数量",
               "fieldType": "≥0",
               "example": "整数",
-              "note": "5"
+              "note": "5",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -1338,7 +1653,10 @@
               "description": "日记数量",
               "fieldType": "≥0",
               "example": "整数",
-              "note": "12"
+              "note": "12",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             },
             {
               "type": "Number",
@@ -1346,7 +1664,10 @@
               "description": "收藏数量",
               "fieldType": "≥0",
               "example": "整数",
-              "note": "3"
+              "note": "3",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -1401,7 +1722,10 @@
               "description": "用户对象",
               "fieldType": "Object",
               "example": "-",
-              "note": "含所有用户字段"
+              "note": "含所有用户字段",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [],
@@ -1434,7 +1758,10 @@
               "description": "当前是否已收藏",
               "fieldType": "Boolean",
               "example": "true/false",
-              "note": "是"
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1473,7 +1800,19 @@
               "note": "可选"
             }
           ],
-          "returns": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "更新成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "更新成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'updateInfo', nickName: '新昵称', avatarUrl: 'https://...' }\n})"
         }

@@ -1,8 +1,8 @@
 /**
  * 获取花卉分类列表
- * @returns {Array} data - 分类数组 | Array<Object> | - | 固定4个分类
- * @returns {Number} data[].id - 分类ID | Number | 1 | 1=观叶,2=观花,3=多肉,4=果蔬
- * @returns {String} data[].name - 分类名称 | String | 观叶
+ * @returns {Array} data.list - 分类数组 | Array<Object> | - | 固定4个分类
+ * @returns {Number} data.list[].id - 分类ID | Number | 1 | 1=观叶,2=观花,3=多肉,4=果蔬
+ * @returns {String} data.list[].name - 分类名称 | String | 观叶植物 | 1=观叶植物,2=观花植物,3=多肉植物,4=果蔬
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'flower',
@@ -16,5 +16,5 @@ module.exports = async (event, context) => {
     { id: 3, name: '多肉植物' },
     { id: 4, name: '果蔬' },
   ]
-  return { code: 0, data: categories }
+  return { code: 0, data: { list: categories } }
 }

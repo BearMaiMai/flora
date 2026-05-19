@@ -1,9 +1,10 @@
-const errorCodes = require('../../utils/error-codes')
+const errorCodes = require('../utils/error-codes')
 
 /**
  * 删除提醒
  * @param {String} id - 提醒ID | - | String | reminder-abc123 | 必填
- * @returns {Null} data - 无返回数据 | Null | - | -
+ * @returns {String} message - 删除成功 | String | - | 删除成功
+ * @returns {Null} data - 无返回数据 | Null | - | null
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'reminder',

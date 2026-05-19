@@ -1,4 +1,4 @@
-const errorCodes = require('../../utils/error-codes')
+const errorCodes = require('../utils/error-codes')
 
 /**
  * 切换花卉收藏状态（收藏/取消收藏）
