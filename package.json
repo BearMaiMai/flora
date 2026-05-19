@@ -1,0 +1,11 @@
+{
+  "name": "flora-miniprogram",
+  "version": "1.0.0",
+  "description": "养花呀 - 花卉种植助手微信小程序",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.0"
+  }
+}

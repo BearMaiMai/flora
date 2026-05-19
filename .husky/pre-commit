@@ -1,0 +1,8 @@
+node scripts/generate-api-docs.js
+
+if ! git diff --quiet docs/API接口文档.md; then
+  git add docs/API接口文档.md
+fi
+if ! git diff --quiet docs/API接口文档.json; then
+  git add docs/API接口文档.json
+fi

@@ -1,9 +1,20 @@
-// cloudfunctions/reminder/actions/complete.js
+const errorCodes = require('../utils/error-codes')
+
+/**
+ * 完成提醒（标记为已完成）
+ * @param {String} id - 提醒ID | - | String | reminder-abc123 | 必填
+ * @returns {String} message - 已完成 | String | - | 已完成
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'reminder',
+ *   data: { action: 'complete', id: 'reminder-abc123' }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   const { id } = event
-  if (!id) return { code: -1, message: '缺少提醒 ID' }
+  if (!id) return errorCodes.MISSING_PARAM
   await db.collection('reminders').doc(id).update({
-    data: { status: 'completed', completedAt: db.serverDate() },
+    data: { isCompleted: true, completedAt: db.serverDate() },
   })
   return { code: 0, message: '已完成' }
 }

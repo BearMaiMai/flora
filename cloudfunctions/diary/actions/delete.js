@@ -1,7 +1,19 @@
-// cloudfunctions/diary/actions/delete.js
+const errorCodes = require('../utils/error-codes')
+
+/**
+ * 删除日记
+ * @param {String} id - 日记ID | - | String | diary-abc123 | 必填
+ * @returns {String} message - 删除成功 | String | - | 删除成功
+ * @returns {Null} data - 无返回数据 | Null | - | null
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'diary',
+ *   data: { action: 'delete', id: 'diary-abc123' }
+ * })
+ */
 module.exports = async (event, context, { db }) => {
   const { id } = event
-  if (!id) return { code: -1, message: '缺少日记 ID' }
+  if (!id) return errorCodes.MISSING_PARAM
   await db.collection('diaries').doc(id).remove()
   return { code: 0, message: '删除成功' }
 }

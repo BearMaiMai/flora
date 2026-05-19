@@ -1,4 +1,15 @@
-// cloudfunctions/user/actions/login.js
+/**
+ * 用户登录/注册（自动获取微信open_id）
+ * @param {Object} [userInfo] - 用户信息 | - | Object | {nickName:'花友',avatarUrl:'...'} | 可选
+ * @param {String} [userInfo.nickName] - 昵称 | - | String | 花友 | 可选，默认'花友'
+ * @param {String} [userInfo.avatarUrl] - 头像URL | - | URL | - | 可选
+ * @returns {Object} data - 用户对象 | Object | - | 含所有用户字段
+ * @example
+ * const res = await wx.cloud.callFunction({
+ *   name: 'user',
+ *   data: { action: 'login', userInfo: { nickName: '花友', avatarUrl: '' } }
+ * })
+ */
 module.exports = async (event, context, { db, cloud }) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID

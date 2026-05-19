@@ -34,3 +34,4 @@ npm-debug.log*
 
 # 编译缓存
 .cache/
+.workbuddy/
