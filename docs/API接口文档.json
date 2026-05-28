@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-28T06:42:40.000Z",
+  "updateTime": "2026-05-28T10:09:30.853Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -965,6 +965,17 @@
               "format": "-",
               "valueRange": "-",
               "isRequired": true
+            },
+            {
+              "type": "Boolean",
+              "path": "data.isFavorite",
+              "description": "是否已收藏",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "false",
+              "format": "未登录时返回 false",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
@@ -1089,7 +1100,7 @@
         },
         {
           "name": "recommend",
-          "description": "获取推荐花卉（返回前6条，按数据库自然顺序）",
+          "description": "获取推荐花卉（随机返回6条）",
           "httpMethod": "GET",
           "apiPath": "/cloud/flower/recommend",
           "cloudFunction": "flower",
@@ -1177,7 +1188,7 @@
       "methods": [
         {
           "name": "add",
-          "description": "添加我的植物",
+          "description": "添加我的植物（添加到花园）",
           "httpMethod": "POST",
           "apiPath": "/cloud/plant/add",
           "cloudFunction": "plant",
@@ -1189,10 +1200,10 @@
               "name": "flowerId",
               "default": "",
               "description": "花卉ID",
-              "valueRange": "-",
+              "valueRange": "flowerId",
               "format": "String",
               "example": "flower_001",
-              "note": "必填"
+              "note": "必填，对应 flowers 集合的 _id"
             },
             {
               "type": "String",
@@ -1200,7 +1211,7 @@
               "name": "flowerName",
               "default": "",
               "description": "花卉名称",
-              "valueRange": "-",
+              "valueRange": "flowerName",
               "format": "String",
               "example": "绿萝",
               "note": "必填"
@@ -1211,7 +1222,7 @@
               "name": "nickname",
               "default": "",
               "description": "昵称",
-              "valueRange": "-",
+              "valueRange": "nickname",
               "format": "String",
               "example": "小绿",
               "note": "可选，默认同 flowerName"
@@ -1222,7 +1233,7 @@
               "name": "location",
               "default": "",
               "description": "放置位置",
-              "valueRange": "-",
+              "valueRange": "location",
               "format": "String",
               "example": "客厅",
               "note": "可选"
@@ -1233,20 +1244,64 @@
               "name": "imageUrl",
               "default": "",
               "description": "封面图",
-              "valueRange": "-",
-              "format": "URL",
-              "example": "-",
-              "note": "可选"
+              "valueRange": "imageUrl",
+              "format": "String",
+              "example": "https://...",
+              "note": "可选，不传则使用 flowers 集合中的 coverImage"
+            },
+            {
+              "type": "Number",
+              "isRequired": false,
+              "name": "waterInterval",
+              "default": "",
+              "description": "浇水间隔天数（天）",
+              "valueRange": "waterInterval",
+              "format": "Number",
+              "example": "7",
+              "note": "可选，不传则使用 flowers 集合中该植物的 waterInterval 字段，无则按分类给默认值"
+            },
+            {
+              "type": "Number",
+              "isRequired": false,
+              "name": "fertilizeInterval",
+              "default": "",
+              "description": "施肥间隔天数（天）",
+              "valueRange": "fertilizeInterval",
+              "format": "Number",
+              "example": "30",
+              "note": "可选，不传则使用 flowers 集合中该植物的 fertilizeInterval 字段，无则按分类给默认值"
             }
           ],
           "returns": [
             {
               "type": "String",
               "path": "data._id",
-              "description": "新植物ID",
-              "fieldType": "String",
-              "example": "-",
+              "description": "新植物记录ID",
+              "fieldType": "_id",
+              "example": "String",
               "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.waterInterval",
+              "description": "实际使用的浇水间隔（天）",
+              "fieldType": "waterInterval",
+              "example": "Number",
+              "note": "7",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.fertilizeInterval",
+              "description": "实际使用的施肥间隔（天）",
+              "fieldType": "fertilizeInterval",
+              "example": "Number",
+              "note": "30",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -1255,7 +1310,7 @@
           "errorCodes": [
             1002
           ],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'plant',\ndata: { action: 'add', flowerId: 'flower_001', flowerName: '绿萝', nickname: '小绿', location: '客厅' }\n})"
+          "example": "// 前端调用示例\nconst res = await wx.cloud.callFunction({\nname: 'plant',\ndata: { action: 'add', flowerId: 'flower_051', flowerName: '发财树' }\n})\n// 返回 { code: 0, data: { _id: 'plant_xxx', waterInterval: 14, fertilizeInterval: 30 } }"
         },
         {
           "name": "detail",
@@ -1614,7 +1669,7 @@
               "name": "plantId",
               "default": "",
               "description": "植物ID",
-              "valueRange": "-",
+              "valueRange": "plantId",
               "format": "String",
               "example": "plant-abc123",
               "note": "必填"
@@ -1625,9 +1680,9 @@
               "name": "type",
               "default": "",
               "description": "提醒类型",
-              "valueRange": "water,fertilize",
+              "valueRange": "type",
               "format": "String",
-              "example": "water",
+              "example": "water / fertilize",
               "note": "必填"
             },
             {
@@ -1636,32 +1691,32 @@
               "name": "title",
               "default": "",
               "description": "提醒标题",
-              "valueRange": "-",
+              "valueRange": "title",
               "format": "String",
               "example": "给小绿浇水",
               "note": "必填"
             },
             {
               "type": "Number",
-              "isRequired": true,
+              "isRequired": false,
               "name": "intervalDays",
               "default": "",
               "description": "间隔天数",
-              "valueRange": "1~365",
+              "valueRange": "intervalDays",
               "format": "Number",
-              "example": "5",
-              "note": "必填"
+              "example": "7",
+              "note": "可选，不传则自动从 plants 集合读取"
             },
             {
               "type": "String",
               "isRequired": false,
               "name": "remindAt",
               "default": "",
-              "description": "提醒时间",
-              "valueRange": "-",
+              "description": "首次提醒时间",
+              "valueRange": "remindAt",
               "format": "String",
               "example": "2026-05-03T08:00:00.000Z",
-              "note": "可选，不传则自动计算"
+              "note": "可选，不传则按当前时间+间隔天数自动计算"
             }
           ],
           "returns": [
@@ -1669,9 +1724,20 @@
               "type": "String",
               "path": "data._id",
               "description": "新提醒ID",
-              "fieldType": "String",
-              "example": "-",
+              "fieldType": "_id",
+              "example": "String",
               "note": "reminder-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.intervalDays",
+              "description": "实际使用的间隔天数",
+              "fieldType": "intervalDays",
+              "example": "Number",
+              "note": "7",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -1680,11 +1746,11 @@
           "errorCodes": [
             1002
           ],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'add', plantId: 'plant-abc123', type: 'water', title: '给小绿浇水', intervalDays: 5 }\n})"
+          "example": "// 推荐调用方式：不传 intervalDays，由后端自动读取\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'add', plantId: 'plant-abc123', type: 'water', title: '给小绿浇水' }\n})\n// 返回 { code: 0, data: { _id: 'reminder-xxx', intervalDays: 7 } }"
         },
         {
           "name": "complete",
-          "description": "完成提醒（标记为已完成）",
+          "description": "完成提醒（自动计算下次提醒时间）",
           "httpMethod": "POST",
           "apiPath": "/cloud/reminder/complete",
           "cloudFunction": "reminder",
@@ -1696,20 +1762,42 @@
               "name": "id",
               "default": "",
               "description": "提醒ID",
-              "valueRange": "-",
+              "valueRange": "id",
               "format": "String",
               "example": "reminder-abc123",
               "note": "必填"
+            },
+            {
+              "type": "Number",
+              "isRequired": false,
+              "name": "newIntervalDays",
+              "default": "",
+              "description": "用户修改后的间隔天数",
+              "valueRange": "newIntervalDays",
+              "format": "Number",
+              "example": "10",
+              "note": "可选，传了会更新 plants 集合的对应字段"
             }
           ],
           "returns": [
             {
-              "type": "String",
-              "path": "message",
-              "description": "已完成",
-              "fieldType": "String",
-              "example": "-",
-              "note": "已完成",
+              "type": "Date",
+              "path": "data.nextRemindAt",
+              "description": "下次提醒时间",
+              "fieldType": "nextRemindAt",
+              "example": "String",
+              "note": "2026-06-04T10:00:00.000Z",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.intervalDays",
+              "description": "实际使用的间隔天数",
+              "fieldType": "intervalDays",
+              "example": "Number",
+              "note": "7",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -1718,7 +1806,7 @@
           "errorCodes": [
             1002
           ],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'complete', id: 'reminder-abc123' }\n})"
+          "example": "// 前端调用示例（用户不修改间隔）\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'complete', id: 'reminder-abc123' }\n})\n// 返回 { code: 0, data: { nextRemindAt: '2026-06-04T10:00:00.000Z', intervalDays: 7 } }\n// 前端调用示例（用户修改间隔为 10 天）\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'complete', id: 'reminder-abc123', newIntervalDays: 10 }\n})"
         },
         {
           "name": "delete",
@@ -1785,7 +1873,18 @@
               "description": "提醒对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "含_id,plantId,type,title,nextRemindAt,isCompleted,intervalDays,isPushed,completedAt,createdAt",
+              "note": "含_id,plantId,type,title,nextRemindAt,isCompleted,intervalDays,isPushed,completedAt,createdAt,status",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].status",
+              "description": "提醒状态",
+              "fieldType": "String",
+              "example": "normal",
+              "note": "normal=正常(绿),warning=即将到期(黄),overdue=已过期(红)",
               "format": "-",
               "valueRange": "-",
               "isRequired": true

@@ -10,6 +10,7 @@ const actions = {
   detail: require('./actions/detail'),
   search: require('./actions/search'),
   recommend: require('./actions/recommend'),
+  getCategories: require('./actions/getCategories'),
 }
 
 exports.main = async (event, context) => {

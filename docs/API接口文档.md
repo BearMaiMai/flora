@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/28 14:42:39
+> **生成时间**：2026/5/28 18:09:30
 >
 > **文档版本**：1.0.0
 >
@@ -810,6 +810,7 @@ wx.cloud.callFunction({
 | expertAnswer[].answer | 回答内容 | String | 养文竹盆景的时候要放在温暖处... | 是 |
 | isPublished | 是否发布 | Boolean | true | 是 |
 | sortOrder | 排序权重 | Number | 1 | 是 |
+| isFavorite | 是否已收藏 | Boolean | false | 是 |
 
 **正确返回示例**：
 
@@ -1016,7 +1017,7 @@ wx.cloud.callFunction({
 
 ### recommend
 
-**功能**：获取推荐花卉（返回前6条，按数据库自然顺序）
+**功能**：获取推荐花卉（随机返回6条）
 
 **接口地址**：`/cloud/flower/recommend`
 
@@ -1183,7 +1184,7 @@ wx.cloud.callFunction({
 
 ### add
 
-**功能**：添加我的植物
+**功能**：添加我的植物（添加到花园）
 
 **接口地址**：`/cloud/plant/add`
 
@@ -1195,11 +1196,13 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
-| flowerId | 花卉ID | String | 格式：String；示例：flower_001；必填 | 是 |
-| flowerName | 花卉名称 | String | 格式：String；示例：绿萝；必填 | 是 |
-| nickname | 昵称 | String | 格式：String；示例：小绿；可选，默认同 flowerName | 否 |
-| location | 放置位置 | String | 格式：String；示例：客厅；可选 | 否 |
-| imageUrl | 封面图 | String | 格式：URL；可选 | 否 |
+| flowerId | 花卉ID | String | 取值范围：flowerId；格式：String；示例：flower_001；必填，对应 flowers 集合的 _id | 是 |
+| flowerName | 花卉名称 | String | 取值范围：flowerName；格式：String；示例：绿萝；必填 | 是 |
+| nickname | 昵称 | String | 取值范围：nickname；格式：String；示例：小绿；可选，默认同 flowerName | 否 |
+| location | 放置位置 | String | 取值范围：location；格式：String；示例：客厅；可选 | 否 |
+| imageUrl | 封面图 | String | 取值范围：imageUrl；格式：String；示例：https://...；可选，不传则使用 flowers 集合中的 coverImage | 否 |
+| waterInterval | 浇水间隔天数（天） | Number | 取值范围：waterInterval；格式：Number；示例：7；可选，不传则使用 flowers 集合中该植物的 waterInterval 字段，无则按分类给默认值 | 否 |
+| fertilizeInterval | 施肥间隔天数（天） | Number | 取值范围：fertilizeInterval；格式：Number；示例：30；可选，不传则使用 flowers 集合中该植物的 fertilizeInterval 字段，无则按分类给默认值 | 否 |
 
 **响应说明**：
 
@@ -1221,7 +1224,9 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
-| _id | 新植物ID | String | plant-abc123 | 是 |
+| _id | 新植物记录ID | _id | 示例：String；plant-abc123 | 是 |
+| waterInterval | 实际使用的浇水间隔（天） | waterInterval | 示例：Number；7 | 是 |
+| fertilizeInterval | 实际使用的施肥间隔（天） | fertilizeInterval | 示例：Number；30 | 是 |
 
 **正确返回示例**：
 
@@ -1242,10 +1247,12 @@ wx.cloud.callFunction({
 **调用示例**：
 
 ```javascript
+// 前端调用示例
 const res = await wx.cloud.callFunction({
 name: 'plant',
-data: { action: 'add', flowerId: 'flower_001', flowerName: '绿萝', nickname: '小绿', location: '客厅' }
+data: { action: 'add', flowerId: 'flower_051', flowerName: '发财树' }
 })
+// 返回 { code: 0, data: { _id: 'plant_xxx', waterInterval: 14, fertilizeInterval: 30 } }
 ```
 
 **接口测试**：
@@ -1260,7 +1267,9 @@ wx.cloud.callFunction({
     flowerName: '绿萝',
     nickname: '小绿',
     location: '客厅',
-    imageUrl: （填测试值）
+    imageUrl: 'https://...',
+    waterInterval: 7,
+    fertilizeInterval: 30
   }
 }).then(res => {
   console.log('成功：', res.result)
@@ -1626,11 +1635,11 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
-| plantId | 植物ID | String | 格式：String；示例：plant-abc123；必填 | 是 |
-| type | 提醒类型 | String | 取值范围：water,fertilize；格式：String；示例：water；必填 | 是 |
-| title | 提醒标题 | String | 格式：String；示例：给小绿浇水；必填 | 是 |
-| intervalDays | 间隔天数 | Number | 取值范围：1~365；格式：Number；示例：5；必填 | 是 |
-| remindAt | 提醒时间 | String | 格式：String；示例：2026-05-03T08:00:00.000Z；可选，不传则自动计算 | 否 |
+| plantId | 植物ID | String | 取值范围：plantId；格式：String；示例：plant-abc123；必填 | 是 |
+| type | 提醒类型 | String | 取值范围：type；格式：String；示例：water / fertilize；必填 | 是 |
+| title | 提醒标题 | String | 取值范围：title；格式：String；示例：给小绿浇水；必填 | 是 |
+| intervalDays | 间隔天数 | Number | 取值范围：intervalDays；格式：Number；示例：7；可选，不传则自动从 plants 集合读取 | 否 |
+| remindAt | 首次提醒时间 | String | 取值范围：remindAt；格式：String；示例：2026-05-03T08:00:00.000Z；可选，不传则按当前时间+间隔天数自动计算 | 否 |
 
 **响应说明**：
 
@@ -1652,7 +1661,8 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
-| _id | 新提醒ID | String | reminder-abc123 | 是 |
+| _id | 新提醒ID | _id | 示例：String；reminder-abc123 | 是 |
+| intervalDays | 实际使用的间隔天数 | intervalDays | 示例：Number；7 | 是 |
 
 **正确返回示例**：
 
@@ -1673,10 +1683,12 @@ wx.cloud.callFunction({
 **调用示例**：
 
 ```javascript
+// 推荐调用方式：不传 intervalDays，由后端自动读取
 const res = await wx.cloud.callFunction({
 name: 'reminder',
-data: { action: 'add', plantId: 'plant-abc123', type: 'water', title: '给小绿浇水', intervalDays: 5 }
+data: { action: 'add', plantId: 'plant-abc123', type: 'water', title: '给小绿浇水' }
 })
+// 返回 { code: 0, data: { _id: 'reminder-xxx', intervalDays: 7 } }
 ```
 
 **接口测试**：
@@ -1688,9 +1700,9 @@ wx.cloud.callFunction({
   data: {
     action: 'add',
     plantId: 'plant-abc123',
-    type: 'water',
+    type: 'water / fertilize',
     title: '给小绿浇水',
-    intervalDays: 5,
+    intervalDays: 7,
     remindAt: '2026-05-03T08:00:00.000Z'
   }
 }).then(res => {
@@ -1706,7 +1718,7 @@ wx.cloud.callFunction({
 
 ### complete
 
-**功能**：完成提醒（标记为已完成）
+**功能**：完成提醒（自动计算下次提醒时间）
 
 **接口地址**：`/cloud/reminder/complete`
 
@@ -1718,7 +1730,8 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
-| id | 提醒ID | String | 格式：String；示例：reminder-abc123；必填 | 是 |
+| id | 提醒ID | String | 取值范围：id；格式：String；示例：reminder-abc123；必填 | 是 |
+| newIntervalDays | 用户修改后的间隔天数 | Number | 取值范围：newIntervalDays；格式：Number；示例：10；可选，传了会更新 plants 集合的对应字段 | 否 |
 
 **响应说明**：
 
@@ -1737,6 +1750,11 @@ wx.cloud.callFunction({
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
 **响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| nextRemindAt | 下次提醒时间 | nextRemindAt | 示例：String；2026-06-04T10:00:00.000Z | 是 |
+| intervalDays | 实际使用的间隔天数 | intervalDays | 示例：Number；7 | 是 |
 
 **正确返回示例**：
 
@@ -1757,9 +1775,16 @@ wx.cloud.callFunction({
 **调用示例**：
 
 ```javascript
+// 前端调用示例（用户不修改间隔）
 const res = await wx.cloud.callFunction({
 name: 'reminder',
 data: { action: 'complete', id: 'reminder-abc123' }
+})
+// 返回 { code: 0, data: { nextRemindAt: '2026-06-04T10:00:00.000Z', intervalDays: 7 } }
+// 前端调用示例（用户修改间隔为 10 天）
+const res = await wx.cloud.callFunction({
+name: 'reminder',
+data: { action: 'complete', id: 'reminder-abc123', newIntervalDays: 10 }
 })
 ```
 
@@ -1771,7 +1796,8 @@ wx.cloud.callFunction({
   name: 'reminder',
   data: {
     action: 'complete',
-    id: 'reminder-abc123'
+    id: 'reminder-abc123',
+    newIntervalDays: 10
   }
 }).then(res => {
   console.log('成功：', res.result)
@@ -1894,6 +1920,16 @@ wx.cloud.callFunction({
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
 **响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 数据列表 | Array | - | 是 |
+
+**list 元素结构**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| status | 提醒状态 | String | 示例：normal；normal=正常(绿),warning=即将到期(黄),overdue=已过期(红) | 是 |
 
 **正确返回示例**：
 

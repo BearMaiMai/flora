@@ -16,10 +16,24 @@ module.exports = async (event, context, { db }) => {
     4: '果蔬',
     5: '驱蚊植物',
   }
-  const [tip, recommend] = await Promise.all([
-    db.collection('daily_tips').orderBy('date', 'desc').limit(1).get(),
-    db.collection('flowers').limit(6).get(),
+
+  // 并行查询：所有已发布小贴士 + 所有花卉
+  const [tipResult, recommendResult] = await Promise.all([
+    db.collection('daily_tips').where({ isPublished: true }).get(),
+    db.collection('flowers').get(),
   ])
+
+  // 内存随机取1条小贴士
+  const tipData = tipResult.data
+  const tip = { data: tipData.length > 0 ? [tipData[Math.floor(Math.random() * tipData.length)]] : [] }
+
+  // 内存随机取6条花卉（Fisher-Yates 洗牌后取前6条）
+  const allFlowers = recommendResult.data.slice()
+  for (let i = allFlowers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allFlowers[i], allFlowers[j]] = [allFlowers[j], allFlowers[i]]
+  }
+  const recommend = { data: allFlowers.slice(0, 6) }
 
   const recommendList = recommend.data.map(item => ({
     ...item,

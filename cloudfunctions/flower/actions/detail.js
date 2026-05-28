@@ -34,6 +34,7 @@ const errorCodes = require('../utils/error-codes')
  * @returns {String} data.expertAnswer[].answer - 回答内容 | String | - | 养文竹盆景的时候要放在温暖处...
  * @returns {Boolean} data.isPublished - 是否发布 | Boolean | - | true
  * @returns {Number} data.sortOrder - 排序权重 | Number | - | 1
+ * @returns {Boolean} data.isFavorite - 是否已收藏 | Boolean | - | false | 未登录时返回 false
  * @example
  * const res = await wx.cloud.callFunction({
  *   name: 'flower',
@@ -53,11 +54,23 @@ module.exports = async (event, context, { db }) => {
   if (!id) return errorCodes.MISSING_PARAM
 
   const { data } = await db.collection('flowers').doc(id).get()
+  if (!data) return errorCodes.NOT_FOUND
 
   // 将 category 数字转为中文，保持与 list 接口一致
-  if (data && data.category != null) {
+  if (data.category != null) {
     data.category = CATEGORY_MAP[data.category] || data.category
   }
+
+  // 查询是否收藏（未登录时 openid 为空，直接返回 false）
+  let isFavorite = false
+  const openid = context.OPENID || context.FROM_OPENID || ''
+  if (openid) {
+    const { data: users } = await db.collection('users').where({ _openid: openid }).limit(1).get()
+    if (users && users.length > 0 && Array.isArray(users[0].favorites)) {
+      isFavorite = users[0].favorites.includes(id)
+    }
+  }
+  data.isFavorite = isFavorite
 
   return { code: 0, data }
 }
