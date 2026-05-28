@@ -14,6 +14,7 @@ module.exports = async (event, context, { db }) => {
     2: '观花植物',
     3: '多肉植物',
     4: '果蔬',
+    5: '驱蚊植物',
   }
   const [tip, recommend] = await Promise.all([
     db.collection('daily_tips').orderBy('date', 'desc').limit(1).get(),

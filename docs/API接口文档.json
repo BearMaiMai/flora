@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-19T03:49:37.199Z",
+  "updateTime": "2026-05-28T06:42:40.000Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -129,6 +129,28 @@
               "format": "Array<String>",
               "example": "[]",
               "note": "可选，默认[]"
+            },
+            {
+              "type": "Array",
+              "isRequired": false,
+              "name": "careActions",
+              "default": "",
+              "description": "养护操作",
+              "valueRange": "-",
+              "format": "Array<String>",
+              "example": "[\"浇水\",\"施肥\"]",
+              "note": "可选"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "weather",
+              "default": "",
+              "description": "天气",
+              "valueRange": "-",
+              "format": "String",
+              "example": "晴",
+              "note": "可选"
             }
           ],
           "returns": [
@@ -147,7 +169,7 @@
           "errorCodes": [
             1002
           ],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'add', plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: [] }\n})"
+          "example": "const res = await wx.cloud.callFunction({\nname: 'diary',\ndata: { action: 'add', plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: [], careActions: [\"浇水\"], weather: \"晴\" }\n})"
         },
         {
           "name": "delete",
@@ -264,6 +286,28 @@
               "isRequired": true
             },
             {
+              "type": "Array",
+              "path": "data.careActions",
+              "description": "养护操作",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"浇水\",\"施肥\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.weather",
+              "description": "天气",
+              "fieldType": "String",
+              "example": "-",
+              "note": "晴",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
               "type": "Object",
               "path": "data.createdAt",
               "description": "创建时间",
@@ -319,7 +363,95 @@
               "description": "日记对象数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-",
+              "note": "含各字段",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[]._id",
+              "description": "日记ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "diary-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].plantId",
+              "description": "植物ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].content",
+              "description": "日记内容",
+              "fieldType": "String",
+              "example": "-",
+              "note": "今天给绿萝浇了水",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Array",
+              "path": "data[].images",
+              "description": "图片列表",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"cloud://...\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Array",
+              "path": "data[].careActions",
+              "description": "养护操作",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"浇水\",\"施肥\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].weather",
+              "description": "天气",
+              "fieldType": "String",
+              "example": "-",
+              "note": "晴",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Object",
+              "path": "data[].createdAt",
+              "description": "创建时间",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "服务端时间对象",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Object",
+              "path": "data[].updatedAt",
+              "description": "更新时间",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "服务端时间对象",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -411,6 +543,28 @@
               "fieldType": "Array<String>",
               "example": "-",
               "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Array",
+              "path": "data.careActions",
+              "description": "养护操作",
+              "fieldType": "Array<String>",
+              "example": "-",
+              "note": "[\"浇水\",\"施肥\"]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.weather",
+              "description": "天气",
+              "fieldType": "String",
+              "example": "-",
+              "note": "晴",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -538,12 +692,12 @@
               "isRequired": true
             },
             {
-              "type": "Number",
+              "type": "String",
               "path": "data.category",
               "description": "分类",
-              "fieldType": "Number",
+              "fieldType": "String",
               "example": "-",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "note": "观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -593,23 +747,111 @@
               "isRequired": true
             },
             {
-              "type": "Number",
+              "type": "String",
               "path": "data.waterDays",
-              "description": "浇水间隔天数",
-              "fieldType": "Number",
+              "description": "浇水需求",
+              "fieldType": "String",
               "example": "-",
-              "note": "5",
+              "note": "见干见湿",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
             },
             {
-              "type": "Number",
+              "type": "String",
               "path": "data.fertilizeDays",
-              "description": "施肥间隔天数",
-              "fieldType": "Number",
+              "description": "施肥需求",
+              "fieldType": "String",
               "example": "-",
-              "note": "20",
+              "note": "生长期每半月施肥一次",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.soil",
+              "description": "土壤要求",
+              "fieldType": "String",
+              "example": "-",
+              "note": "疏松、肥沃的土壤",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.propagation",
+              "description": "繁殖方法",
+              "fieldType": "String",
+              "example": "-",
+              "note": "既可以水培也可以土培，繁殖多采用扦插的方法",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.pruning",
+              "description": "修剪建议",
+              "fieldType": "String",
+              "example": "-",
+              "note": "注意要及时修剪，枝条过密会影响通风",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.repotting",
+              "description": "换盆建议",
+              "fieldType": "String",
+              "example": "-",
+              "note": "春季换盆，选用透气土壤",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.pestControl",
+              "description": "病虫害防治",
+              "fieldType": "String",
+              "example": "-",
+              "note": "注意预防蚜虫和红蜘蛛",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.floweringSeason",
+              "description": "花期",
+              "fieldType": "String",
+              "example": "-",
+              "note": "春夏季",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.weeding",
+              "description": "除草建议",
+              "fieldType": "String",
+              "example": "-",
+              "note": "及时清除杂草",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.sowing",
+              "description": "播种方法",
+              "fieldType": "String",
+              "example": "-",
+              "note": "春季播种，保持土壤湿润",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -670,6 +912,39 @@
               "isRequired": true
             },
             {
+              "type": "Array",
+              "path": "data.expertAnswer",
+              "description": "专家解答",
+              "fieldType": "Array<Object>",
+              "example": "-",
+              "note": "[{question, answer}]",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.expertAnswer[].question",
+              "description": "问题标题",
+              "fieldType": "String",
+              "example": "-",
+              "note": "文竹盆景怎么养护，黄叶怎么办",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.expertAnswer[].answer",
+              "description": "回答内容",
+              "fieldType": "String",
+              "example": "-",
+              "note": "养文竹盆景的时候要放在温暖处...",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
               "type": "Boolean",
               "path": "data.isPublished",
               "description": "是否发布",
@@ -712,7 +987,7 @@
               "description": "分类数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "固定4个分类",
+              "note": "固定5个分类",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -723,7 +998,7 @@
               "description": "分类ID",
               "fieldType": "Number",
               "example": "1",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬,5=驱蚊",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -734,7 +1009,7 @@
               "description": "分类名称",
               "fieldType": "String",
               "example": "观叶植物",
-              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬",
+              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬,5=驱蚊植物",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -779,10 +1054,10 @@
               "name": "category",
               "default": "",
               "description": "分类ID",
-              "valueRange": "1~4",
+              "valueRange": "1~5",
               "format": "整数",
               "example": "2",
-              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬；不传则返回全部分类"
+              "note": "1=观叶植物,2=观花植物,3=多肉植物,4=果蔬,5=驱蚊植物；不传则返回全部分类"
             }
           ],
           "returns": [
@@ -803,7 +1078,7 @@
               "description": "分类名称",
               "fieldType": "String",
               "example": "观花植物",
-              "note": "1=观叶,2=观花,3=多肉,4=果蔬",
+              "note": "1=观叶,2=观花,3=多肉,4=果蔬,5=驱蚊",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -827,7 +1102,18 @@
               "description": "推荐花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "6条花卉，字段同 flowers 集合",
+              "note": "6条花卉，category 已转为中文",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].category",
+              "description": "分类名称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -863,7 +1149,18 @@
               "description": "匹配的花卉数组",
               "fieldType": "Array<Object>",
               "example": "-",
-              "note": "-",
+              "note": "category 已转为中文",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].category",
+              "description": "分类名称",
+              "fieldType": "String",
+              "example": "-",
+              "note": "观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -1054,6 +1351,61 @@
               "fieldType": "String",
               "example": "-",
               "note": "cloud://xxx",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.waterDays",
+              "description": "浇水间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "5",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.fertilizeDays",
+              "description": "施肥间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "20",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.lastWateredAt",
+              "description": "最后浇水时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-28T08:00:00.000Z",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.lastFertilizedAt",
+              "description": "最后施肥时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-04-10T08:00:00.000Z",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.purchaseDate",
+              "description": "购买日期",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-03-01T00:00:00.000Z",
               "format": "-",
               "valueRange": "-",
               "isRequired": true

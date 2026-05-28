@@ -530,54 +530,37 @@ function generateMarkdown(docs, errorCodesMap) {
           r.path !== 'data.list' && 
           !r.path.startsWith('data.list.')
         )
-        
+        // 新增：直接返回数组的格式 data[].fieldName
+        const hasDirectArray = method.returns.some(r => r.path.match(/^data\[\]\./))
+
         if (hasList) {
-          // Case 3: 返回列表
-          // 只有当接口有 page/size 参数时才显示分页字段
-          const hasPagination = method.params.some(p => p.name === 'page' || p.name === 'size' || p.name === 'pageSize')
-          
-          if (hasPagination) {
-            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
-            md += '|------|------|------|------|----------|\n'
-            md += '| data.page | 当前页 | Number | - | 是 |\n'
-            md += '| data.size | 每页条数 | Number | - | 是 |\n'
-            md += '| data.total | 总条数 | Number | - | 是 |\n'
-            md += '| data.totalPage | 总页数 | Number | - | 是 |\n'
-            md += '| data.list | 数据列表 | Array | - | 是 |\n\n'
-          } else {
-            // 非分页列表，只显示 data.list
-            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
-            md += '|------|------|------|------|----------|\n'
-            md += '| data.list | 数据列表 | Array | - | 是 |\n\n'
-          }
-          
-          // 添加 list 元素的字段说明（支持 data.list.xxx 和 data.list[].xxx 两种格式）
-          const listFields = method.returns.filter(r => 
-            r.path.startsWith('data.list.') || 
-            r.path.match(/^data\.list\[\]\./)
-          )
-          if (listFields.length > 0) {
-            md += '**list 元素结构**：\n\n'
-            md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
-            md += '|------|------|------|------|----------|\n'
-            listFields.forEach(r => {
-              // 支持 data.list.xxx 和 data.list[].xxx 两种格式
-              const fieldName = r.path.replace('data.list.', '').replace('data.list[].', '')
+          // ... existing code ...
+        } else if (hasDirectArray) {
+          // Case 2.5: 直接返回数组（data[].fieldName 格式）
+          md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+          md += '|------|------|------|------|----------|\n'
+          md += '| data | 数据列表 | Array | - | 是 |\n\n'
+
+          md += '**list 元素结构**：\n\n'
+          md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'
+          md += '|------|------|------|------|----------|\n'
+          method.returns.forEach(r => {
+            if (r.path.match(/^data\[\]\./)) {
+              const fieldName = r.path.replace('data[].', '')
               const description = r.description || '-'
               const fieldType = r.fieldType || 'String'
-              
-              // 备注列：合并示例值、特殊说明、取值范围、格式
+
               const noteParts = []
               if (r.format && r.format !== '-') noteParts.push(`格式：${r.format}`)
               if (r.valueRange && r.valueRange !== '-') noteParts.push(`取值范围：${r.valueRange}`)
               if (r.example && r.example !== '-') noteParts.push(`示例：${r.example}`)
               if (r.note && r.note !== '-') noteParts.push(r.note)
               const note = noteParts.length > 0 ? noteParts.join('；') : '-'
-              
+
               md += `| ${fieldName} | ${description} | ${fieldType} | ${note} | ${r.isRequired ? '是' : '否'} |\n`
-            })
-            md += '\n'
-          }
+            }
+          })
+          md += '\n'
         } else if (hasDataField) {
           // Case 2: 返回对象
           md += '| 字段 | 说明 | 类型 | 备注 | 是否必填 |\n'

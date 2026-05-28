@@ -9,6 +9,8 @@ const errorCodes = require('../utils/error-codes')
  * @returns {String} data.plantId - 植物ID | String | - | plant-abc123
  * @returns {String} data.content - 日记内容 | String | - | 今天给绿萝浇了水
  * @returns {Array} data.images - 图片列表 | Array<String> | - | -
+ * @returns {Array} data.careActions - 养护操作 | Array<String> | - | ["浇水","施肥"]
+ * @returns {String} data.weather - 天气 | String | - | 晴
  * @returns {Object} data.createdAt - 创建时间 | Object | - | 服务端时间对象
  * @returns {Object} data.updatedAt - 更新时间 | Object | - | 服务端时间对象
  * @example
@@ -19,7 +21,7 @@ const errorCodes = require('../utils/error-codes')
  */
 module.exports = async (event, context, { db, cloud }) => {
   const openid = cloud.getWXContext().OPENID
-  const { id, content, images } = event
+  const { id, content, images, careActions, weather } = event
   if (!id) return errorCodes.MISSING_PARAM
 
   // 校验归属
@@ -29,6 +31,8 @@ module.exports = async (event, context, { db, cloud }) => {
   const updateData = {}
   if (content !== undefined) updateData.content = content
   if (images !== undefined) updateData.images = images
+  if (careActions !== undefined) updateData.careActions = careActions
+  if (weather !== undefined) updateData.weather = weather
   updateData.updatedAt = db.serverDate()
 
   await db.collection('diaries').doc(id).update({ data: updateData })

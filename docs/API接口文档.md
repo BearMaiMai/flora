@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/19 11:49:37
+> **生成时间**：2026/5/28 14:42:39
 >
 > **文档版本**：1.0.0
 >
@@ -305,6 +305,8 @@ wx.cloud.callFunction({
 | plantId | 植物ID | String | 格式：String；示例：plant-abc123；必填 | 是 |
 | content | 日记内容 | String | 格式：String；示例：今天给绿萝浇了水；必填 | 是 |
 | images | 图片列表 | Array | 格式：Array<String>；示例：[]；可选，默认[] | 否 |
+| careActions | 养护操作 | Array | 格式：Array<String>；示例：["浇水","施肥"]；可选 | 否 |
+| weather | 天气 | String | 格式：String；示例：晴；可选 | 否 |
 
 **响应说明**：
 
@@ -349,7 +351,7 @@ wx.cloud.callFunction({
 ```javascript
 const res = await wx.cloud.callFunction({
 name: 'diary',
-data: { action: 'add', plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: [] }
+data: { action: 'add', plantId: 'plant-abc123', content: '今天给绿萝浇了水', images: [], careActions: ["浇水"], weather: "晴" }
 })
 ```
 
@@ -363,7 +365,9 @@ wx.cloud.callFunction({
     action: 'add',
     plantId: 'plant-abc123',
     content: '今天给绿萝浇了水',
-    images: '[]'
+    images: '[]',
+    careActions: '["浇水","施肥"]',
+    weather: '晴'
   }
 }).then(res => {
   console.log('成功：', res.result)
@@ -496,6 +500,8 @@ wx.cloud.callFunction({
 | plantId | 植物ID | String | plant-abc123 | 是 |
 | content | 日记内容 | String | 今天给绿萝浇了水 | 是 |
 | images | 图片列表 | Array<String> | - | 是 |
+| careActions | 养护操作 | Array<String> | ["浇水","施肥"] | 是 |
+| weather | 天气 | String | 晴 | 是 |
 | createdAt | 创建时间 | Object | 服务端时间对象 | 是 |
 | updatedAt | 更新时间（编辑后才有） | Object | 服务端时间对象 | 是 |
 
@@ -580,6 +586,23 @@ wx.cloud.callFunction({
 
 **响应参数（`data` 结构）**：
 
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 数据列表 | Array | - | 是 |
+
+**list 元素结构**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| _id | 日记ID | String | diary-abc123 | 是 |
+| plantId | 植物ID | String | plant-abc123 | 是 |
+| content | 日记内容 | String | 今天给绿萝浇了水 | 是 |
+| images | 图片列表 | Array<String> | ["cloud://..."] | 是 |
+| careActions | 养护操作 | Array<String> | ["浇水","施肥"] | 是 |
+| weather | 天气 | String | 晴 | 是 |
+| createdAt | 创建时间 | Object | 服务端时间对象 | 是 |
+| updatedAt | 更新时间 | Object | 服务端时间对象 | 是 |
+
 **正确返回示例**：
 
 ```json
@@ -662,6 +685,8 @@ wx.cloud.callFunction({
 | plantId | 植物ID | String | plant-abc123 | 是 |
 | content | 日记内容 | String | 今天给绿萝浇了水 | 是 |
 | images | 图片列表 | Array<String> | - | 是 |
+| careActions | 养护操作 | Array<String> | ["浇水","施肥"] | 是 |
+| weather | 天气 | String | 晴 | 是 |
 | createdAt | 创建时间 | Object | 服务端时间对象 | 是 |
 | updatedAt | 更新时间 | Object | 服务端时间对象 | 是 |
 
@@ -760,18 +785,29 @@ wx.cloud.callFunction({
 | alias | 别名列表 | Array<String> | ["魔鬼藤","黄金葛"] | 是 |
 | family | 科属 | String | 天南星科 | 是 |
 | coverImage | 封面图 | String | cloud://... | 是 |
-| category | 分类 | Number | 1=观叶,2=观花,3=多肉,4=果蔬 | 是 |
+| category | 分类 | String | 观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物 | 是 |
 | plantType | 植物类型 | String | 藤本 | 是 |
 | difficulty | 养护难度 | Number | 1~5 | 是 |
 | light | 光照需求 | String | 耐阴，散射光 | 是 |
 | temperature | 适宜温度 | String | 15-30°C | 是 |
-| waterDays | 浇水间隔天数 | Number | 5 | 是 |
-| fertilizeDays | 施肥间隔天数 | Number | 20 | 是 |
+| waterDays | 浇水需求 | String | 见干见湿 | 是 |
+| fertilizeDays | 施肥需求 | String | 生长期每半月施肥一次 | 是 |
+| soil | 土壤要求 | String | 疏松、肥沃的土壤 | 是 |
+| propagation | 繁殖方法 | String | 既可以水培也可以土培，繁殖多采用扦插的方法 | 是 |
+| pruning | 修剪建议 | String | 注意要及时修剪，枝条过密会影响通风 | 是 |
+| repotting | 换盆建议 | String | 春季换盆，选用透气土壤 | 是 |
+| pestControl | 病虫害防治 | String | 注意预防蚜虫和红蜘蛛 | 是 |
+| floweringSeason | 花期 | String | 春夏季 | 是 |
+| weeding | 除草建议 | String | 及时清除杂草 | 是 |
+| sowing | 播种方法 | String | 春季播种，保持土壤湿润 | 是 |
 | season | 适宜季节 | Array<String> | ["春","夏","秋"] | 是 |
 | isIndoor | 是否室内 | Boolean | true | 是 |
 | description | 描述 | String | 绿萝属于麒麟叶属植物... | 是 |
 | flowerLanguage | 花语 | String | 守望幸福 | 是 |
 | tags | 标签 | Array<String> | ["室内","耐阴","净化空气"] | 是 |
+| expertAnswer | 专家解答 | Array<Object> | [{question, answer}] | 是 |
+| expertAnswer[].question | 问题标题 | String | 文竹盆景怎么养护，黄叶怎么办 | 是 |
+| expertAnswer[].answer | 回答内容 | String | 养文竹盆景的时候要放在温暖处... | 是 |
 | isPublished | 是否发布 | Boolean | true | 是 |
 | sortOrder | 排序权重 | Number | 1 | 是 |
 
@@ -851,17 +887,6 @@ wx.cloud.callFunction({
 
 **响应参数（`data` 结构）**：
 
-| 字段 | 说明 | 类型 | 备注 | 是否必填 |
-|------|------|------|------|----------|
-| data.list | 数据列表 | Array | - | 是 |
-
-**list 元素结构**：
-
-| 字段 | 说明 | 类型 | 备注 | 是否必填 |
-|------|------|------|------|----------|
-| id | 分类ID | Number | 示例：1；1=观叶,2=观花,3=多肉,4=果蔬 | 是 |
-| name | 分类名称 | String | 示例：观叶植物；1=观叶植物,2=观花植物,3=多肉植物,4=果蔬 | 是 |
-
 **正确返回示例**：
 
 ```json
@@ -917,7 +942,7 @@ wx.cloud.callFunction({
 |------|------|------|------|----------|
 | page | 页码 | Number | 取值范围：1~100；格式：整数；示例：1；默认第1页 | 是 |
 | pageSize | 每页数量 | Number | 取值范围：1~100；格式：整数；示例：20；默认20条 | 是 |
-| category | 分类ID | Number | 取值范围：1~4；格式：整数；示例：2；1=观叶植物,2=观花植物,3=多肉植物,4=果蔬；不传则返回全部分类 | 否 |
+| category | 分类ID | Number | 取值范围：1~5；格式：整数；示例：2；1=观叶植物,2=观花植物,3=多肉植物,4=果蔬,5=驱蚊植物；不传则返回全部分类 | 否 |
 
 **响应说明**：
 
@@ -936,6 +961,16 @@ wx.cloud.callFunction({
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
 **响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 数据列表 | Array | - | 是 |
+
+**list 元素结构**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| category | 分类名称 | String | 示例：观花植物；1=观叶,2=观花,3=多肉,4=果蔬,5=驱蚊 | 是 |
 
 **正确返回示例**：
 
@@ -1009,6 +1044,16 @@ wx.cloud.callFunction({
 
 **响应参数（`data` 结构）**：
 
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 数据列表 | Array | - | 是 |
+
+**list 元素结构**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| category | 分类名称 | String | 观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物 | 是 |
+
 **正确返回示例**：
 
 ```json
@@ -1081,6 +1126,16 @@ wx.cloud.callFunction({
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
 **响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 数据列表 | Array | - | 是 |
+
+**list 元素结构**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| category | 分类名称 | String | 观叶植物,观花植物,多肉植物,果蔬植物,驱蚊植物 | 是 |
 
 **正确返回示例**：
 
@@ -1261,6 +1316,11 @@ wx.cloud.callFunction({
 | status | 状态 | String | healthy | 是 |
 | location | 放置位置 | String | 客厅窗台 | 是 |
 | imageUrl | 植物图片URL | String | cloud://xxx | 是 |
+| waterDays | 浇水间隔天数 | Number | 5 | 是 |
+| fertilizeDays | 施肥间隔天数 | Number | 20 | 是 |
+| lastWateredAt | 最后浇水时间 | String | 2026-04-28T08:00:00.000Z | 是 |
+| lastFertilizedAt | 最后施肥时间 | String | 2026-04-10T08:00:00.000Z | 是 |
+| purchaseDate | 购买日期 | String | 2026-03-01T00:00:00.000Z | 是 |
 | createdAt | 创建时间 | Object | 服务端时间对象 | 是 |
 | updatedAt | 更新时间 | Object | 服务端时间对象 | 是 |
 
@@ -2063,10 +2123,6 @@ wx.cloud.callFunction({
 - `data`：业务数据，成功时返回，失败时为 `null` 或不返回
 
 **响应参数（`data` 结构）**：
-
-| 字段 | 说明 | 类型 | 备注 | 是否必填 |
-|------|------|------|------|----------|
-| data.list | 数据列表 | Array | - | 是 |
 
 **正确返回示例**：
 
