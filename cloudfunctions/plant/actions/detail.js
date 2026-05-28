@@ -10,6 +10,11 @@ const errorCodes = require('../utils/error-codes')
  * @returns {String} data.status - 状态 | String | - | healthy
  * @returns {String} data.location - 放置位置 | String | - | 客厅窗台
  * @returns {String} data.imageUrl - 植物图片URL | String | - | cloud://xxx
+ * @returns {Number} data.waterInterval - 浇水间隔天数 | Number | - | 7
+ * @returns {Number} data.fertilizeInterval - 施肥间隔天数 | Number | - | 30
+ * @returns {String} data.lastWateredAt - 最后浇水时间 | String | - | 2026-04-28T08:00:00.000Z
+ * @returns {String} data.lastFertilizedAt - 最后施肥时间 | String | - | 2026-04-10T08:00:00.000Z
+ * @returns {String} data.purchaseDate - 购买日期 | String | - | 2026-03-01T00:00:00.000Z
  * @returns {Object} data.createdAt - 创建时间 | Object | - | 服务端时间对象
  * @returns {Object} data.updatedAt - 更新时间 | Object | - | 服务端时间对象
  * @example
