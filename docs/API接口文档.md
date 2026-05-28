@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/28 18:09:30
+> **生成时间**：2026/5/28 19:40:42
 >
 > **文档版本**：1.0.0
 >
@@ -792,6 +792,8 @@ wx.cloud.callFunction({
 | temperature | 适宜温度 | String | 15-30°C | 是 |
 | waterDays | 浇水需求 | String | 见干见湿 | 是 |
 | fertilizeDays | 施肥需求 | String | 生长期每半月施肥一次 | 是 |
+| waterInterval | 浇水间隔天数 | Number | 7 | 是 |
+| fertilizeInterval | 施肥间隔天数 | Number | 30 | 是 |
 | soil | 土壤要求 | String | 疏松、肥沃的土壤 | 是 |
 | propagation | 繁殖方法 | String | 既可以水培也可以土培，繁殖多采用扦插的方法 | 是 |
 | pruning | 修剪建议 | String | 注意要及时修剪，枝条过密会影响通风 | 是 |
@@ -1325,8 +1327,8 @@ wx.cloud.callFunction({
 | status | 状态 | String | healthy | 是 |
 | location | 放置位置 | String | 客厅窗台 | 是 |
 | imageUrl | 植物图片URL | String | cloud://xxx | 是 |
-| waterDays | 浇水间隔天数 | Number | 5 | 是 |
-| fertilizeDays | 施肥间隔天数 | Number | 20 | 是 |
+| waterInterval | 浇水间隔天数 | Number | 7 | 是 |
+| fertilizeInterval | 施肥间隔天数 | Number | 30 | 是 |
 | lastWateredAt | 最后浇水时间 | String | 2026-04-28T08:00:00.000Z | 是 |
 | lastFertilizedAt | 最后施肥时间 | String | 2026-04-10T08:00:00.000Z | 是 |
 | purchaseDate | 购买日期 | String | 2026-03-01T00:00:00.000Z | 是 |
@@ -1929,6 +1931,15 @@ wx.cloud.callFunction({
 
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
+| _id | 提醒ID | String | reminder-abc123 | 是 |
+| plantId | 植物ID | String | plant-abc123 | 是 |
+| type | 提醒类型 | String | water / fertilize | 是 |
+| title | 提醒标题 | String | 给小绿浇水 | 是 |
+| intervalDays | 间隔天数 | Number | 7 | 是 |
+| nextRemindAt | 下次提醒时间 | String | 2026-06-04T10:00:00.000Z | 是 |
+| isCompleted | 是否已完成 | Boolean | false | 是 |
+| isPushed | 是否已推送 | Boolean | false | 是 |
+| createdAt | 创建时间 | String | 2026-05-01T08:00:00.000Z | 是 |
 | status | 提醒状态 | String | 示例：normal；normal=正常(绿),warning=即将到期(黄),overdue=已过期(红) | 是 |
 
 **正确返回示例**：

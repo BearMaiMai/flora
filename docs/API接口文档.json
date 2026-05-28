@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-28T10:09:30.853Z",
+  "updateTime": "2026-05-28T11:40:42.879Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -769,6 +769,28 @@
               "isRequired": true
             },
             {
+              "type": "Number",
+              "path": "data.waterInterval",
+              "description": "浇水间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "7",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.fertilizeInterval",
+              "description": "施肥间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "30",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
               "type": "String",
               "path": "data.soil",
               "description": "土壤要求",
@@ -1412,22 +1434,22 @@
             },
             {
               "type": "Number",
-              "path": "data.waterDays",
+              "path": "data.waterInterval",
               "description": "浇水间隔天数",
               "fieldType": "Number",
               "example": "-",
-              "note": "5",
+              "note": "7",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
             },
             {
               "type": "Number",
-              "path": "data.fertilizeDays",
+              "path": "data.fertilizeInterval",
               "description": "施肥间隔天数",
               "fieldType": "Number",
               "example": "-",
-              "note": "20",
+              "note": "30",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -1868,12 +1890,100 @@
           "params": [],
           "returns": [
             {
-              "type": "Array",
-              "path": "data",
-              "description": "提醒对象数组",
-              "fieldType": "Array<Object>",
+              "type": "String",
+              "path": "data[]._id",
+              "description": "提醒ID",
+              "fieldType": "String",
               "example": "-",
-              "note": "含_id,plantId,type,title,nextRemindAt,isCompleted,intervalDays,isPushed,completedAt,createdAt,status",
+              "note": "reminder-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].plantId",
+              "description": "植物ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "plant-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].type",
+              "description": "提醒类型",
+              "fieldType": "String",
+              "example": "-",
+              "note": "water / fertilize",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].title",
+              "description": "提醒标题",
+              "fieldType": "String",
+              "example": "-",
+              "note": "给小绿浇水",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data[].intervalDays",
+              "description": "间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "7",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].nextRemindAt",
+              "description": "下次提醒时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-06-04T10:00:00.000Z",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Boolean",
+              "path": "data[].isCompleted",
+              "description": "是否已完成",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "false",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Boolean",
+              "path": "data[].isPushed",
+              "description": "是否已推送",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "false",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].createdAt",
+              "description": "创建时间",
+              "fieldType": "String",
+              "example": "-",
+              "note": "2026-05-01T08:00:00.000Z",
               "format": "-",
               "valueRange": "-",
               "isRequired": true

@@ -16,6 +16,8 @@ const errorCodes = require('../utils/error-codes')
  * @returns {String} data.temperature - 适宜温度 | String | - | 15-30°C
  * @returns {String} data.waterDays - 浇水需求 | String | - | 见干见湿
  * @returns {String} data.fertilizeDays - 施肥需求 | String | - | 生长期每半月施肥一次
+ * @returns {Number} data.waterInterval - 浇水间隔天数 | Number | - | 7
+ * @returns {Number} data.fertilizeInterval - 施肥间隔天数 | Number | - | 30
  * @returns {String} data.soil - 土壤要求 | String | - | 疏松、肥沃的土壤
  * @returns {String} data.propagation - 繁殖方法 | String | - | 既可以水培也可以土培，繁殖多采用扦插的方法
  * @returns {String} data.pruning - 修剪建议 | String | - | 注意要及时修剪，枝条过密会影响通风
