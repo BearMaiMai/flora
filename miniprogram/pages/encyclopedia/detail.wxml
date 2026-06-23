@@ -46,49 +46,60 @@
       <icon src="/images/icons/flower/a-029-arugula.svg" size="sm" />
       <text class="section-title">养护指南</text>
     </view>
-    <view class="care-grid">
+    <view class="care-grid {{careExpanded ? 'care-expanded' : ''}}">
       <view class="care-card card-water">
         <icon name="water" size="lg" bg="water" />
         <view class="care-card-text">
           <text class="care-card-label">浇水</text>
-          <text class="care-card-value">{{flower.careGuide.water}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.water}}</text>
         </view>
       </view>
       <view class="care-card card-sun">
         <icon name="sun" size="lg" bg="sun" />
         <view class="care-card-text">
           <text class="care-card-label">光照</text>
-          <text class="care-card-value">{{flower.careGuide.light}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.light}}</text>
         </view>
       </view>
       <view class="care-card card-soil">
         <icon name="soil" size="lg" bg="soil" />
         <view class="care-card-text">
           <text class="care-card-label">土壤</text>
-          <text class="care-card-value">{{flower.careGuide.soil}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.soil}}</text>
         </view>
       </view>
       <view class="care-card card-temp">
         <icon name="temp" size="lg" bg="temp" />
         <view class="care-card-text">
           <text class="care-card-label">温度</text>
-          <text class="care-card-value">{{flower.careGuide.temperature}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.temperature}}</text>
         </view>
       </view>
       <view class="care-card card-fertilizer">
         <icon name="fertilizer" size="lg" bg="fertilizer" />
         <view class="care-card-text">
           <text class="care-card-label">施肥</text>
-          <text class="care-card-value">{{flower.careGuide.fertilizer}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.fertilizer}}</text>
         </view>
       </view>
       <view class="care-card card-humidity">
         <icon name="humidity" size="lg" bg="humidity" />
         <view class="care-card-text">
           <text class="care-card-label">湿度</text>
-          <text class="care-card-value">{{flower.careGuide.humidity}}</text>
+          <text class="care-card-value {{careExpanded ? '' : 'text-clamp-1'}}">{{flower.careGuide.humidity}}</text>
         </view>
       </view>
+    </view>
+    <view class="care-expand-btn" bindtap="toggleCareExpand" hover-class="hover-btn" hover-stay-time="100">
+      <text>{{careExpanded ? '收起' : '展开详情'}}</text>
+      <icon name="{{careExpanded ? 'chevronUp' : 'chevronDown'}}" size="xs" tint="primary" />
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="tags-section" wx:if="{{flower.tags.length}}">
+    <view class="tags-row">
+      <text class="flower-tag" wx:for="{{flower.tags}}" wx:key="*this">{{item}}</text>
     </view>
   </view>
 
@@ -103,9 +114,20 @@
     </view>
   </view>
 
+  <!-- 专家问答 -->
+  <view class="expert-section anim-fade-in-up anim-delay-4" wx:if="{{flower.expertAnswer.length}}">
+    <text class="section-title">🧑‍🌾 专家问答</text>
+    <view class="expert-list">
+      <view class="expert-item" wx:for="{{flower.expertAnswer}}" wx:key="*this">
+        <view class="expert-q-icon">Q</view>
+        <text class="expert-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 底部操作栏 -->
   <view class="action-bar safe-bottom">
-    <view class="action-fav {{isFavorite ? 'fav-active' : ''}}" bindtap="onToggleFavorite">
+    <view class="action-fav {{isFavorite ? 'fav-active fav-heartbeat' : ''}}" bindtap="onToggleFavorite">
       <icon name="{{isFavorite ? 'heart' : 'heartEmpty'}}" size="md" />
     </view>
     <view class="action-add-btn" bindtap="onAddToGarden">

@@ -53,6 +53,8 @@
             wx:key="title"
             style="background: {{item.gradient || item.bgColor}};"
             hover-class="hover-card" hover-stay-time="100"
+            bindtap="goToGuideCategory"
+            data-category="{{item.category}}"
           >
             <view class="season-card-icon-wrap">
               <icon emoji="{{item.icon}}" size="lg" />
@@ -86,7 +88,7 @@
             data-id="{{item._id}}"
           >
             <view class="recommend-card-thumb" style="background-color: {{item.coverImage ? '' : item.thumbBg || 'var(--bg-green-light)'}};">
-              <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="recommend-card-img" />
+              <image wx:if="{{item.coverImage}}" src="{{item.coverImage}}" mode="aspectFill" class="recommend-card-img" lazy-load />
               <icon wx:else src="/images/icons/flower/a-029-arugula.svg" size="xl" />
             </view>
             <view class="recommend-card-body">
@@ -109,17 +111,8 @@
           </view>
         </view>
 
-        <!-- 空状态 - 花卉装饰 -->
-        <view class="empty-state" wx:else>
-          <view class="empty-flower-group">
-            <icon src="/images/icons/flower/a-023-cherryblossom.svg" size="xl" />
-          </view>
-          <text class="empty-title">暂无推荐</text>
-          <text class="empty-text">快去探索花卉百科吧</text>
-          <view class="empty-action">
-            <view class="btn-primary btn-sm" bindtap="goToEncyclopedia">去看看</view>
-          </view>
-        </view>
+        <!-- 空状态 -->
+        <empty-state wx:else iconName="daisy" title="暂无推荐" desc="快去探索花卉百科吧" btnText="去看看" bind:action="goToEncyclopedia" />
       </view>
 
     </view>

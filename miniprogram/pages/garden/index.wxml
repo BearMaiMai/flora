@@ -77,11 +77,7 @@
       </view>
     </view>
 
-    <view class="empty-state" wx:else>
-      <icon name="tree" size="xl" />
-      <text class="empty-text">还没有种花哦</text>
-      <view class="btn-primary" bindtap="goToAddPlant">去花卉百科添加</view>
-    </view>
+    <empty-state wx:else iconName="tree" desc="还没有种花哦" btnText="去花卉百科添加" bind:action="goToAddPlant" />
   </view>
     </view>
   </scroll-view>

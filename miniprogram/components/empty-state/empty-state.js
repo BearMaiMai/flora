@@ -2,8 +2,11 @@
 Component({
   properties: {
     icon: { type: String, value: '📭' },
-    text: { type: String, value: '暂无数据' },
+    title: { type: String, value: '' },
+    desc: { type: String, value: '暂无数据' },
     btnText: { type: String, value: '' },
+    iconColor: { type: String, value: '' },
+    iconName: { type: String, value: '' },
   },
   methods: {
     onBtnTap() {

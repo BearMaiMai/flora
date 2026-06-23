@@ -207,7 +207,24 @@
   color: var(--text-hint);
 }
 
+.reminder-next-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex-wrap: wrap;
+}
+
 .reminder-next-time {
+  font-size: var(--font-xs);
+  color: var(--text-hint);
+}
+
+.reminder-next-time.text-danger {
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.reminder-location {
   font-size: var(--font-xs);
   color: var(--text-hint);
 }
@@ -237,26 +254,173 @@
   transform: scale(0.9);
 }
 
-/* 空状态 */
-.empty-state {
+/* ==================== 浮动添加按钮 ==================== */
+.fab-add {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(48rpx + env(safe-area-inset-bottom));
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 200rpx 0;
+  box-shadow: 0 12rpx 28rpx rgba(76, 175, 80, 0.4);
+  z-index: 50;
 }
 
-.empty-icon {
-  font-size: 80rpx;
+/* ==================== 底部弹层 ==================== */
+.sheet-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  animation: sheetFadeIn 0.2s ease both;
+}
+
+@keyframes sheetFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.sheet-panel {
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 16rpx 32rpx calc(32rpx + env(safe-area-inset-bottom));
+  animation: sheetSlideUp 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.sheet-handle {
+  width: 64rpx;
+  height: 8rpx;
+  background: var(--border-color);
+  border-radius: 4rpx;
+  margin: 0 auto 16rpx;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 0 24rpx;
+  border-bottom: 1rpx solid var(--border-color);
   margin-bottom: 24rpx;
 }
 
-.empty-text {
+.sheet-title {
   font-size: var(--font-lg);
-  color: var(--text-secondary);
-  margin-bottom: 8rpx;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
-.empty-subtext {
+.sheet-close {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-row {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  display: block;
   font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+}
+
+.form-input,
+.form-input-like {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg-grey);
+  border-radius: var(--border-radius-md);
+  padding: 0 24rpx;
+  font-size: var(--font-md);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.placeholder {
   color: var(--text-hint);
 }
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+}
+
+.type-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 8rpx;
+  background: var(--bg-grey);
+  border-radius: var(--border-radius-md);
+  border: 2rpx solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.type-chip.active {
+  background: var(--bg-green-light);
+  border-color: var(--color-primary);
+}
+
+.type-chip-icon {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+
+.type-chip-label {
+  font-size: var(--font-xs);
+  color: var(--text-primary);
+}
+
+.sheet-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 32rpx;
+}
+
+.sheet-submit {
+  flex: 1;
+}
+
+.btn-danger-outline {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--color-danger);
+  border: 2rpx solid var(--color-danger);
+  border-radius: var(--border-radius-md);
+  padding: 0 32rpx;
+  height: 88rpx;
+  font-size: var(--font-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-danger-outline::after {
+  border: none;
+}
+
+

@@ -1,70 +1,109 @@
 // pages/garden/index.js - 我的花园
+const plantService = require('../../services/plant')
+const reminderService = require('../../services/reminder')
+const { REMINDER_TYPE_ICON, REMINDER_TYPE_LABEL } = require('../../constants/reminder')
+const { toDate, formatRelativeDays, isToday } = require('../../utils/util')
+
 Page({
   data: {
-    loading: false,
-    plantList: [
-      {
-        _id: 'p1',
-        flowerName: '绿萝',
-        nickname: '小绿',
-        location: '客厅窗台',
-        days: 45,
-        status: 'healthy',
-        lastWatered: '2天前',
-      },
-      {
-        _id: 'p2',
-        flowerName: '多肉（桃蛋）',
-        nickname: '小桃',
-        location: '阳台',
-        days: 30,
-        status: 'healthy',
-        lastWatered: '5天前',
-      },
-      {
-        _id: 'p3',
-        flowerName: '栀子花',
-        nickname: '小栀',
-        location: '卧室',
-        days: 15,
-        status: 'needCare',
-        lastWatered: '3天前',
-      },
-    ],
-    todayReminders: [
-      { _id: 'r1', plantName: '小绿', type: '浇水', icon: '💧', time: '09:00' },
-      { _id: 'r2', plantName: '小栀', type: '施肥', icon: '🧪', time: '10:00' },
-      { _id: 'r3', plantName: '小桃', type: '晒太阳', icon: '☀️', time: '14:00' },
-    ],
+    loading: true,
+    plantList: [],
+    todayReminders: [],
   },
 
   onLoad() {
-    // 模拟数据已直接写入
+    this.loadData()
   },
 
   onShow() {
-    // 后续接入 service 后刷新
+    if (!this.data.loading) {
+      this.loadData(true)
+    }
   },
 
-  onPullDownRefresh() {
+  async onPullDownRefresh() {
+    await this.loadData(true)
     wx.stopPullDownRefresh()
   },
 
-  onCompleteReminder(e) {
+  async loadData(silent = false) {
+    if (!silent) this.setData({ loading: true })
+    try {
+      const [plantRes, reminderRes] = await Promise.all([
+        plantService.getList(),
+        reminderService.getList(),
+      ])
+      const plantList = ((plantRes && plantRes.data) || []).map(p => this.normalizePlant(p))
+      const todayReminders = ((reminderRes && reminderRes.data) || [])
+        .filter(r => !r.isCompleted && isToday(r.nextRemindAt))
+        .map(r => this.normalizeReminder(r, plantList))
+      this.setData({ plantList, todayReminders })
+    } catch (err) {
+      console.error('我的花园加载失败:', err)
+      if (!silent) wx.showToast({ title: '加载失败，请下拉重试', icon: 'none' })
+    } finally {
+      this.setData({ loading: false })
+    }
+  },
+
+  normalizePlant(raw) {
+    const created = toDate(raw.createdAt)
+    const days = created
+      ? Math.max(1, Math.floor((Date.now() - created.getTime()) / 86400000))
+      : 0
+    return {
+      _id: raw._id,
+      flowerId: raw.flowerId,
+      flowerName: raw.flowerName || '',
+      nickname: raw.nickname || '',
+      location: raw.location || '',
+      days,
+      status: raw.status || 'healthy',
+      lastWatered: formatRelativeDays(raw.lastWateredAt),
+    }
+  },
+
+  normalizeReminder(raw, plantList) {
+    const plant = plantList.find(p => p._id === raw.plantId)
+    const next = toDate(raw.nextRemindAt)
+    const time = next
+      ? `${String(next.getHours()).padStart(2, '0')}:${String(next.getMinutes()).padStart(2, '0')}`
+      : ''
+    return {
+      _id: raw._id,
+      plantId: raw.plantId,
+      plantName: (plant && plant.nickname) || raw.title || '植物',
+      type: REMINDER_TYPE_LABEL[raw.type] || raw.type,
+      icon: REMINDER_TYPE_ICON[raw.type] || '⏰',
+      time,
+      done: !!raw.isCompleted,
+    }
+  },
+
+  async onCompleteReminder(e) {
     const { id } = e.currentTarget.dataset
-    // 先播放完成动画 + 振动反馈
     wx.vibrateShort({ type: 'light' })
-    // 标记为已完成
-    const todayReminders = this.data.todayReminders.map((r) =>
+    // 乐观更新
+    const todayReminders = this.data.todayReminders.map(r =>
       r._id === id ? { ...r, done: true } : r
     )
     this.setData({ todayReminders })
-    // 延迟后移除
-    setTimeout(() => {
-      const updatedReminders = this.data.todayReminders.filter((r) => r._id !== id)
-      this.setData({ todayReminders: updatedReminders })
-      wx.showToast({ title: '已完成', icon: 'success' })
-    }, 500)
+
+    try {
+      await reminderService.complete(id)
+      setTimeout(() => {
+        const updated = this.data.todayReminders.filter(r => r._id !== id)
+        this.setData({ todayReminders: updated })
+        wx.showToast({ title: '已完成', icon: 'success' })
+      }, 500)
+    } catch (err) {
+      console.error('完成提醒失败:', err)
+      const rollback = this.data.todayReminders.map(r =>
+        r._id === id ? { ...r, done: false } : r
+      )
+      this.setData({ todayReminders: rollback })
+      wx.showToast({ title: '操作失败，请重试', icon: 'none' })
+    }
   },
 
   goToPlantDetail(e) {
