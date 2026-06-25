@@ -19,7 +19,7 @@
 
   <!-- 提醒列表 (Timeline 样式) -->
   <view class="timeline-list anim-fade-in-up anim-delay-2" wx:if="{{filteredList.length}}">
-    <view class="timeline-item {{item.done ? 'item-done' : ''}}" wx:for="{{filteredList}}" wx:key="_id">
+    <view class="timeline-item {{item.done ? 'item-done' : ''}}" wx:for="{{filteredList}}" wx:key="_id" bindtap="onEditTap" data-id="{{item._id}}" hover-class="hover-card" hover-stay-time="100">
       <!-- 时间线 -->
       <view class="timeline-left">
         <view class="timeline-dot {{item.done ? 'dot-done' : item.overdue ? 'dot-overdue' : 'dot-upcoming'}}"></view>
@@ -35,13 +35,16 @@
             <view class="reminder-info">
               <text class="reminder-plant-name {{item.done ? 'text-line-through' : ''}}">{{item.plantName}}</text>
               <view class="reminder-tags-row">
-                <text class="reminder-type-tag {{item.type === '浇水' ? 'type-water' : item.type === '施肥' ? 'type-fertilizer' : 'type-other'}}">{{item.type}}</text>
+                <text class="reminder-type-tag {{item.typeClass}}">{{item.type}}</text>
                 <text class="reminder-time-text">{{item.time}}</text>
               </view>
-              <text class="reminder-next-time">⏰ {{item.nextTime}}</text>
+              <view class="reminder-next-row">
+                <text class="reminder-next-time {{item.overdue ? 'text-danger' : ''}}">⏰ {{item.nextTime}}</text>
+                <text class="reminder-location" wx:if="{{item.location}}">📍 {{item.location}}</text>
+              </view>
             </view>
           </view>
-          <view class="check-circle {{item.done ? 'checked' : ''}}" bindtap="onComplete" data-id="{{item._id}}">
+          <view class="check-circle {{item.done ? 'checked' : ''}}" catchtap="onComplete" data-id="{{item._id}}">
             <icon wx:if="{{item.done}}" name="check" size="xs" />
           </view>
         </view>
@@ -50,9 +53,78 @@
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{!loading && !filteredList.length}}">
-    <icon name="lavender" size="xl" />
-    <text class="empty-text">暂无提醒</text>
-    <text class="empty-subtext">添加植物后会自动生成养护提醒哦</text>
+  <empty-state wx:if="{{!loading && !filteredList.length}}" iconName="lavender" desc="暂无提醒&#10;添加植物后会自动生成养护提醒哦" />
+
+  <!-- 浮动添加按钮 -->
+  <view class="fab-add" bindtap="onAddTap" hover-class="hover-btn" hover-stay-time="100">
+    <icon name="add" size="lg" color="var(--text-white)" />
+  </view>
+
+  <!-- 底部弹层：添加/编辑提醒 -->
+  <view class="sheet-mask" wx:if="{{sheetVisible}}" bindtap="onSheetClose" catchtouchmove="noop">
+    <view class="sheet-panel" catchtap="noop">
+      <view class="sheet-handle"></view>
+      <view class="sheet-header">
+        <text class="sheet-title">{{sheetMode === 'add' ? '添加提醒' : '编辑提醒'}}</text>
+        <view class="sheet-close" bindtap="onSheetClose">
+          <icon name="close" size="sm" />
+        </view>
+      </view>
+
+      <!-- 选择植物 -->
+      <view class="form-row">
+        <text class="form-label">植物</text>
+        <picker mode="selector" range="{{plantOptions}}" range-key="nickname" value="{{plantPickerIndex}}" bindchange="onPlantPickerChange" disabled="{{sheetMode === 'edit'}}">
+          <view class="form-input-like">
+            <text wx:if="{{plantOptions.length}}">{{plantOptions[plantPickerIndex].nickname}}</text>
+            <text wx:else class="placeholder">暂无植物</text>
+            <icon wx:if="{{sheetMode !== 'edit'}}" name="chevronRight" size="xs" tint="grey" />
+          </view>
+        </picker>
+      </view>
+
+      <!-- 提醒类型 -->
+      <view class="form-row">
+        <text class="form-label">类型</text>
+        <view class="type-grid">
+          <view
+            class="type-chip {{sheetForm.type === item.value ? 'active' : ''}}"
+            wx:for="{{typeOptions}}"
+            wx:key="value"
+            bindtap="onTypeTap"
+            data-value="{{item.value}}"
+            hover-class="hover-tag"
+            hover-stay-time="100"
+          >
+            <text class="type-chip-icon">{{item.icon}}</text>
+            <text class="type-chip-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 间隔天数 -->
+      <view class="form-row">
+        <text class="form-label">间隔（天）</text>
+        <input class="form-input" type="number" value="{{sheetForm.intervalDays}}" bindinput="onIntervalInput" placeholder="例如：3" />
+      </view>
+
+      <!-- 首次时间（仅添加模式） -->
+      <view class="form-row" wx:if="{{sheetMode === 'add'}}">
+        <text class="form-label">首次提醒</text>
+        <picker mode="date" value="{{sheetForm.firstTime}}" bindchange="onFirstTimeChange">
+          <view class="form-input-like">
+            <text wx:if="{{sheetForm.firstTime}}">{{sheetForm.firstTime}}</text>
+            <text wx:else class="placeholder">默认今天</text>
+            <icon name="chevronRight" size="xs" tint="grey" />
+          </view>
+        </picker>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="sheet-actions">
+        <button wx:if="{{sheetMode === 'edit'}}" class="btn-danger-outline" bindtap="onSheetDelete">删除</button>
+        <button class="btn-primary sheet-submit" bindtap="onSheetSubmit">保存</button>
+      </view>
+    </view>
   </view>
 </view>

@@ -1,0 +1,134 @@
+/* pages/profile/settings/index.wxss */
+@import '/styles/animation.wxss';
+
+.settings-page {
+  padding: 24rpx 24rpx 48rpx;
+}
+
+.section-title {
+  font-size: var(--font-xs);
+  color: var(--text-hint);
+  padding: 16rpx 16rpx 8rpx;
+  font-weight: 500;
+}
+
+/* 卡片容器 */
+.card {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-xl);
+  padding: 4rpx 0;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24rpx;
+  overflow: hidden;
+}
+
+/* 单行 */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 96rpx;
+  padding: 16rpx 32rpx;
+  position: relative;
+}
+
+.row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 32rpx;
+  right: 32rpx;
+  height: 1rpx;
+  background-color: var(--border-color);
+}
+
+/* 带图标的左侧 */
+.row-left-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.row-icon-wrap {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-bell { background-color: #FFF3E0; }
+.icon-time { background-color: #E3F2FD; }
+.icon-vibrate { background-color: #F3E5F5; }
+.icon-list { background-color: #E8F5E9; }
+.icon-image { background-color: #FCE4EC; }
+.icon-trash { background-color: #FFEBEE; }
+.icon-update { background-color: #E0F7FA; }
+.icon-doc { background-color: #FFF8E1; }
+.icon-lock { background-color: #EFEBE9; }
+.icon-feedback { background-color: #F3E5F5; }
+.icon-info { background-color: #E8F5E9; }
+
+.row-label {
+  font-size: var(--font-md);
+  color: var(--text-primary);
+}
+
+.row-right {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.row-value {
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+}
+
+/* 头像预览 */
+.avatar-preview {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background-color: var(--bg-grey);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-emoji {
+  font-size: 36rpx;
+}
+
+/* 退出登录 */
+.logout-section {
+  margin-top: 48rpx;
+  padding: 0 24rpx;
+}
+
+.logout-btn {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-xl);
+  padding: 28rpx;
+  display: flex;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.logout-text {
+  font-size: var(--font-md);
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+/* 底部留白 */
+.bottom-spacer {
+  height: 32rpx;
+}

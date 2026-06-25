@@ -56,8 +56,5 @@
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-placeholder" wx:if="{{!loading && !guideList.length}}">
-    <text class="empty-icon">📖</text>
-    <text class="empty-text">种植指南即将上线</text>
-  </view>
+  <empty-state wx:if="{{!loading && !guideList.length}}" icon="📖" desc="种植指南即将上线" />
 </view>

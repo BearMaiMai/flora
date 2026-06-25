@@ -1,14 +1,24 @@
 // pages/encyclopedia/index.js - 花卉百科列表页
 const flowerService = require('../../services/flower')
+const { CATEGORY_COLOR_MAP } = require('../../constants/flower')
 
-// 分类 → 标签颜色映射
-const CATEGORY_COLOR_MAP = {
-  '观叶植物': 'green',
-  '开花植物': 'orange',
-  '多肉植物': 'purple',
-  '香草植物': 'blue',
-  '水培植物': 'blue',
-  '果蔬植物': 'orange',
+const CACHE_KEY = 'encyclopedia_list'
+const CACHE_EXPIRE = 5 * 60 * 1000 // 5分钟
+
+function getCache() {
+  try {
+    const cache = wx.getStorageSync(CACHE_KEY)
+    if (cache && Date.now() - cache.timestamp < CACHE_EXPIRE) {
+      return cache.data
+    }
+  } catch (e) {}
+  return null
+}
+
+function setCache(data) {
+  try {
+    wx.setStorageSync(CACHE_KEY, { data, timestamp: Date.now() })
+  } catch (e) {}
 }
 
 Page({
@@ -24,7 +34,19 @@ Page({
   },
 
   async onLoad() {
-    await this.fetchFlowers()
+    // 先尝试读取缓存
+    const cached = getCache()
+    if (cached) {
+      this.setData({
+        allFlowers: cached.allFlowers,
+        flowerList: cached.flowerList,
+        categoryList: cached.categoryList,
+      })
+      // 静默刷新背景数据
+      this.fetchFlowers(true)
+    } else {
+      await this.fetchFlowers()
+    }
   },
 
   async onPullDownRefresh() {
@@ -33,7 +55,7 @@ Page({
       keyword: '',
     })
 
-    await this.fetchFlowers()
+    await this.fetchFlowers(true)
     wx.stopPullDownRefresh()
   },
 
@@ -41,8 +63,13 @@ Page({
     // 当前为全量加载，暂不做分页
   },
 
-  async fetchFlowers() {
-    this.setData({ loading: true })
+  async fetchFlowers(forceRefresh = false) {
+    // 非强制刷新时，若已有数据则不显示 loading
+    const hadData = this.data.allFlowers.length > 0
+    if (!hadData || forceRefresh) {
+      this.setData({ loading: true })
+    }
+
     try {
       const res = await flowerService.getList({ page: 1, pageSize: 200 })
       const rawList = (res && res.data) || []
@@ -54,13 +81,19 @@ Page({
         flowerList: allFlowers,
         categoryList,
       })
+
+      // 写入本地缓存
+      setCache({ allFlowers, flowerList: allFlowers, categoryList })
     } catch (err) {
       console.error('获取花卉列表失败:', err)
-      wx.showToast({
-        title: '花卉数据加载失败',
-        icon: 'none',
-      })
-      this.setData({ allFlowers: [], flowerList: [], categoryList: [] })
+      // 有缓存时不报错，静默失败
+      if (!hadData) {
+        wx.showToast({
+          title: '花卉数据加载失败',
+          icon: 'none',
+        })
+        this.setData({ allFlowers: [], flowerList: [], categoryList: [] })
+      }
     } finally {
       this.setData({ loading: false })
     }

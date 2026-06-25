@@ -1,4 +1,23 @@
 // pages/guide/index.js - 种植指南列表页
+const CACHE_KEY = 'guide_list'
+const CACHE_EXPIRE = 5 * 60 * 1000 // 5分钟
+
+function getCache() {
+  try {
+    const cache = wx.getStorageSync(CACHE_KEY)
+    if (cache && Date.now() - cache.timestamp < CACHE_EXPIRE) {
+      return cache.data
+    }
+  } catch (e) {}
+  return null
+}
+
+function setCache(data) {
+  try {
+    wx.setStorageSync(CACHE_KEY, { data, timestamp: Date.now() })
+  } catch (e) {}
+}
+
 Page({
   data: {
     loading: false,
@@ -60,7 +79,26 @@ Page({
     ],
   },
 
-  onLoad() {},
+  onLoad(options) {
+    const cached = getCache()
+    if (cached) {
+      this.setData({
+        featuredGuide: cached.featuredGuide || this.data.featuredGuide,
+        guideList: cached.guideList || this.data.guideList,
+      })
+    } else {
+      // 首次加载，将 mock 数据写入缓存
+      setCache({
+        featuredGuide: this.data.featuredGuide,
+        guideList: this.data.guideList,
+      })
+    }
+
+    // 从首页跳过来时自动高亮分类
+    if (options && options.category) {
+      this.setData({ activeCategory: options.category })
+    }
+  },
 
   goToDetail(e) {
     const { id } = e.currentTarget.dataset

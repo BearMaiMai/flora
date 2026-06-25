@@ -1,0 +1,178 @@
+<!--pages/profile/settings/index.wxml - 设置-->
+<view class="page-layout">
+  <custom-header title="设置" showBack />
+
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+    <view class="settings-page">
+
+      <!-- ========== 个人信息 ========== -->
+      <view class="section-title">个人信息</view>
+      <view class="card">
+        <view class="row" bindtap="onEditAvatar" hover-class="hover-list-item" hover-stay-time="100">
+          <text class="row-label">头像</text>
+          <view class="row-right">
+            <view class="avatar-preview">
+              <image wx:if="{{userInfo.avatarUrl}}" class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+              <text wx:else class="avatar-emoji">🧑‍🌾</text>
+            </view>
+            <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+          </view>
+        </view>
+
+        <view class="row" bindtap="onEditNickname" hover-class="hover-list-item" hover-stay-time="100">
+          <text class="row-label">昵称</text>
+          <view class="row-right">
+            <text class="row-value">{{userInfo.nickName || '点击设置'}}</text>
+            <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+          </view>
+        </view>
+      </view>
+
+      <!-- ========== 提醒偏好 ========== -->
+      <view class="section-title">提醒偏好</view>
+      <view class="card">
+        <view class="row">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-bell">
+              <icon name="bell" size="sm" />
+            </view>
+            <text class="row-label">接收养护提醒</text>
+          </view>
+          <switch checked="{{settings.reminderEnabled}}" bindchange="onToggleReminder" color="var(--color-primary)" />
+        </view>
+
+        <view class="row">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-time">
+              <icon emoji="⏰" size="sm" />
+            </view>
+            <text class="row-label">默认提醒时间</text>
+          </view>
+          <picker mode="time" value="{{settings.defaultReminderTime}}" bindchange="onDefaultTimeChange">
+            <view class="row-right">
+              <text class="row-value">{{settings.defaultReminderTime}}</text>
+              <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+            </view>
+          </picker>
+        </view>
+
+        <view class="row">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-vibrate">
+              <icon emoji="📳" size="sm" />
+            </view>
+            <text class="row-label">振动反馈</text>
+          </view>
+          <switch checked="{{settings.vibrateEnabled}}" bindchange="onToggleVibrate" color="var(--color-primary)" />
+        </view>
+      </view>
+
+      <!-- ========== 交互偏好 ========== -->
+      <view class="section-title">交互偏好</view>
+      <view class="card">
+        <view class="row">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-list">
+              <icon emoji="📜" size="sm" />
+            </view>
+            <text class="row-label">列表自动加载更多</text>
+          </view>
+          <switch checked="{{settings.autoLoadMore}}" bindchange="onToggleAutoLoad" color="var(--color-primary)" />
+        </view>
+
+        <view class="row">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-image">
+              <icon emoji="🖼️" size="sm" />
+            </view>
+            <text class="row-label">图片懒加载</text>
+          </view>
+          <switch checked="{{settings.imageLazyLoad}}" bindchange="onToggleLazyLoad" color="var(--color-primary)" />
+        </view>
+      </view>
+
+      <!-- ========== 数据管理 ========== -->
+      <view class="section-title">数据管理</view>
+      <view class="card">
+        <view class="row" bindtap="onClearCache" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-trash">
+              <icon emoji="🗑️" size="sm" />
+            </view>
+            <text class="row-label">清除本地缓存</text>
+          </view>
+          <view class="row-right">
+            <text class="row-value">{{cacheSize}}</text>
+            <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+          </view>
+        </view>
+
+        <view class="row" bindtap="onCheckUpdate" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-update">
+              <icon emoji="🔄" size="sm" />
+            </view>
+            <text class="row-label">检查更新</text>
+          </view>
+          <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+        </view>
+      </view>
+
+      <!-- ========== 关于 ========== -->
+      <view class="section-title">关于</view>
+      <view class="card">
+        <view class="row" bindtap="goToAgreement" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-doc">
+              <icon emoji="📄" size="sm" />
+            </view>
+            <text class="row-label">用户协议</text>
+          </view>
+          <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+        </view>
+
+        <view class="row" bindtap="goToPrivacy" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-lock">
+              <icon emoji="🔒" size="sm" />
+            </view>
+            <text class="row-label">隐私政策</text>
+          </view>
+          <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+        </view>
+
+        <view class="row" bindtap="onFeedback" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-feedback">
+              <icon emoji="💬" size="sm" />
+            </view>
+            <text class="row-label">意见反馈</text>
+          </view>
+          <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+        </view>
+
+        <view class="row" bindtap="onAbout" hover-class="hover-list-item" hover-stay-time="100">
+          <view class="row-left-with-icon">
+            <view class="row-icon-wrap icon-info">
+              <icon name="info" size="sm" />
+            </view>
+            <text class="row-label">关于养花呀</text>
+          </view>
+          <view class="row-right">
+            <text class="row-value">{{appVersion}}</text>
+            <icon name="chevronRight" size="xs" color="var(--text-hint)" />
+          </view>
+        </view>
+      </view>
+
+      <!-- ========== 退出登录 ========== -->
+      <view class="logout-section">
+        <view class="logout-btn" bindtap="onLogout" hover-class="hover-btn" hover-stay-time="100">
+          <text class="logout-text">退出登录</text>
+        </view>
+      </view>
+
+      <view class="bottom-spacer safe-bottom"></view>
+    </view>
+  </scroll-view>
+</view>

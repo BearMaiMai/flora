@@ -1,9 +1,46 @@
 <!--pages/garden/diary-edit.wxml-->
 <view class="container">
   <textarea class="diary-input" placeholder="记录今天的种植心得..." value="{{content}}" bindinput="onContentInput" maxlength="500" auto-height />
-  <view class="image-grid mt-md">
+
+  <!-- 天气 -->
+  <view class="diary-section-label">今日天气</view>
+  <view class="chip-row">
+    <view
+      class="chip {{weather === item.value ? 'chip-active' : ''}}"
+      wx:for="{{weatherOptions}}"
+      wx:key="value"
+      bindtap="onWeatherTap"
+      data-value="{{item.value}}"
+      hover-class="hover-tag"
+      hover-stay-time="100"
+    >
+      <text wx:if="{{item.icon}}" class="chip-icon">{{item.icon}}</text>
+      <text class="chip-label">{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 养护动作 -->
+  <view class="diary-section-label">养护记录（可多选）</view>
+  <view class="chip-row">
+    <view
+      class="chip {{careActions.indexOf(item.value) > -1 ? 'chip-active' : ''}}"
+      wx:for="{{careActionOptions}}"
+      wx:key="value"
+      bindtap="onCareActionTap"
+      data-value="{{item.value}}"
+      hover-class="hover-tag"
+      hover-stay-time="100"
+    >
+      <text class="chip-icon">{{item.icon}}</text>
+      <text class="chip-label">{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 图片 -->
+  <view class="diary-section-label">配图（最多 {{maxImageCount}} 张）</view>
+  <view class="image-grid">
     <view class="image-item" wx:for="{{images}}" wx:key="*this">
-      <image src="{{item}}" mode="aspectFill" />
+      <image src="{{item}}" mode="aspectFill" lazy-load />
       <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">
         <icon name="close" size="xs" />
       </view>
@@ -12,5 +49,10 @@
       <icon name="add" size="xl" color="var(--text-hint)" />
     </view>
   </view>
-  <button class="btn-primary submit-btn mt-lg" bindtap="onSubmit">保存日记</button>
+
+  <!-- 保存按钮 -->
+  <button class="btn-primary submit-btn" bindtap="onSubmit" disabled="{{submitting}}" loading="{{submitting}}">
+    {{isEdit ? '保存修改' : '保存日记'}}
+  </button>
+  <button wx:if="{{isEdit}}" class="btn-danger mt-md" bindtap="onDelete">删除日记</button>
 </view>

@@ -31,16 +31,16 @@
   <!-- 统计卡片 -->
   <view class="stats-row anim-fade-in-up anim-delay-1">
     <view class="stat-mini-card">
-      <text class="stat-mini-num font-number">{{stats.waterCount}}</text>
-      <text class="stat-mini-label">浇水次数</text>
-    </view>
-    <view class="stat-mini-card">
       <text class="stat-mini-num font-number">{{stats.diaryCount}}</text>
       <text class="stat-mini-label">日记条数</text>
     </view>
     <view class="stat-mini-card">
-      <text class="stat-mini-num font-number">{{stats.healthScore}}</text>
-      <text class="stat-mini-label">健康评分</text>
+      <text class="stat-mini-text">{{stats.lastWatered}}</text>
+      <text class="stat-mini-label">上次浇水</text>
+    </view>
+    <view class="stat-mini-card">
+      <text class="stat-mini-text">{{stats.lastFertilized}}</text>
+      <text class="stat-mini-label">上次施肥</text>
     </view>
   </view>
 
@@ -79,5 +79,13 @@
   <!-- 浮动添加按钮 -->
   <view class="fab" bindtap="goToAddDiary">
     <icon name="add" size="lg" color="var(--text-white)" />
+  </view>
+
+  <!-- 移除植物入口 -->
+  <view class="danger-action-section">
+    <view class="danger-btn" bindtap="onRemovePlant" hover-class="hover-btn" hover-stay-time="100">
+      <icon name="trash" size="sm" color="var(--color-danger)" />
+      <text class="danger-btn-text">移除这株植物</text>
+    </view>
   </view>
 </view>
