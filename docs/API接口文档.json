@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-05-28T11:40:42.879Z",
+  "updateTime": "2026-06-25T15:37:21.447Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -1205,6 +1205,405 @@
       ]
     },
     {
+      "name": "guideService",
+      "file": "cloudfunctions/guide/actions/*.js",
+      "methods": [
+        {
+          "name": "detail",
+          "description": "获取种植指南文章详情（阅读量+1）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/guide/detail",
+          "cloudFunction": "guide",
+          "action": "detail",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "id",
+              "default": "",
+              "description": "文章ID",
+              "valueRange": "_id",
+              "format": "-",
+              "example": "-",
+              "note": "care_guides 集合的 _id"
+            }
+          ],
+          "returns": [
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "文章完整对象",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "是",
+              "format": "含 _id,title,summary,category,content,coverImage,readTime,level,viewCount,createdAt,updatedAt",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "文章ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.title",
+              "description": "文章标题",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.summary",
+              "description": "文章摘要",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.category",
+              "description": "文章分类",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "入门基础/浇水技巧/光照指南/施肥方案/病虫防治/换盆教程/修剪养护",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.content",
+              "description": "文章正文",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.coverImage",
+              "description": "封面图云存储 fileID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "否",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.readTime",
+              "description": "阅读时长（分钟）",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.level",
+              "description": "难度级别",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "入门/进阶/高级",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.viewCount",
+              "description": "阅读量",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Date",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "Date",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Date",
+              "path": "data.updatedAt",
+              "description": "更新时间",
+              "fieldType": "Date",
+              "example": "-",
+              "note": "否",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'guide',\ndata: { action: 'detail', id: 'abc123' }\n})\n// res.result = { code: 0, data: { _id: 'abc123', title: '...', ... } }"
+        },
+        {
+          "name": "featured",
+          "description": "获取首页精选文章（最新一篇标记为精选的已发布文章）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/guide/featured",
+          "cloudFunction": "guide",
+          "action": "featured",
+          "params": [],
+          "returns": [
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "精选文章对象",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "是",
+              "format": "含 _id,title,summary,category,coverImage,readTime,level,viewCount,createdAt；无精选时返回 null",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "文章ID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.title",
+              "description": "文章标题",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.summary",
+              "description": "文章摘要",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.category",
+              "description": "文章分类",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.coverImage",
+              "description": "封面图云存储 fileID",
+              "fieldType": "String",
+              "example": "-",
+              "note": "否",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.readTime",
+              "description": "阅读时长（分钟）",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.level",
+              "description": "难度级别",
+              "fieldType": "String",
+              "example": "-",
+              "note": "是",
+              "format": "入门/进阶/高级",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.viewCount",
+              "description": "阅读量",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Date",
+              "path": "data.createdAt",
+              "description": "创建时间",
+              "fieldType": "Date",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'guide',\ndata: { action: 'featured' }\n})\n// res.result = { code: 0, data: { _id: 'xxx', title: '...', ... } } // 或 data: null"
+        },
+        {
+          "name": "list",
+          "description": "获取种植指南文章列表（支持分页和分类筛选，仅返回已发布文章）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/guide/list",
+          "cloudFunction": "guide",
+          "action": "list",
+          "params": [
+            {
+              "type": "Number",
+              "isRequired": true,
+              "name": "page",
+              "default": "",
+              "description": "页码",
+              "valueRange": "1~100",
+              "format": "整数",
+              "example": "1",
+              "note": "默认第1页"
+            },
+            {
+              "type": "Number",
+              "isRequired": true,
+              "name": "pageSize",
+              "default": "",
+              "description": "每页数量",
+              "valueRange": "1~50",
+              "format": "整数",
+              "example": "10",
+              "note": "默认10条"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "category",
+              "default": "",
+              "description": "分类名称",
+              "valueRange": "String",
+              "format": "浇水技巧",
+              "example": "可选值：入门基础/浇水技巧/光照指南/施肥方案/病虫防治/换盆教程/修剪养护；不传则返回全部",
+              "note": ""
+            }
+          ],
+          "returns": [
+            {
+              "type": "Object",
+              "path": "data",
+              "description": "分页结果对象",
+              "fieldType": "Object",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Array",
+              "path": "data.list",
+              "description": "文章列表",
+              "fieldType": "Array",
+              "example": "-",
+              "note": "是",
+              "format": "含 _id,title,summary,category,coverImage,readTime,level,viewCount,createdAt",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.total",
+              "description": "总文章数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.page",
+              "description": "当前页码",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.pageSize",
+              "description": "每页数量",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "是",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Boolean",
+              "path": "data.hasMore",
+              "description": "是否有更多",
+              "fieldType": "Boolean",
+              "example": "-",
+              "note": "是",
+              "format": "true=还有下一页,false=已到底",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'guide',\ndata: { action: 'list', page: 1, pageSize: 10, category: '浇水技巧' }\n})\n// res.result = { code: 0, data: { list: [...], total: 25, page: 1, pageSize: 10, hasMore: true } }"
+        }
+      ]
+    },
+    {
       "name": "plantService",
       "file": "cloudfunctions/plant/actions/*.js",
       "methods": [
@@ -1882,12 +2281,24 @@
         },
         {
           "name": "list",
-          "description": "获取提醒列表（待处理的提醒）",
+          "description": "获取提醒列表（待处理的提醒，自动关联植物位置信息）",
           "httpMethod": "GET",
           "apiPath": "/cloud/reminder/list",
           "cloudFunction": "reminder",
           "action": "list",
-          "params": [],
+          "params": [
+            {
+              "type": "Boolean",
+              "isRequired": false,
+              "name": "includeCompleted",
+              "default": "",
+              "description": "是否包含已完成提醒",
+              "valueRange": "includeCompleted",
+              "format": "Boolean",
+              "example": "true",
+              "note": "可选，默认 false 只返回未完成的"
+            }
+          ],
           "returns": [
             {
               "type": "String",
@@ -1929,6 +2340,17 @@
               "fieldType": "String",
               "example": "-",
               "note": "给小绿浇水",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data[].plantLocation",
+              "description": "植物摆放位置",
+              "fieldType": "String",
+              "example": "客厅窗台",
+              "note": "从关联 plants 集合读取；未设置则为空字符串",
               "format": "-",
               "valueRange": "-",
               "isRequired": true
@@ -2001,7 +2423,7 @@
             }
           ],
           "errorCodes": [],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'list' }\n})"
+          "example": "// 获取未完成提醒\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'list' }\n})\n// 获取全部提醒（含已完成）\nconst res2 = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'list', includeCompleted: true }\n})"
         },
         {
           "name": "push",
@@ -2029,7 +2451,7 @@
         },
         {
           "name": "update",
-          "description": "修改提醒时间",
+          "description": "修改提醒（支持修改间隔天数或提醒时间）",
           "httpMethod": "PUT",
           "apiPath": "/cloud/reminder/update",
           "cloudFunction": "reminder",
@@ -2047,15 +2469,26 @@
               "note": "必填"
             },
             {
+              "type": "Number",
+              "isRequired": false,
+              "name": "intervalDays",
+              "default": "",
+              "description": "新的间隔天数",
+              "valueRange": "-",
+              "format": "Number",
+              "example": "7",
+              "note": "可选，传了则自动计算 nextRemindAt"
+            },
+            {
               "type": "String",
-              "isRequired": true,
+              "isRequired": false,
               "name": "nextRemindAt",
               "default": "",
               "description": "新提醒时间",
               "valueRange": "-",
               "format": "String",
               "example": "2026-05-03T08:00:00.000Z",
-              "note": "必填"
+              "note": "可选，与 intervalDays 二选一"
             }
           ],
           "returns": [
@@ -2069,13 +2502,24 @@
               "format": "-",
               "valueRange": "-",
               "isRequired": true
+            },
+            {
+              "type": "Number",
+              "path": "data.intervalDays",
+              "description": "更新后的间隔天数",
+              "fieldType": "Number",
+              "example": "-",
+              "note": "7",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
             }
           ],
           "errorCodes": [
             1002,
             3001
           ],
-          "example": "const res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'update', id: 'reminder-abc123', nextRemindAt: '2026-05-03T08:00:00.000Z' }\n})"
+          "example": "// 修改间隔天数（自动计算下次提醒时间）\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'update', id: 'reminder-abc123', intervalDays: 7 }\n})\n// 修改具体提醒时间\nconst res = await wx.cloud.callFunction({\nname: 'reminder',\ndata: { action: 'update', id: 'reminder-abc123', nextRemindAt: '2026-05-03T08:00:00.000Z' }\n})"
         }
       ]
     },
@@ -2083,6 +2527,53 @@
       "name": "userService",
       "file": "cloudfunctions/user/actions/*.js",
       "methods": [
+        {
+          "name": "feedback",
+          "description": "用户意见反馈（存数据库 + 发邮件通知）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/user/feedback",
+          "cloudFunction": "user",
+          "action": "feedback",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "content",
+              "default": "",
+              "description": "反馈内容",
+              "valueRange": "content",
+              "format": "String",
+              "example": "希望增加XX植物的养护指南",
+              "note": "必填"
+            },
+            {
+              "type": "String",
+              "isRequired": false,
+              "name": "contact",
+              "default": "",
+              "description": "联系方式",
+              "valueRange": "contact",
+              "format": "String",
+              "example": "user@example.com",
+              "note": "可选"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data._id",
+              "description": "反馈记录ID",
+              "fieldType": "_id",
+              "example": "String",
+              "note": "fb-abc123",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'feedback', content: '希望增加XX植物的养护指南', contact: 'user@example.com' }\n})"
+        },
         {
           "name": "getFavorites",
           "description": "获取用户收藏列表",

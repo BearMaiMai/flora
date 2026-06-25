@@ -1,0 +1,10 @@
+[
+  {
+    "_id": "fb_sample001",
+    "_openid": "sample",
+    "content": "希望增加玫瑰花的养护指南",
+    "contact": "user@example.com",
+    "status": "pending",
+    "createdAt": "2026-06-25T00:00:00.000Z"
+  }
+]

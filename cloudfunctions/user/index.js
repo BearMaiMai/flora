@@ -9,6 +9,7 @@ const actions = {
   toggleFavorite: require('./actions/toggleFavorite'),
   getFavorites: require('./actions/getFavorites'),
   getStats: require('./actions/getStats'),
+  feedback: require('./actions/feedback'),
 }
 
 exports.main = async (event, context) => {
