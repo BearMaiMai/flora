@@ -1,0 +1,71 @@
+<!--pages/profile/favorites/index.wxml - 我的收藏-->
+<view class="page-layout">
+  <custom-header title="我的收藏" showBack />
+
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+    <view class="favorites-page">
+
+      <!-- 骨架屏 -->
+      <view class="skeleton-list" wx:if="{{loading}}">
+        <view class="skeleton-card" wx:for="{{5}}" wx:key="*this">
+          <view class="skeleton skeleton-avatar"></view>
+          <view class="skeleton-info">
+            <view class="skeleton skeleton-text" style="width: 40%"></view>
+            <view class="skeleton skeleton-text" style="width: 70%"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 收藏列表 -->
+      <view class="favorites-list" wx:elif="{{!empty}}">
+        <view
+          class="fav-card anim-fade-in-up"
+          style="animation-delay: {{index * 0.06}}s"
+          wx:for="{{favorites}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onTapItem"
+          hover-class="hover-card"
+          hover-stay-time="100"
+        >
+          <view class="fav-thumb">
+            <image wx:if="{{item.image}}" class="thumb-img" src="{{item.image}}" mode="aspectFill" lazy-load />
+            <view wx:else class="thumb-placeholder">
+              <text class="thumb-emoji">{{item.emoji}}</text>
+            </view>
+          </view>
+
+          <view class="fav-info">
+            <view class="fav-name-row">
+              <text class="fav-name">{{item.name}}</text>
+              <text class="fav-tag {{item.tagClass}}">{{item.category}}</text>
+            </view>
+            <text class="fav-desc">{{item.desc}}</text>
+            <view class="fav-meta">
+              <text class="meta-label">养护难度：</text>
+              <text class="star" wx:for="{{5}}" wx:for-item="star" wx:key="*this" class="star {{star < item.difficulty ? 'filled' : 'empty'}}">★</text>
+            </view>
+          </view>
+
+          <!-- 取消收藏按钮 -->
+          <view
+            class="unfav-btn"
+            data-id="{{item.id}}"
+            data-name="{{item.name}}"
+            catchtap="onUnfavorite"
+            hover-class="hover-icon"
+            hover-stay-time="100"
+          >
+            <icon name="heartFill" size="sm" color="#E91E63" />
+          </view>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <empty-state wx:if="{{empty && !loading}}" iconName="heart" iconColor="#E0E0E0" title="还没有收藏" desc="去花卉百科发现你喜欢的植物吧" btnText="去逛逛" bind:action="goToEncyclopedia" />
+
+      <!-- 底部安全区 -->
+      <view class="bottom-spacer safe-bottom"></view>
+    </view>
+  </scroll-view>
+</view>

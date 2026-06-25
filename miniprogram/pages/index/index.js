@@ -5,15 +5,14 @@ Page({
   data: {
     statusBarHeight: 20,
     loading: false,
-    userName: '花友小明',
     bannerList: [],
     dailyTip: '',
     recommendList: [],
     seasonTips: [
-      { icon: '💧', title: '浇水技巧', desc: '保持土壤微湿', gradient: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
-      { icon: '☀️', title: '光照管理', desc: '日照6小时', gradient: 'linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%)' },
-      { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', gradient: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
-      { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', gradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },
+      { icon: '💧', title: '浇水技巧', desc: '保持土壤微湿', category: 'water', gradient: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
+      { icon: '☀️', title: '光照管理', desc: '日照6小时', category: 'light', gradient: 'linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%)' },
+      { icon: '✂️', title: '修剪指南', desc: '春季适当修剪', category: 'pruning', gradient: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
+      { icon: '🌱', title: '施肥方法', desc: '薄肥勤施', category: 'fertilizer', gradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },
     ],
   },
 
@@ -94,6 +93,12 @@ Page({
   // 跳转到种植指南
   goToGuide() {
     wx.navigateTo({ url: '/pages/guide/index' })
+  },
+
+  // 按分类跳转到种植指南
+  goToGuideCategory(e) {
+    const category = e.currentTarget.dataset.category || ''
+    wx.navigateTo({ url: `/pages/guide/index?category=${category}` })
   },
 
   // 跳转到花卉详情

@@ -231,20 +231,4 @@
   font-weight: 300;
 }
 
-/* 空状态 */
-.empty-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 160rpx 0;
-}
 
-.empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 20rpx;
-}
-
-.empty-text {
-  font-size: var(--font-md);
-  color: var(--text-hint);
-}

@@ -1,0 +1,60 @@
+/* pages/profile/agreement/index.wxss & privacy/index.wxss 共用结构 */
+.doc-page {
+  padding: 32rpx 32rpx 48rpx;
+}
+
+.doc-title {
+  font-size: var(--font-xxl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12rpx;
+  text-align: center;
+}
+
+.doc-meta {
+  font-size: var(--font-xs);
+  color: var(--text-hint);
+  text-align: center;
+  margin-bottom: 48rpx;
+}
+
+.doc-section {
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-h2 {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 16rpx;
+}
+
+.doc-p {
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 8rpx;
+}
+
+.doc-li {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  padding-left: 16rpx;
+  margin-bottom: 4rpx;
+}
+
+.doc-footer {
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--text-hint);
+  margin-top: 32rpx;
+}
+
+.bottom-spacer {
+  height: 32rpx;
+}

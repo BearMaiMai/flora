@@ -1,0 +1,60 @@
+<!--pages/profile/agreement/index.wxml - 用户协议-->
+<view class="page-layout">
+  <custom-header title="用户协议" showBack />
+
+  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}">
+    <view class="doc-page">
+      <view class="doc-title">养花呀（Flora）用户协议</view>
+      <view class="doc-meta">最近更新：2026 年 6 月</view>
+
+      <view class="doc-section">
+        <view class="doc-h2">一、协议接受</view>
+        <view class="doc-p">欢迎使用「养花呀」（以下简称"本应用"）。本应用为花卉爱好者提供花卉百科查询、个人养护记录与提醒服务。当您使用本应用时，即视为您已阅读并同意本协议的全部条款。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">二、服务内容</view>
+        <view class="doc-p">本应用提供的服务包括但不限于：</view>
+        <view class="doc-li">1. 花卉百科查询、收藏与分享；</view>
+        <view class="doc-li">2. 我的花园：植物管理与成长日记；</view>
+        <view class="doc-li">3. 养护提醒：浇水、施肥等定时提醒；</view>
+        <view class="doc-li">4. 种植指南内容浏览。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">三、用户行为规范</view>
+        <view class="doc-p">您在使用本应用时，应遵守以下规则：</view>
+        <view class="doc-li">1. 不得发布违反法律法规、公序良俗的内容；</view>
+        <view class="doc-li">2. 不得对本应用及其他用户造成干扰或损害；</view>
+        <view class="doc-li">3. 不得利用本应用从事任何违法或不正当活动；</view>
+        <view class="doc-li">4. 您应对自己的账号、密码及账号下的一切行为负责。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">四、知识产权</view>
+        <view class="doc-p">本应用内的文字、图片、音视频、Logo 等内容，除特别注明外，均归本应用及相关权利人所有。未经授权，不得以任何方式复制、修改、传播或用于商业用途。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">五、免责声明</view>
+        <view class="doc-p">1. 本应用提供的养护建议仅供参考，实际养护效果因气候、环境等因素而异，本应用不对此承担责任；</view>
+        <view class="doc-p">2. 因不可抗力或非本应用过错导致的服务中断或数据丢失，本应用不承担责任；</view>
+        <view class="doc-p">3. 因您违反本协议或法律法规造成的损失，由您本人承担。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">六、协议变更</view>
+        <view class="doc-p">本应用有权根据需要修改本协议条款。修改后将通过应用内通知或更新公告告知用户，您继续使用本应用即视为接受变更后的条款。</view>
+      </view>
+
+      <view class="doc-section">
+        <view class="doc-h2">七、联系我们</view>
+        <view class="doc-p">如对本协议有任何疑问，请通过以下方式联系：</view>
+        <view class="doc-li">邮箱：feedback@flora.app</view>
+      </view>
+
+      <view class="doc-footer">© 2026 Flora Team. All rights reserved.</view>
+      <view class="bottom-spacer safe-bottom"></view>
+    </view>
+  </scroll-view>
+</view>

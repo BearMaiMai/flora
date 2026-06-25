@@ -6,11 +6,32 @@
     "pages/garden/index",
     "pages/garden/plant-detail",
     "pages/garden/diary-edit",
-    "pages/guide/index",
-    "pages/guide/detail",
-    "pages/reminder/index",
-    "pages/profile/index"
+    "pages/profile/index",
+    "pages/profile/favorites/index",
+    "pages/profile/settings/index",
+    "pages/profile/agreement/index",
+    "pages/profile/privacy/index"
   ],
+  "subPackages": [
+    {
+      "root": "pages/guide",
+      "pages": ["index", "detail"]
+    },
+    {
+      "root": "pages/reminder",
+      "pages": ["index"]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["pages/guide"]
+    },
+    "pages/profile/index": {
+      "network": "all",
+      "packages": ["pages/reminder"]
+    }
+  },
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#4CAF50",
@@ -52,7 +73,8 @@
     "animationDuration": 300
   },
   "usingComponents": {
-    "icon": "/components/icon/icon"
+    "icon": "/components/icon/icon",
+    "empty-state": "/components/empty-state/empty-state"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

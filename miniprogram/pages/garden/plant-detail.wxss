@@ -123,9 +123,40 @@
   margin-bottom: 6rpx;
 }
 
+.stat-mini-text {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6rpx;
+  line-height: 1.4;
+  text-align: center;
+}
+
 .stat-mini-label {
   font-size: var(--font-xs);
   color: var(--text-hint);
+}
+
+/* 移除植物按钮 */
+.danger-action-section {
+  display: flex;
+  justify-content: center;
+  padding: 48rpx 0 32rpx;
+}
+
+.danger-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 16rpx 32rpx;
+  border-radius: var(--border-radius-round);
+  background: var(--bg-red-light);
+  color: var(--color-danger);
+}
+
+.danger-btn-text {
+  font-size: var(--font-sm);
+  color: var(--color-danger);
 }
 
 /* 成长日记区域 */
