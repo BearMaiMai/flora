@@ -5,6 +5,7 @@ const db = cloud.database()
 
 const actions = {
   add: require('./actions/add'),
+  detail: require('./actions/detail'),
   list: require('./actions/list'),
   update: require('./actions/update'),
   remove: require('./actions/remove'),

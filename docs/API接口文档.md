@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/5/28 19:40:42
+> **生成时间**：2026/6/25 23:37:21
 >
 > **文档版本**：1.0.0
 >
@@ -34,6 +34,10 @@
   - [list](#list)
   - [recommend](#recommend)
   - [search](#search)
+- [guideService](#guideservice)
+  - [detail](#detail)
+  - [featured](#featured)
+  - [list](#list)
 - [plantService](#plantservice)
   - [add](#add)
   - [detail](#detail)
@@ -48,6 +52,7 @@
   - [push](#push)
   - [update](#update)
 - [userService](#userservice)
+  - [feedback](#feedback)
   - [getFavorites](#getfavorites)
   - [getInfo](#getinfo)
   - [getStats](#getstats)
@@ -1180,6 +1185,262 @@ wx.cloud.callFunction({
 
 ---
 
+## guideService
+
+> 文件：`cloudfunctions/guide/actions/*.js`
+
+### detail
+
+**功能**：获取种植指南文章详情（阅读量+1）
+
+**接口地址**：`/cloud/guide/detail`
+
+**请求方法**：`GET`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'guide', data: { action: 'detail', ...params })`
+
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| id | 文章ID | String | 取值范围：_id；care_guides 集合的 _id | 是 |
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 文章完整对象 | Object | 是 | 是 |
+| _id | 文章ID | String | 是 | 是 |
+| title | 文章标题 | String | 是 | 是 |
+| summary | 文章摘要 | String | 是 | 是 |
+| category | 文章分类 | String | 是 | 是 |
+| content | 文章正文 | String | 是 | 是 |
+| coverImage | 封面图云存储 fileID | String | 否 | 是 |
+| readTime | 阅读时长（分钟） | Number | 是 | 是 |
+| level | 难度级别 | String | 是 | 是 |
+| viewCount | 阅读量 | Number | 是 | 是 |
+| createdAt | 创建时间 | Date | 是 | 是 |
+| updatedAt | 更新时间 | Date | 否 | 是 |
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'guide',
+data: { action: 'detail', id: 'abc123' }
+})
+// res.result = { code: 0, data: { _id: 'abc123', title: '...', ... } }
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'guide',
+  data: {
+    action: 'detail',
+    id: （填测试值）
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
+
+### featured
+
+**功能**：获取首页精选文章（最新一篇标记为精选的已发布文章）
+
+**接口地址**：`/cloud/guide/featured`
+
+**请求方法**：`POST`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'guide', data: { action: 'featured' })`
+
+**请求参数**：无
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| data | 精选文章对象 | Object | 是 | 是 |
+| _id | 文章ID | String | 是 | 是 |
+| title | 文章标题 | String | 是 | 是 |
+| summary | 文章摘要 | String | 是 | 是 |
+| category | 文章分类 | String | 是 | 是 |
+| coverImage | 封面图云存储 fileID | String | 否 | 是 |
+| readTime | 阅读时长（分钟） | Number | 是 | 是 |
+| level | 难度级别 | String | 是 | 是 |
+| viewCount | 阅读量 | Number | 是 | 是 |
+| createdAt | 创建时间 | Date | 是 | 是 |
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'guide',
+data: { action: 'featured' }
+})
+// res.result = { code: 0, data: { _id: 'xxx', title: '...', ... } } // 或 data: null
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'guide',
+  data: {
+    action: 'featured'
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
+
+### list
+
+**功能**：获取种植指南文章列表（支持分页和分类筛选，仅返回已发布文章）
+
+**接口地址**：`/cloud/guide/list`
+
+**请求方法**：`GET`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'guide', data: { action: 'list', ...params })`
+
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| page | 页码 | Number | 取值范围：1~100；格式：整数；示例：1；默认第1页 | 是 |
+| pageSize | 每页数量 | Number | 取值范围：1~50；格式：整数；示例：10；默认10条 | 是 |
+| category | 分类名称 | String | 取值范围：String；格式：浇水技巧；示例：可选值：入门基础/浇水技巧/光照指南/施肥方案/病虫防治/换盆教程/修剪养护；不传则返回全部 | 否 |
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'guide',
+data: { action: 'list', page: 1, pageSize: 10, category: '浇水技巧' }
+})
+// res.result = { code: 0, data: { list: [...], total: 25, page: 1, pageSize: 10, hasMore: true } }
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'guide',
+  data: {
+    action: 'list',
+    page: 1,
+    pageSize: 10,
+    category: '可选值：入门基础/浇水技巧/光照指南/施肥方案/病虫防治/换盆教程/修剪养护；不传则返回全部'
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
+
 ## plantService
 
 > 文件：`cloudfunctions/plant/actions/*.js`
@@ -1895,15 +2156,19 @@ wx.cloud.callFunction({
 
 ### list
 
-**功能**：获取提醒列表（待处理的提醒）
+**功能**：获取提醒列表（待处理的提醒，自动关联植物位置信息）
 
 **接口地址**：`/cloud/reminder/list`
 
 **请求方法**：`GET`
 
-> 实际调用：`wx.cloud.callFunction({ name: 'reminder', data: { action: 'list' })`
+> 实际调用：`wx.cloud.callFunction({ name: 'reminder', data: { action: 'list', ...params })`
 
-**请求参数**：无
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| includeCompleted | 是否包含已完成提醒 | Boolean | 取值范围：includeCompleted；格式：Boolean；示例：true；可选，默认 false 只返回未完成的 | 否 |
 
 **响应说明**：
 
@@ -1935,6 +2200,7 @@ wx.cloud.callFunction({
 | plantId | 植物ID | String | plant-abc123 | 是 |
 | type | 提醒类型 | String | water / fertilize | 是 |
 | title | 提醒标题 | String | 给小绿浇水 | 是 |
+| plantLocation | 植物摆放位置 | String | 示例：客厅窗台；从关联 plants 集合读取；未设置则为空字符串 | 是 |
 | intervalDays | 间隔天数 | Number | 7 | 是 |
 | nextRemindAt | 下次提醒时间 | String | 2026-06-04T10:00:00.000Z | 是 |
 | isCompleted | 是否已完成 | Boolean | false | 是 |
@@ -1955,9 +2221,15 @@ wx.cloud.callFunction({
 **调用示例**：
 
 ```javascript
+// 获取未完成提醒
 const res = await wx.cloud.callFunction({
 name: 'reminder',
 data: { action: 'list' }
+})
+// 获取全部提醒（含已完成）
+const res2 = await wx.cloud.callFunction({
+name: 'reminder',
+data: { action: 'list', includeCompleted: true }
 })
 ```
 
@@ -1968,7 +2240,8 @@ data: { action: 'list' }
 wx.cloud.callFunction({
   name: 'reminder',
   data: {
-    action: 'list'
+    action: 'list',
+    includeCompleted: true
   }
 }).then(res => {
   console.log('成功：', res.result)
@@ -2052,7 +2325,7 @@ wx.cloud.callFunction({
 
 ### update
 
-**功能**：修改提醒时间
+**功能**：修改提醒（支持修改间隔天数或提醒时间）
 
 **接口地址**：`/cloud/reminder/update`
 
@@ -2065,7 +2338,8 @@ wx.cloud.callFunction({
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
 | id | 提醒ID | String | 格式：String；示例：reminder-abc123；必填 | 是 |
-| nextRemindAt | 新提醒时间 | String | 格式：String；示例：2026-05-03T08:00:00.000Z；必填 | 是 |
+| intervalDays | 新的间隔天数 | Number | 格式：Number；示例：7；可选，传了则自动计算 nextRemindAt | 否 |
+| nextRemindAt | 新提醒时间 | String | 格式：String；示例：2026-05-03T08:00:00.000Z；可选，与 intervalDays 二选一 | 否 |
 
 **响应说明**：
 
@@ -2088,6 +2362,7 @@ wx.cloud.callFunction({
 | 字段 | 说明 | 类型 | 备注 | 是否必填 |
 |------|------|------|------|----------|
 | nextRemindAt | 更新后的提醒时间 | String | 2026-05-03T08:00:00.000Z | 是 |
+| intervalDays | 更新后的间隔天数 | Number | 7 | 是 |
 
 **正确返回示例**：
 
@@ -2109,6 +2384,12 @@ wx.cloud.callFunction({
 **调用示例**：
 
 ```javascript
+// 修改间隔天数（自动计算下次提醒时间）
+const res = await wx.cloud.callFunction({
+name: 'reminder',
+data: { action: 'update', id: 'reminder-abc123', intervalDays: 7 }
+})
+// 修改具体提醒时间
 const res = await wx.cloud.callFunction({
 name: 'reminder',
 data: { action: 'update', id: 'reminder-abc123', nextRemindAt: '2026-05-03T08:00:00.000Z' }
@@ -2124,6 +2405,7 @@ wx.cloud.callFunction({
   data: {
     action: 'update',
     id: 'reminder-abc123',
+    intervalDays: 7,
     nextRemindAt: '2026-05-03T08:00:00.000Z'
   }
 }).then(res => {
@@ -2140,6 +2422,86 @@ wx.cloud.callFunction({
 ## userService
 
 > 文件：`cloudfunctions/user/actions/*.js`
+
+### feedback
+
+**功能**：用户意见反馈（存数据库 + 发邮件通知）
+
+**接口地址**：`/cloud/user/feedback`
+
+**请求方法**：`POST`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'user', data: { action: 'feedback', ...params })`
+
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| content | 反馈内容 | String | 取值范围：content；格式：String；示例：希望增加XX植物的养护指南；必填 | 是 |
+| contact | 联系方式 | String | 取值范围：contact；格式：String；示例：user@example.com；可选 | 否 |
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| _id | 反馈记录ID | _id | 示例：String；fb-abc123 | 是 |
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'user',
+data: { action: 'feedback', content: '希望增加XX植物的养护指南', contact: 'user@example.com' }
+})
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'user',
+  data: {
+    action: 'feedback',
+    content: '希望增加XX植物的养护指南',
+    contact: 'user@example.com'
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
 
 ### getFavorites
 
