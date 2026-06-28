@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/6/25 23:37:21
+> **生成时间**：2026/6/28 21:51:35
 >
 > **文档版本**：1.0.0
 >
@@ -20,6 +20,7 @@
 - [接口版本管理](#接口版本管理)
 - [变更记录](#变更记录)
 - [commonService](#commonservice)
+  - [checkContent](#checkcontent)
   - [getDailyTip](#getdailytip)
   - [getHomeData](#gethomedata)
 - [diaryService](#diaryservice)
@@ -141,6 +142,85 @@ wx.cloud.callFunction({
 ## commonService
 
 > 文件：`cloudfunctions/common/actions/*.js`
+
+### checkContent
+
+**功能**：内容安全检查（对接微信 msgSecCheck，审核合规必接）
+
+**接口地址**：`/cloud/common/checkContent`
+
+**请求方法**：`GET`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'common', data: { action: 'checkContent', ...params })`
+
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| content | 要检测的文本内容 | String | 取值范围：content；格式：String；示例：用户昵称或反馈文本；必填 | 是 |
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| suggest | 检测结果 | suggest | 示例：String；pass=通过,review=疑似,block=违规 | 是 |
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'common',
+data: { action: 'checkContent', content: '检测的文本' }
+})
+// { code: 0, data: { suggest: 'pass' } }
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'common',
+  data: {
+    action: 'checkContent',
+    content: '用户昵称或反馈文本'
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
 
 ### getDailyTip
 
