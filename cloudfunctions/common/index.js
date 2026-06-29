@@ -6,6 +6,7 @@ const db = cloud.database()
 const actions = {
   getHomeData: require('./actions/getHomeData'),
   getDailyTip: require('./actions/getDailyTip'),
+  checkContent: require('./actions/checkContent'),
 }
 
 exports.main = async (event, context) => {

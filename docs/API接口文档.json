@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-06-25T15:37:21.447Z",
+  "updateTime": "2026-06-28T13:58:14.585Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -24,6 +24,42 @@
       "name": "commonService",
       "file": "cloudfunctions/common/actions/*.js",
       "methods": [
+        {
+          "name": "checkContent",
+          "description": "内容安全检查（对接微信 msgSecCheck，审核合规必接）",
+          "httpMethod": "GET",
+          "apiPath": "/cloud/common/checkContent",
+          "cloudFunction": "common",
+          "action": "checkContent",
+          "params": [
+            {
+              "type": "String",
+              "isRequired": true,
+              "name": "content",
+              "default": "",
+              "description": "要检测的文本内容",
+              "valueRange": "content",
+              "format": "String",
+              "example": "用户昵称或反馈文本",
+              "note": "必填"
+            }
+          ],
+          "returns": [
+            {
+              "type": "String",
+              "path": "data.suggest",
+              "description": "检测结果",
+              "fieldType": "suggest",
+              "example": "String",
+              "note": "pass=通过,review=疑似,block=违规",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'common',\ndata: { action: 'checkContent', content: '检测的文本' }\n})\n// { code: 0, data: { suggest: 'pass' } }"
+        },
         {
           "name": "getDailyTip",
           "description": "获取每日养花小贴士",
