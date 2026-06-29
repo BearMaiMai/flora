@@ -5,10 +5,11 @@ const { callFunction } = require('../utils/cloud')
 
 const reminderService = {
   /** 获取提醒列表（默认返回未完成的提醒，按 nextRemindAt 升序）
-   * 注意：后端目前不支持 filter/plantId 参数，前端需自行筛选
+   * @param {Object} [params] - 可选参数
+   * @param {Boolean} [params.includeCompleted] - 是否包含已完成的提醒
    */
-  getList() {
-    return callFunction('reminder', { action: 'list' })
+  getList(params = {}) {
+    return callFunction('reminder', { action: 'list', ...params })
   },
 
   /** 添加提醒

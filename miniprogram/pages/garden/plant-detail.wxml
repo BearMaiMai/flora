@@ -8,22 +8,22 @@
         <icon name="sunflower" size="xl" />
       </view>
     </view>
-    <text class="plant-nickname">{{plant.nickname}}</text>
+    <text class="plant-nickname" bindtap="onEditNickname">{{plant.nickname}}</text>
     <text class="plant-species">{{plant.flowerName}}</text>
     
     <!-- 信息标签 -->
     <view class="plant-info-pills">
-      <view class="info-pill">
+      <view class="info-pill" bindtap="onEditLocation">
         <icon src="/images/icons/common/place.svg" size="xs" />
-        <text class="pill-text">{{plant.location}}</text>
+        <text class="pill-text">{{plant.location || '点击设置位置'}}</text>
       </view>
-      <view class="info-pill">
+      <view class="info-pill" bindtap="onEditPurchaseDate">
         <icon src="/images/icons/common/date.svg" size="xs" />
         <text class="pill-text">养了{{plant.days}}天</text>
       </view>
-      <view class="info-pill pill-status-{{plant.status}}">
+      <view class="info-pill pill-status-{{plant.status}}" bindtap="onEditStatus">
         <icon name="leaf" size="xs" />
-        <text class="pill-text">{{plant.status === 'healthy' ? '状态良好' : '需要关注'}}</text>
+        <text class="pill-text">{{statusLabel}}</text>
       </view>
     </view>
   </view>
@@ -84,7 +84,7 @@
   <!-- 移除植物入口 -->
   <view class="danger-action-section">
     <view class="danger-btn" bindtap="onRemovePlant" hover-class="hover-btn" hover-stay-time="100">
-      <icon name="trash" size="sm" color="var(--color-danger)" />
+      <icon name="delete" size="sm" color="var(--color-danger)" />
       <text class="danger-btn-text">移除这株植物</text>
     </view>
   </view>

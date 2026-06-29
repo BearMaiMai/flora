@@ -1,8 +1,37 @@
-<!--pages/profile/settings/index.wxml - 设置-->
+<!--pages/profile/settings/index.wxml - 设置/关于页-->
 <view class="page-layout">
-  <custom-header title="设置" showBack />
+  <custom-header title="{{aboutMode ? '关于养花呀' : '设置'}}" showBack />
 
-  <scroll-view class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
+  <!-- 关于页面内容 -->
+  <view class="about-page" wx:if="{{aboutMode}}">
+    <view class="about-logo-section">
+      <icon name="sunflower" size="xl" />
+      <text class="about-app-name">养花呀（Flora）</text>
+      <text class="about-version">版本 {{appVersion}}</text>
+    </view>
+    <view class="about-card">
+      <text class="about-desc">一款帮助花卉爱好者轻松种花的小助手 🌸</text>
+    </view>
+    <view class="about-card">
+      <view class="about-row">
+        <text class="about-label">团队</text>
+        <text class="about-value">Flora Team</text>
+      </view>
+      <view class="about-divider"></view>
+      <view class="about-row">
+        <text class="about-label">邮箱</text>
+        <text class="about-value">flowers_and_plant@163.com</text>
+      </view>
+      <view class="about-divider"></view>
+      <view class="about-row">
+        <text class="about-label">版权</text>
+        <text class="about-value">© 2026 Flora Team</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置页面内容 -->
+  <scroll-view wx:else class="page-content" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}" enable-back-to-top>
     <view class="settings-page">
 
       <!-- ========== 个人信息 ========== -->

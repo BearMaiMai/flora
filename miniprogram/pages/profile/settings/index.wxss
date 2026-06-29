@@ -132,3 +132,67 @@
 .bottom-spacer {
   height: 32rpx;
 }
+
+/* ============ 关于页面 ============ */
+.about-page {
+  padding: 48rpx 32rpx;
+}
+
+.about-logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0 48rpx;
+}
+
+.about-app-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 24rpx;
+}
+
+.about-version {
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+  margin-top: 8rpx;
+}
+
+.about-card {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-xl);
+  padding: 32rpx;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20rpx;
+}
+
+.about-desc {
+  font-size: var(--font-md);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+  display: block;
+}
+
+.about-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.about-label {
+  font-size: var(--font-md);
+  color: var(--text-secondary);
+}
+
+.about-value {
+  font-size: var(--font-md);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.about-divider {
+  height: 1rpx;
+  background-color: var(--border-light);
+}
