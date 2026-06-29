@@ -1,5 +1,6 @@
 // pages/profile/feedback/index.js - 意见反馈页
 const userService = require('../../../services/user')
+const { checkText, showSecurityWarning } = require('../../../utils/security')
 
 Page({
   data: {
@@ -24,6 +25,10 @@ Page({
       wx.showToast({ title: '请输入反馈内容', icon: 'none' })
       return
     }
+
+    // 内容安全检测：反馈文本
+    const textResult = await checkText(content)
+    if (!showSecurityWarning(textResult, { type: 'text' })) return
 
     this.setData({ submitting: true })
     wx.showLoading({ title: '提交中...', mask: true })

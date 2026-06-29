@@ -1,6 +1,7 @@
 // pages/garden/diary-edit.js - 日记编辑页（支持新增 + 编辑）
 const diaryService = require('../../services/diary')
 const { uploadImages, toTempFileURLs } = require('../../utils/image')
+const { checkText, checkImage, showSecurityWarning } = require('../../utils/security')
 
 const WEATHER_OPTIONS = [
   { value: '', icon: '', label: '不选' },
@@ -120,6 +121,29 @@ Page({
       return
     }
     if (this.data.submitting) return
+
+    // 内容安全检测：文本 + 图片并行检测
+    wx.showLoading({ title: '检测中...', mask: true })
+    try {
+      const { textPass, imagePass } = await checkAll({
+        text: content,
+        images: this.data.images.length > 0 ? this.data.images : undefined,
+      })
+      if (!textPass) {
+        wx.hideLoading()
+        showSecurityWarning({ pass: false }, { type: 'text' })
+        return
+      }
+      // 图片检测：如果有图片但未通过，提示用户删除违规图片
+      if (this.data.images.length > 0 && !imagePass) {
+        wx.hideLoading()
+        showSecurityWarning({ allPassed: false }, { type: 'image' })
+        return
+      }
+    } catch (e) {
+      console.warn('安全检测异常，继续提交:', e)
+    }
+
     this.setData({ submitting: true })
     wx.showLoading({ title: '保存中...', mask: true })
 
