@@ -2,6 +2,7 @@
 const userService = require('../../../services/user')
 const settingsUtil = require('../../../utils/settings')
 const { uploadImage } = require('../../../utils/image')
+const { checkText, checkImage, showSecurityWarning } = require('../../../utils/security')
 
 const APP_VERSION = 'v1.0.0'
 
@@ -67,6 +68,10 @@ Page({
     }
     if (nickName === this.data.userInfo.nickName) return
 
+    // 内容安全检测：昵称
+    const textResult = await checkText(nickName)
+    if (!showSecurityWarning(textResult, { type: 'text' })) return
+
     wx.showLoading({ title: '保存中...', mask: true })
     try {
       await userService.updateInfo({ nickName })
@@ -100,6 +105,14 @@ Page({
     wx.showLoading({ title: '上传中...', mask: true })
     try {
       const fileID = await uploadImage(filePath, 'avatars')
+
+      // 内容安全检测：头像图片
+      const imgResult = await checkImage(fileID)
+      if (!showSecurityWarning(imgResult, { type: 'image' })) {
+        wx.hideLoading()
+        return
+      }
+
       await userService.updateInfo({ avatarUrl: fileID })
       const userInfo = { ...this.data.userInfo, avatarUrl: fileID }
       const app = getApp()
