@@ -38,6 +38,8 @@ const ACTION_ICONS = {
   arrowRight: COMMON + 'arrow_right.svg',
   chevronLeft: COMMON + 'triangle_left.svg',
   chevronRight: COMMON + 'chevron_right.svg',
+  chevronUp: COMMON + 'arrow_top.svg',
+  chevronDown: COMMON + 'arrow_bottom.svg',
   close: COMMON + 'no.svg',
   check: COMMON + 'yes.svg',
   more: COMMON + 'more.svg',

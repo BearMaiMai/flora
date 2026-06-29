@@ -113,6 +113,15 @@ Page({
     wx.navigateTo({ url: '/pages/reminder/index' })
   },
 
+  goToGarden() {
+    wx.switchTab({ url: '/pages/garden/index' })
+  },
+
+  goToDiaryList() {
+    // 跳转到花园页，日记列表在花园页内
+    wx.switchTab({ url: '/pages/garden/index' })
+  },
+
   goToFavorites() {
     wx.navigateTo({ url: '/pages/profile/favorites/index' })
   },
@@ -126,7 +135,7 @@ Page({
   },
 
   goToAbout() {
-    wx.navigateTo({ url: '/pages/profile/settings/index' })
+    wx.navigateTo({ url: '/pages/profile/settings/index?about=1' })
   },
 
   onLogout() {

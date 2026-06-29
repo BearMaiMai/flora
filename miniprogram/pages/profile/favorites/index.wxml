@@ -56,7 +56,7 @@
             hover-class="hover-icon"
             hover-stay-time="100"
           >
-            <icon name="heartFill" size="sm" color="#E91E63" />
+            <icon name="heart" size="sm" color="#E91E63" />
           </view>
         </view>
       </view>

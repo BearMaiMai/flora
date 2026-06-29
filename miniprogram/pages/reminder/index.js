@@ -53,7 +53,8 @@ Page({
   async loadReminders(silent = false) {
     if (!silent) this.setData({ loading: true })
     try {
-      const res = await reminderService.getList()
+      // 始终请求包含已完成的提醒，由前端 applyFilter 按tab筛选
+      const res = await reminderService.getList({ includeCompleted: true })
       const list = ((res && res.data) || []).map(r => this.normalize(r))
       this.setData({ reminderList: list })
       this.applyFilter()

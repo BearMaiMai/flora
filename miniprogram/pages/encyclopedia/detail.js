@@ -64,13 +64,13 @@ Page({
       ? raw.alias.join('、')
       : (raw.alias || '')
 
-    const waterText = raw.waterDays
-      ? `约每${raw.waterDays}天浇水一次`
-      : '根据土壤干湿度灵活浇水'
+    const waterText = raw.waterInterval
+      ? `每 ${raw.waterInterval} 天浇水一次`
+      : (raw.waterDays || '根据土壤干湿度灵活浇水')
 
-    const fertilizeText = raw.fertilizeDays
-      ? `约每${raw.fertilizeDays}天施肥一次`
-      : '生长季薄肥勤施，休眠期停肥'
+    const fertilizeText = raw.fertilizeInterval
+      ? `每 ${raw.fertilizeInterval} 天施肥一次`
+      : (raw.fertilizeDays || '生长季薄肥勤施，休眠期停肥')
 
     // tags → 标签链（保持原始数组）
     const tags = Array.isArray(raw.tags) ? raw.tags : []

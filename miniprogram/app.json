@@ -10,7 +10,8 @@
     "pages/profile/favorites/index",
     "pages/profile/settings/index",
     "pages/profile/agreement/index",
-    "pages/profile/privacy/index"
+    "pages/profile/privacy/index",
+    "pages/profile/feedback/index"
   ],
   "subPackages": [
     {

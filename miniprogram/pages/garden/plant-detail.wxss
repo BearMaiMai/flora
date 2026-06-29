@@ -141,7 +141,8 @@
 .danger-action-section {
   display: flex;
   justify-content: center;
-  padding: 48rpx 0 32rpx;
+  padding: 48rpx 0;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
 
 .danger-btn {

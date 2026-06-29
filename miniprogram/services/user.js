@@ -37,6 +37,14 @@ const userService = {
   getStats() {
     return callFunction('user', { action: 'getStats' })
   },
+
+  /** 提交意见反馈
+   * @param {string} content - 反馈内容（必填）
+   * @param {string} [contact] - 联系方式（可选）
+   */
+  feedback({ content, contact }) {
+    return callFunction('user', { action: 'feedback', content, contact })
+  },
 }
 
 module.exports = userService

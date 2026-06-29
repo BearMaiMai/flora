@@ -41,17 +41,17 @@
 
   <!-- 统计数据 -->
   <view class="stats-card">
-    <view class="stat-item">
+    <view class="stat-item" bindtap="goToGarden" hover-class="hover-stat" hover-stay-time="100">
       <text class="stat-num font-number">{{stats.plantCount}}</text>
       <text class="stat-label">我的植物</text>
     </view>
     <view class="stat-divider"></view>
-    <view class="stat-item">
+    <view class="stat-item" bindtap="goToDiaryList" hover-class="hover-stat" hover-stay-time="100">
       <text class="stat-num font-number">{{stats.diaryCount}}</text>
       <text class="stat-label">成长日记</text>
     </view>
     <view class="stat-divider"></view>
-    <view class="stat-item">
+    <view class="stat-item" bindtap="goToFavorites" hover-class="hover-stat" hover-stay-time="100">
       <text class="stat-num font-number">{{stats.favoriteCount}}</text>
       <text class="stat-label">我的收藏</text>
     </view>

@@ -120,7 +120,9 @@
     <view class="expert-list">
       <view class="expert-item" wx:for="{{flower.expertAnswer}}" wx:key="*this">
         <view class="expert-q-icon">Q</view>
-        <text class="expert-text">{{item}}</text>
+        <text class="expert-text">Q: {{item.question}}</text>
+        <view class="expert-a-icon">A</view>
+        <text class="expert-text">A: {{item.answer}}</text>
       </view>
     </view>
   </view>

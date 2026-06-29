@@ -11,15 +11,22 @@ Page({
     settings: settingsUtil.getAll(),
     appVersion: APP_VERSION,
     cacheSize: '0K',
+    aboutMode: false,
   },
 
-  onLoad() {
-    this.loadUser()
-    this.calcCacheSize()
+  onLoad(options) {
+    const isAbout = !!(options && options.about)
+    this.setData({ aboutMode: isAbout })
+    if (!isAbout) {
+      this.loadUser()
+      this.calcCacheSize()
+    }
   },
 
   onShow() {
-    this.setData({ settings: settingsUtil.getAll() })
+    if (!this._aboutMode) {
+      this.setData({ settings: settingsUtil.getAll() })
+    }
   },
 
   loadUser() {
@@ -212,19 +219,25 @@ Page({
   },
 
   onFeedback() {
-    wx.showModal({
-      title: '意见反馈',
-      content: '请通过邮箱联系：feedback@flora.app\n\n感谢你的支持！',
-      showCancel: false,
-    })
+    wx.navigateTo({ url: '/pages/profile/feedback/index' })
   },
 
   onAbout() {
-    wx.showModal({
-      title: '关于养花呀',
-      content: `养花呀 ${APP_VERSION}\n\n一款帮助花卉爱好者轻松种花的小助手 🌸\n\n© 2026 Flora Team`,
-      showCancel: false,
-    })
+    wx.navigateTo({ url: '/pages/profile/settings/index?about=1' })
+  },
+  
+  onLoad(options) {
+    this._aboutMode = !!(options && options.about)
+    if (!this._aboutMode) {
+      this.loadUser()
+      this.calcCacheSize()
+    }
+  },
+
+  onShow() {
+    if (!this._aboutMode) {
+      this.setData({ settings: settingsUtil.getAll() })
+    }
   },
 
   // ============ 退出登录 ============

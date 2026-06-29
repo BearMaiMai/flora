@@ -1,0 +1,54 @@
+<!--pages/profile/feedback/index.wxml - 意见反馈-->
+<view class="page-layout">
+  <custom-header title="意见反馈" showBack />
+
+  <view class="feedback-page">
+    <!-- 邮箱联系 -->
+    <view class="email-card">
+      <icon name="mail" size="md" tint="primary" />
+      <view class="email-info">
+        <text class="email-label">邮箱联系</text>
+        <text class="email-addr">flowers_and_plant@163.com</text>
+      </view>
+    </view>
+    <text class="email-hint">如果植物数据库中没有您心仪的植物，请联系我们，我们快马加鞭为您添加！</text>
+
+    <!-- 反馈表单 -->
+    <view class="form-section">
+      <view class="form-title">在线反馈</view>
+
+      <view class="form-item">
+        <text class="form-label">反馈内容 <text class="required">*</text></text>
+        <textarea
+          class="form-textarea"
+          placeholder="请详细描述您的意见或建议..."
+          placeholder-class="placeholder"
+          maxlength="500"
+          auto-height
+          value="{{content}}"
+          bindinput="onContentInput"
+        />
+        <text class="char-count">{{content.length}}/500</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">联系方式（选填）</text>
+        <input
+          class="form-input"
+          placeholder="邮箱或手机号，方便我们回复您"
+          placeholder-class="placeholder"
+          value="{{contact}}"
+          bindinput="onContactInput"
+        />
+      </view>
+
+      <button
+        class="submit-btn {{submitting ? 'disabled' : ''}}"
+        bindtap="onSubmit"
+        disabled="{{submitting}}"
+      >
+        {{submitting ? '提交中...' : '提交反馈'}}
+      </button>
+    </view>
+  </view>
+</view>
