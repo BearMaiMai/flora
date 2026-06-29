@@ -7,6 +7,7 @@ const actions = {
   getHomeData: require('./actions/getHomeData'),
   getDailyTip: require('./actions/getDailyTip'),
   checkContent: require('./actions/checkContent'),
+  imgSecCheck: require('./actions/imgSecCheck'),
 }
 
 exports.main = async (event, context) => {

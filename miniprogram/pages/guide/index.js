@@ -1,5 +1,5 @@
 // pages/guide/index.js - 种植指南列表页
-const CACHE_KEY = 'guide_list'
+const CACHE_KEY = 'guide_list_v2'
 const CACHE_EXPIRE = 5 * 60 * 1000 // 5分钟
 
 function getCache() {
@@ -21,6 +21,8 @@ function setCache(data) {
 Page({
   data: {
     loading: false,
+    activeCategory: '',
+    activeCategoryLabel: '',
     featuredGuide: {
       _id: 'g1',
       title: '新手入门：如何开始你的第一盆花',
@@ -28,12 +30,12 @@ Page({
       icon: '🌱',
     },
     categoryList: [
-      { name: '入门基础', icon: '🌱', bgColor: '#E8F5E9' },
-      { name: '浇水技巧', icon: '💧', bgColor: '#E3F2FD' },
-      { name: '光照指南', icon: '☀️', bgColor: '#FFF8E1' },
-      { name: '施肥方案', icon: '🧪', bgColor: '#F3E5F5' },
-      { name: '病虫防治', icon: '🔍', bgColor: '#FBE9E7' },
-      { name: '换盆教程', icon: '🪴', bgColor: '#EFEBE9' },
+      { key: 'basics', label: '入门基础', icon: '🌱', bgColor: '#E8F5E9' },
+      { key: 'watering', label: '浇水技巧', icon: '💧', bgColor: '#E3F2FD' },
+      { key: 'lighting', label: '光照指南', icon: '☀️', bgColor: '#FFF8E1' },
+      { key: 'fertilizing', label: '施肥方案', icon: '🧪', bgColor: '#F3E5F5' },
+      { key: 'pests', label: '病虫防治', icon: '🔍', bgColor: '#FBE9E7' },
+      { key: 'repotting', label: '换盆教程', icon: '🪴', bgColor: '#EFEBE9' },
     ],
     guideList: [
       {
@@ -43,6 +45,7 @@ Page({
         icon: '🌱',
         difficulty: '入门',
         readTime: '5分钟阅读',
+        category: 'basics',
       },
       {
         _id: 'g2',
@@ -51,6 +54,7 @@ Page({
         icon: '🪴',
         difficulty: '进阶',
         readTime: '4分钟阅读',
+        category: 'repotting',
       },
       {
         _id: 'g3',
@@ -59,6 +63,7 @@ Page({
         icon: '💧',
         difficulty: '入门',
         readTime: '3分钟阅读',
+        category: 'watering',
       },
       {
         _id: 'g4',
@@ -67,6 +72,7 @@ Page({
         icon: '☀️',
         difficulty: '进阶',
         readTime: '4分钟阅读',
+        category: 'lighting',
       },
       {
         _id: 'g5',
@@ -75,8 +81,10 @@ Page({
         icon: '🔍',
         difficulty: '高级',
         readTime: '6分钟阅读',
+        category: 'pests',
       },
     ],
+    filteredGuideList: [],
   },
 
   onLoad(options) {
@@ -95,13 +103,32 @@ Page({
     }
 
     // 从首页跳过来时自动高亮分类
-    if (options && options.category) {
-      this.setData({ activeCategory: options.category })
-    }
+    const initCategory = (options && options.category) || ''
+    this.setData({ activeCategory: initCategory })
+    this.filterGuideList()
+  },
+
+  /** 根据选中分类过滤文章列表 */
+  filterGuideList() {
+    const { guideList, activeCategory, categoryList } = this.data
+    const filtered = activeCategory
+      ? guideList.filter(item => item.category === activeCategory)
+      : guideList
+    const label = activeCategory
+      ? (categoryList.find(c => c.key === activeCategory) || {}).label || ''
+      : ''
+    this.setData({ filteredGuideList: filtered, activeCategoryLabel: label })
   },
 
   goToDetail(e) {
     const { id } = e.currentTarget.dataset
     wx.navigateTo({ url: `/pages/guide/detail?id=${id}` })
+  },
+
+  onSelectCategory(e) {
+    const category = e.currentTarget.dataset.category
+    const newActive = category === this.data.activeCategory ? '' : category
+    this.setData({ activeCategory: newActive })
+    this.filterGuideList()
   },
 })

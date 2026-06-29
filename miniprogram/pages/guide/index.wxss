@@ -103,6 +103,16 @@
   width: 100rpx;
 }
 
+.category-circle-item.category-active .category-circle {
+  border: 4rpx solid var(--color-primary, #4CAF50);
+  box-shadow: inset 0 0 8rpx rgba(76, 175, 80, 0.15);
+}
+
+.category-circle-item.category-active .category-label {
+  color: var(--color-primary, #4CAF50);
+  font-weight: 700;
+}
+
 .category-circle {
   width: 88rpx;
   height: 88rpx;

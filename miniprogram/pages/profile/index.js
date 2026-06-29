@@ -2,6 +2,7 @@
 const userService = require('../../services/user')
 const reminderService = require('../../services/reminder')
 const { uploadImage } = require('../../utils/image')
+const { checkImage } = require('../../utils/security')
 
 Page({
   data: {
@@ -76,6 +77,12 @@ Page({
           if (profile.avatarUrl && !profile.avatarUrl.startsWith('cloud://')) {
             try {
               cloudAvatar = await uploadImage(profile.avatarUrl, 'avatars')
+              // 内容安全检测：登录头像（微信官方头像风险较低，但仍做校验）
+              const imgResult = await checkImage(cloudAvatar)
+              if (!imgResult.allPassed) {
+                console.warn('[login] 头像安全检测未通过，使用默认头像')
+                cloudAvatar = ''  // 检测不通过时清空，使用默认头像
+              }
             } catch (e) {
               console.warn('头像上传云存储失败，使用原 URL:', e)
               cloudAvatar = profile.avatarUrl
