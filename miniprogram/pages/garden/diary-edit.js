@@ -1,7 +1,7 @@
 // pages/garden/diary-edit.js - 日记编辑页（支持新增 + 编辑）
 const diaryService = require('../../services/diary')
 const { uploadImages, toTempFileURLs } = require('../../utils/image')
-const { checkText, checkImage, showSecurityWarning } = require('../../utils/security')
+const { checkText, checkImage, showSecurityWarning, checkAll } = require('../../utils/security')
 
 const WEATHER_OPTIONS = [
   { value: '', icon: '', label: '不选' },

@@ -28,6 +28,7 @@ Page({
     this.plantId = options && options.id ? options.id : ''
     if (!this.plantId) {
       wx.showToast({ title: '缺少植物ID', icon: 'none' })
+      this.setData({ loading: false })
       setTimeout(() => wx.navigateBack(), 1000)
       return
     }
@@ -57,12 +58,12 @@ Page({
       const diaryList = await Promise.all(
         ((diaryRes && diaryRes.data) || []).map(async d => this.normalizeDiary(d))
       )
-      // 解析图片为 https 临时链接
-      for (const d of diaryList) {
+      // 解析图片为 https 临时链接（并行）
+      await Promise.all(diaryList.map(async d => {
         if (d.images && d.images.length) {
           d.images = await toTempFileURLs(d.images)
         }
-      }
+      }))
       const stats = {
         diaryCount: diaryList.length,
         lastWatered: formatRelativeDays(raw.lastWateredAt),
@@ -83,12 +84,12 @@ Page({
     try {
       const diaryRes = await diaryService.getList(this.plantId)
       const diaryList = ((diaryRes && diaryRes.data) || []).map(d => this.normalizeDiary(d))
-      // 解析图片为 https 临时链接
-      for (const d of diaryList) {
+      // 解析图片为 https 临时链接（并行）
+      await Promise.all(diaryList.map(async d => {
         if (d.images && d.images.length) {
           d.images = await toTempFileURLs(d.images)
         }
-      }
+      }))
       this.setData({
         diaryList,
         'stats.diaryCount': diaryList.length,
@@ -263,7 +264,7 @@ Page({
         if (!res.confirm) return
         // 计算当前日期或从 purchaseDate 推算初始值
         const defaultDate = plant.addDate || new Date().toISOString().slice(0, 10)
-        wx.showDatePicker && wx.showDatePicker ? (
+        wx.showDatePicker ? (
           wx.showDatePicker({
             value: defaultDate,
             success: async (dateRes) => {

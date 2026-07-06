@@ -9,6 +9,7 @@ Page({
     loading: true,
     plantList: [],
     todayReminders: [],
+    _completingId: null, // 防重入：正在完成的提醒ID
   },
 
   onLoad() {
@@ -82,6 +83,8 @@ Page({
 
   async onCompleteReminder(e) {
     const { id } = e.currentTarget.dataset
+    if (this.data._completingId === id) return // 防重入
+    this.setData({ _completingId: id })
     wx.vibrateShort({ type: 'light' })
     // 乐观更新
     const todayReminders = this.data.todayReminders.map(r =>
@@ -103,6 +106,8 @@ Page({
       )
       this.setData({ todayReminders: rollback })
       wx.showToast({ title: '操作失败，请重试', icon: 'none' })
+    } finally {
+      this.setData({ _completingId: null })
     }
   },
 

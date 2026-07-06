@@ -4,6 +4,10 @@ const reminderService = require('../../services/reminder')
 const { uploadImage } = require('../../utils/image')
 const { checkImage } = require('../../utils/security')
 
+// 临时存储用户授权的头像和昵称（新 API 方式收集）
+let _pendingAvatar = ''
+let _pendingNickname = ''
+
 Page({
   data: {
     userInfo: { avatarUrl: '', nickName: '' },
@@ -65,55 +69,84 @@ Page({
     }
   },
 
-  onLogin() {
-    wx.getUserProfile({
-      desc: '用于完善个人资料',
-      success: async (res) => {
-        const profile = res.userInfo
-        wx.showLoading({ title: '同步中...', mask: true })
+  /**
+   * 新 API：用户选择头像回调（替代已废弃的 getUserProfile）
+   */
+  onChooseAvatar(e) {
+    const avatarUrl = (e.detail && e.detail.avatarUrl) || ''
+    if (!avatarUrl) return
+    _pendingAvatar = avatarUrl
+    // 如果昵称也已填写，自动触发登录
+    if (_pendingNickname) this.doLogin()
+  },
+
+  /**
+   * 新 API：用户输入昵称回调
+   */
+  onNicknameInput(e) {
+    _pendingNickname = (e.detail && e.detail.value) || ''
+  },
+
+  /**
+   * 执行登录（收集齐头像+昵称后调用）
+   */
+  async doLogin() {
+    const nickName = (_pendingNickname || '').trim()
+    let cloudAvatar = _pendingAvatar || ''
+
+    // 至少需要昵称才执行登录
+    if (!nickName) {
+      wx.showToast({ title: '请输入昵称', icon: 'none' })
+      return
+    }
+
+    wx.showLoading({ title: '登录中...', mask: true })
+    try {
+      // 如果有头像，上传到云存储
+      if (cloudAvatar && !cloudAvatar.startsWith('cloud://')) {
         try {
-          // 微信返回的 avatarUrl 是临时 URL，需上传到云存储持久化
-          let cloudAvatar = profile.avatarUrl
-          if (profile.avatarUrl && !profile.avatarUrl.startsWith('cloud://')) {
-            try {
-              cloudAvatar = await uploadImage(profile.avatarUrl, 'avatars')
-              // 内容安全检测：登录头像（微信官方头像风险较低，但仍做校验）
-              const imgResult = await checkImage(cloudAvatar)
-              if (!imgResult.allPassed) {
-                console.warn('[login] 头像安全检测未通过，使用默认头像')
-                cloudAvatar = ''  // 检测不通过时清空，使用默认头像
-              }
-            } catch (e) {
-              console.warn('头像上传云存储失败，使用原 URL:', e)
-              cloudAvatar = profile.avatarUrl
-            }
+          cloudAvatar = await uploadImage(cloudAvatar, 'avatars')
+          const imgResult = await checkImage(cloudAvatar)
+          if (!imgResult.allPassed) {
+            console.warn('[login] 头像安全检测未通过，使用默认头像')
+            cloudAvatar = ''
           }
-
-          await userService.login(profile)
-          await userService.updateInfo({
-            nickName: profile.nickName,
-            avatarUrl: cloudAvatar,
-          })
-
-          const userInfo = { ...profile, avatarUrl: cloudAvatar }
-          const app = getApp()
-          app.globalData.userInfo = userInfo
-          app.globalData.isLoggedIn = true
-          this.setData({ userInfo, isLoggedIn: true })
-          this.loadStats()
-
-          wx.hideLoading()
-          wx.showToast({ title: '登录成功', icon: 'success' })
-        } catch (err) {
-          console.error('登录失败:', err)
-          wx.hideLoading()
-          wx.showToast({ title: err.message || '登录失败', icon: 'none' })
+        } catch (e) {
+          console.warn('头像上传云存储失败，使用原 URL:', e)
+          cloudAvatar = _pendingAvatar
         }
-      },
-      fail: () => {
-        // 用户取消授权，静默处理
-      },
-    })
+      }
+
+      await userService.login({})
+      await userService.updateInfo({
+        nickName,
+        avatarUrl: cloudAvatar,
+      })
+
+      const userInfo = { nickName, avatarUrl: cloudAvatar }
+      const app = getApp()
+      app.globalData.userInfo = userInfo
+      app.globalData.isLoggedIn = true
+      this.setData({ userInfo, isLoggedIn: true })
+      this.loadStats()
+
+      // 清理临时状态
+      _pendingAvatar = ''
+      _pendingNickname = ''
+
+      wx.hideLoading()
+      wx.showToast({ title: '登录成功', icon: 'success' })
+    } catch (err) {
+      console.error('登录失败:', err)
+      wx.hideLoading()
+      wx.showToast({ title: err.message || '登录失败', icon: 'none' })
+    }
+  },
+
+  /** @deprecated 已废弃，保留以防旧版基础库兜底 */
+  onLogin() {
+    // 兼容提示：引导用户使用新的头像/昵称填写方式
+    wx.showToast({ title: '请先填写昵称后确认登录', icon: 'none' })
   },
 
   goToReminder() {
@@ -151,6 +184,9 @@ Page({
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
+          const app = getApp()
+          app.globalData.userInfo = null
+          app.globalData.isLoggedIn = false
           this.setData({
             isLoggedIn: false,
             userInfo: { avatarUrl: '', nickName: '' },
