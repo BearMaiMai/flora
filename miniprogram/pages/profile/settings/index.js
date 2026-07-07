@@ -17,6 +17,7 @@ Page({
 
   onLoad(options) {
     const isAbout = !!(options && options.about)
+    this._aboutMode = isAbout
     this.setData({ aboutMode: isAbout })
     if (!isAbout) {
       this.loadUser()
@@ -239,20 +240,6 @@ Page({
     wx.navigateTo({ url: '/pages/profile/settings/index?about=1' })
   },
   
-  onLoad(options) {
-    this._aboutMode = !!(options && options.about)
-    if (!this._aboutMode) {
-      this.loadUser()
-      this.calcCacheSize()
-    }
-  },
-
-  onShow() {
-    if (!this._aboutMode) {
-      this.setData({ settings: settingsUtil.getAll() })
-    }
-  },
-
   // ============ 退出登录 ============
   async onLogout() {
     const res = await new Promise(resolve => {

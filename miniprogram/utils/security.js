@@ -8,7 +8,7 @@
  *   pass: true=通过, false=不通过
  *   suggest: pass/review/block
  */
-export async function checkText(text) {
+const checkText = async function(text) {
   if (!text || !text.trim()) return { pass: true, suggest: 'pass' }
 
   try {
@@ -36,7 +36,7 @@ export async function checkText(text) {
  * @param {String|String[]} mediaUrl - 单张或批量图片 cloud:// URL
  * @returns {Promise<{allPassed: Boolean, results: Array}>}
  */
-export async function checkImage(mediaUrl) {
+const checkImage = async function(mediaUrl) {
   if (!mediaUrl) return { allPassed: true, results: [] }
 
   try {
@@ -64,7 +64,7 @@ export async function checkImage(mediaUrl) {
  * @param {Object} [options] - 配置项
  * @param {String} [options.type='text'] - 'text' 或 'image'
  */
-export function showSecurityWarning(result, options = {}) {
+const showSecurityWarning = function(result, options = {}) {
   const type = options.type || 'text'
   const isImage = type === 'image'
 
@@ -88,7 +88,7 @@ export function showSecurityWarning(result, options = {}) {
  * @param {String|String[]} [params.images] - 待检测图片 URL
  * @returns {Promise<{textPass: Boolean, imagePass: Boolean}>}
  */
-export async function checkAll({ text, images }) {
+const checkAll = async function({ text, images }) {
   const tasks = []
 
   if (text && text.trim()) {
@@ -112,3 +112,5 @@ export async function checkAll({ text, images }) {
 
   return { textPass, imagePass, results }
 }
+
+module.exports = { checkText, checkImage, showSecurityWarning, checkAll }

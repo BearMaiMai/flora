@@ -1,6 +1,7 @@
 // pages/encyclopedia/index.js - 花卉百科列表页
 const flowerService = require('../../services/flower')
 const { CATEGORY_COLOR_MAP } = require('../../constants/flower')
+const { debounce } = require('../../utils/util')
 
 const CACHE_KEY = 'encyclopedia_list'
 const CACHE_EXPIRE = 5 * 60 * 1000 // 5分钟
@@ -32,6 +33,9 @@ Page({
     page: 1,
     hasMore: false,
   },
+
+  // 搜索防抖实例
+  _debounceSearch: null,
 
   async onLoad() {
     // 先尝试读取缓存
@@ -128,6 +132,13 @@ Page({
 
   onSearchInput(e) {
     this.setData({ keyword: e.detail.value })
+    // 防抖搜索：300ms 内不再输入才触发过滤
+    if (!this._debounceSearch) {
+      this._debounceSearch = debounce(() => {
+        this.filterFlowers()
+      }, 300)
+    }
+    this._debounceSearch()
   },
 
   onSearch() {
