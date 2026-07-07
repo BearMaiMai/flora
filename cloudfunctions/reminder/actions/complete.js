@@ -60,13 +60,13 @@ module.exports = async (event, context, { db }) => {
 
   const nextTime = new Date(now.getTime() + actualIntervalDays * 24 * 60 * 60 * 1000)
 
-  // 4. 更新为下次提醒时间（不标记完成，而是循环使用）
+  // 4. 标记完成，更新下次提醒时间（到期后 list 接口会自动恢复为待完成）
   await db.collection('reminders').doc(id).update({
     data: {
       intervalDays: actualIntervalDays, // 同步最新间隔到 reminders 记录
       nextRemindAt: nextTime,
       lastCompletedAt: db.serverDate(),
-      isCompleted: false,
+      isCompleted: true,
     },
   })
 

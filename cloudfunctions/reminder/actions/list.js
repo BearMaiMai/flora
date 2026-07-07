@@ -38,6 +38,24 @@ module.exports = async (event, context, { db, cloud }) => {
     .orderBy('nextRemindAt', 'asc')
     .get()
 
+  // 自动恢复已到期提醒：isCompleted=true 但 nextRemindAt 已过期 → 重置为待完成
+  const now = new Date()
+  const expiredIds = []
+  for (const r of data) {
+    if (r.isCompleted && new Date(r.nextRemindAt) <= now) {
+      expiredIds.push(r._id)
+      r.isCompleted = false
+    }
+  }
+  if (expiredIds.length > 0) {
+    const _ = db.command
+    await Promise.all(expiredIds.map(id =>
+      db.collection('reminders').doc(id).update({
+        data: { isCompleted: false }
+      }).catch(() => {})
+    ))
+  }
+
   // 收集所有 plantId，批量查植物信息（获取 location）
   const plantIds = [...new Set(data.map(r => r.plantId).filter(Boolean))]
   let plantMap = {}
@@ -53,7 +71,6 @@ module.exports = async (event, context, { db, cloud }) => {
   }
 
   // 计算每条提醒的状态 + 关联植物位置
-  const now = new Date()
   const withStatus = data.map(item => {
     const next = new Date(item.nextRemindAt)
     const diffHours = (next - now) / (1000 * 60 * 60)

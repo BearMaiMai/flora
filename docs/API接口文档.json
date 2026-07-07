@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updateTime": "2026-06-29T07:08:01.472Z",
+  "updateTime": "2026-07-07T09:36:29.184Z",
   "cloudEnv": "cloud1-d1gjubt747d28d4ac",
   "changeLog": [
     {
@@ -118,6 +118,64 @@
           ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'common',\ndata: { action: 'getHomeData' }\n})"
+        },
+        {
+          "name": "imgSecCheck",
+          "description": "图片内容安全检查（对接微信 imgSecCheck，审核合规必接）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/common/imgSecCheck",
+          "cloudFunction": "common",
+          "action": "imgSecCheck",
+          "params": [
+            {
+              "type": "String|String[]",
+              "isRequired": true,
+              "name": "mediaUrl",
+              "default": "",
+              "description": "单张图片 cloud:// URL 或 URL 数组",
+              "valueRange": "",
+              "format": "",
+              "example": "",
+              "note": ""
+            }
+          ],
+          "returns": [
+            {
+              "type": "Object",
+              "path": "data.results",
+              "description": "每张图的检测结果数组",
+              "fieldType": "-",
+              "example": "-",
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "String",
+              "path": "data.results[].suggest",
+              "description": "pass=通过, review=疑似, block=违规",
+              "fieldType": "-",
+              "example": "-",
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            },
+            {
+              "type": "Boolean",
+              "path": "data.allPassed",
+              "description": "是否全部通过",
+              "fieldType": "-",
+              "example": "-",
+              "note": "-",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'common',\ndata: { action: 'imgSecCheck', mediaUrl: 'cloud://xxx/avatars/abc.jpg' }\n})\n// { code: 0, data: { allPassed: true, results: [{ suggest: 'pass' }] } }"
         }
       ]
     },
@@ -2818,6 +2876,30 @@
           ],
           "errorCodes": [],
           "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'login', userInfo: { nickName: '花友', avatarUrl: '' } }\n})"
+        },
+        {
+          "name": "logout",
+          "description": "用户退出登录（清除 session，但不删除用户数据）",
+          "httpMethod": "POST",
+          "apiPath": "/cloud/user/logout",
+          "cloudFunction": "user",
+          "action": "logout",
+          "params": [],
+          "returns": [
+            {
+              "type": "String",
+              "path": "message",
+              "description": "退出成功",
+              "fieldType": "String",
+              "example": "-",
+              "note": "退出成功",
+              "format": "-",
+              "valueRange": "-",
+              "isRequired": true
+            }
+          ],
+          "errorCodes": [],
+          "example": "const res = await wx.cloud.callFunction({\nname: 'user',\ndata: { action: 'logout' }\n})"
         },
         {
           "name": "toggleFavorite",

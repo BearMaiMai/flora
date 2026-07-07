@@ -13,7 +13,8 @@
  */
 module.exports = async (event, context, { db }) => {
   const { page = 1, pageSize = 20, category } = event
-  const skip = (page - 1) * pageSize
+  const SIZE = Math.max(1, Math.min(100, pageSize))
+  const skip = (page - 1) * SIZE
 
   let query = db.collection('flowers')
   if (category !== undefined && category !== '') {
@@ -23,7 +24,7 @@ module.exports = async (event, context, { db }) => {
   const countRes = await query.count()
   const { data } = await query
     .skip(skip)
-    .limit(pageSize)
+    .limit(SIZE)
     .orderBy('name', 'asc')
     .get()
 

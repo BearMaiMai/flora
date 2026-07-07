@@ -12,6 +12,7 @@ module.exports = async (event, context, { db, cloud }) => {
   const { data } = await db.collection('plants')
     .where({ _openid: openid })
     .orderBy('createdAt', 'desc')
+    .limit(100)
     .get()
   return { code: 0, data }
 }
