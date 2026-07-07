@@ -14,10 +14,13 @@ const errorCodes = require('../utils/error-codes')
  *   data: { action: 'update', id: 'plant-abc123', nickname: '新昵称' }
  * })
  */
-module.exports = async (event, context, { db }) => {
+module.exports = async (event, context, { db, cloud }) => {
+  const openid = cloud.getWXContext().OPENID
   const { id, ...updateData } = event
   delete updateData.action
   if (!id) return errorCodes.MISSING_PARAM
+  const { data } = await db.collection('plants').where({ _id: id, _openid: openid }).get()
+  if (!data || !data.length) return errorCodes.NOT_FOUND
   await db.collection('plants').doc(id).update({ data: { ...updateData, updatedAt: db.serverDate() } })
   return { code: 0, message: '更新成功' }
 }

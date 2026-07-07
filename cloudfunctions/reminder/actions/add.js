@@ -28,8 +28,9 @@ module.exports = async (event, context, { db, cloud }) => {
   let finalIntervalDays = intervalDays
   if (!finalIntervalDays && plantId) {
     try {
-      const { data: plant } = await db.collection('plants').doc(plantId).get()
-      if (plant) {
+      const { data: plantArr } = await db.collection('plants').where({ _id: plantId, _openid: openid }).get()
+      if (plantArr && plantArr.length > 0) {
+        const plant = plantArr[0]
         const field = type === 'water' ? 'waterInterval' : 'fertilizeInterval'
         if (plant[field]) {
           finalIntervalDays = plant[field]

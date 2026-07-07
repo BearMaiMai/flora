@@ -22,13 +22,15 @@ const errorCodes = require('../utils/error-codes')
  *   data: { action: 'complete', id: 'reminder-abc123', newIntervalDays: 10 }
  * })
  */
-module.exports = async (event, context, { db }) => {
+module.exports = async (event, context, { db, cloud }) => {
+  const openid = cloud.getWXContext().OPENID
   const { id, newIntervalDays } = event
   if (!id) return errorCodes.MISSING_PARAM
 
-  // 1. 查出提醒详情
-  const { data: reminder } = await db.collection('reminders').doc(id).get()
-  if (!reminder) return errorCodes.NOT_FOUND
+  // 1. 查出提醒详情，校验归属
+  const { data: reminderArr } = await db.collection('reminders').where({ _id: id, _openid: openid }).get()
+  if (!reminderArr || !reminderArr.length) return errorCodes.NOT_FOUND
+  const reminder = reminderArr[0]
 
   const now = new Date()
 
