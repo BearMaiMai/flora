@@ -132,6 +132,8 @@ Page({
 
   async onComplete(e) {
     const { id } = e.currentTarget.dataset
+    if (this.data._completingId === id) return // 防重入
+    this.setData({ _completingId: id })
     wx.vibrateShort({ type: 'light' })
     const reminderList = this.data.reminderList.map(r =>
       r._id === id ? { ...r, done: true } : r
@@ -141,7 +143,8 @@ Page({
 
     try {
       await reminderService.complete(id)
-      await this.loadReminders(true)
+      // 延迟刷新，避免乐观更新后列表闪烁
+      setTimeout(() => this.loadReminders(true), 800)
     } catch (err) {
       console.error('完成提醒失败:', err)
       const rollback = this.data.reminderList.map(r =>
@@ -150,6 +153,15 @@ Page({
       this.setData({ reminderList: rollback })
       this.applyFilter()
       wx.showToast({ title: err.message || '操作失败', icon: 'none' })
+    } finally {
+      this.setData({ _completingId: null })
+    }
+  },
+
+  onHide() {
+    // 切到后台时关闭弹层，避免状态残留
+    if (this.data.sheetVisible) {
+      this.setData({ sheetVisible: false })
     }
   },
 

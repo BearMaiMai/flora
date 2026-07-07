@@ -6,7 +6,7 @@ const plantService = require('../../services/plant')
 Page({
   data: {
     loading: false,
-    statusBarHeight: 20,
+    statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20,
     flower: null,
     isFavorite: false,
     favoriteSubmitting: false,

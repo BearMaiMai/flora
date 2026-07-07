@@ -27,15 +27,17 @@
         <icon src="/images/icons/flower/a-023-cherryblossom.svg" size="sm" />
       </view>
     </view>
-    <view class="user-section login-section" wx:else bindtap="onLogin">
+    <view class="user-section login-section" wx:else>
       <view class="avatar-container">
         <view class="avatar-decoration">
-          <view class="avatar-default">
-            <text class="avatar-emoji">👋</text>
-          </view>
+          <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+            <view class="avatar-default">
+              <text class="avatar-emoji">👋</text>
+            </view>
+          </button>
         </view>
       </view>
-      <text class="login-text">点击登录</text>
+      <input class="login-nickname-input" type="nickname" placeholder="点击登录" bindblur="onNicknameInput" bindconfirm="doLogin" />
     </view>
   </view>
 

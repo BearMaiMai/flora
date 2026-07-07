@@ -7,6 +7,7 @@ Page({
     loading: true,
     favorites: [],
     empty: false,
+    _unfavoritingId: null, // 防重入：正在取消收藏的ID
   },
 
   onLoad() {
@@ -57,6 +58,7 @@ Page({
   // 取消收藏
   onUnfavorite(e) {
     const { id } = e.currentTarget.dataset
+    if (this.data._unfavoritingId === id) return // 防重入
     const name = e.currentTarget.dataset.name || '该花卉'
 
     wx.showModal({
@@ -65,6 +67,7 @@ Page({
       confirmColor: '#E53935',
       success: async (res) => {
         if (!res.confirm) return
+        this.setData({ _unfavoritingId: id })
         // 乐观更新
         const oldList = this.data.favorites
         const favorites = oldList.filter(item => item.id !== id)
@@ -79,6 +82,8 @@ Page({
           // 回滚
           this.setData({ favorites: oldList, empty: false })
           wx.showToast({ title: '操作失败，请重试', icon: 'none' })
+        } finally {
+          this.setData({ _unfavoritingId: null })
         }
       },
     })

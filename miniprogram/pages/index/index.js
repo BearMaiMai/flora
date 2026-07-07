@@ -3,7 +3,7 @@ const commonService = require('../../services/common')
 
 Page({
   data: {
-    statusBarHeight: 20,
+    statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20,
     loading: false,
     bannerList: [],
     dailyTip: '',
@@ -98,7 +98,7 @@ Page({
   // 按分类跳转到种植指南
   goToGuideCategory(e) {
     const category = e.currentTarget.dataset.category || ''
-    wx.navigateTo({ url: `/pages/guide/index?category=${category}` })
+    wx.navigateTo({ url: `/pages/guide/index?category=${encodeURIComponent(category)}` })
   },
 
   // 跳转到花卉详情
