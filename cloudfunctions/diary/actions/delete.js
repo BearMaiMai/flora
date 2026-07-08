@@ -11,9 +11,12 @@ const errorCodes = require('../utils/error-codes')
  *   data: { action: 'delete', id: 'diary-abc123' }
  * })
  */
-module.exports = async (event, context, { db }) => {
+module.exports = async (event, context, { db, cloud }) => {
+  const openid = cloud.getWXContext().OPENID
   const { id } = event
   if (!id) return errorCodes.MISSING_PARAM
+  const { data } = await db.collection('diaries').where({ _id: id, _openid: openid }).get()
+  if (!data || !data.length) return errorCodes.NOT_FOUND
   await db.collection('diaries').doc(id).remove()
   return { code: 0, message: '删除成功' }
 }

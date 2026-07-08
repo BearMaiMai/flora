@@ -17,16 +17,21 @@ module.exports = async (event, context, { db, cloud }) => {
   const { data } = await db.collection('users').where({ _openid: openid }).get()
 
   if (data.length > 0) {
-    // 已有用户，更新登录时间
-    await db.collection('users').doc(data[0]._id).update({ data: { lastLoginAt: db.serverDate() } })
-    return { code: 0, data: data[0] }
+    // 已有用户，更新登录时间 + 生成新 session token
+    const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
+    await db.collection('users').doc(data[0]._id).update({
+      data: { sessionToken, lastLoginAt: db.serverDate() }
+    })
+    return { code: 0, data: { ...data[0], sessionToken } }
   }
 
   // 新用户注册
+  const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
   const newUser = {
     _openid: openid,
     nickName: event.userInfo?.nickName || '花友',
     avatarUrl: event.userInfo?.avatarUrl || '',
+    sessionToken,
     favorites: [],
     createdAt: db.serverDate(),
     lastLoginAt: db.serverDate(),

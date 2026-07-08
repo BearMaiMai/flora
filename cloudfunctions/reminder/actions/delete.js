@@ -17,8 +17,8 @@ module.exports = async (event, context, { db, cloud }) => {
   if (!id) return errorCodes.MISSING_PARAM
 
   // 校验归属
-  const { data } = await db.collection('reminders').doc(id).get()
-  if (!data || data._openid !== openid) return errorCodes.DATA_NOT_FOUND
+  const { data } = await db.collection('reminders').where({ _id: id, _openid: openid }).get()
+  if (!data || !data.length) return errorCodes.DATA_NOT_FOUND
 
   await db.collection('reminders').doc(id).remove()
   return { code: 0, message: '删除成功', data: null }

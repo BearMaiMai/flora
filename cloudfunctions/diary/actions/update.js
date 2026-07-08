@@ -28,6 +28,22 @@ module.exports = async (event, context, { db, cloud }) => {
   const { data } = await db.collection('diaries').doc(id).get()
   if (!data || data._openid !== openid) return errorCodes.DATA_NOT_FOUND
 
+  // 内容安全校验（防止绕过客户端直调云函数）
+  if (content) {
+    try {
+      const textRes = await cloud.openapi.security.msgSecCheck({ content })
+      if (textRes.result.suggest !== 'pass') return { code: -1, message: '内容违规，请修改' }
+    } catch (e) { console.log('[diary/update] 文字检测失败:', e.message) }
+  }
+  if (images && images.length > 0) {
+    try {
+      for (const img of images) {
+        const imgRes = await cloud.openapi.security.imgSecCheck({ media: { contentType: 'image/*', value: Buffer.from(img, 'base64') } })
+        if (imgRes.result.suggest !== 'pass') return { code: -1, message: '图片违规，请更换' }
+      }
+    } catch (e) { console.log('[diary/update] 图片检测失败:', e.message) }
+  }
+
   const updateData = {}
   if (content !== undefined) updateData.content = content
   if (images !== undefined) updateData.images = images

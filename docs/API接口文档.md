@@ -2,7 +2,7 @@
 
 > **本文档由脚本自动生成，请勿手动修改**
 >
-> **生成时间**：2026/6/29 15:08:01
+> **生成时间**：2026/7/7 21:24:59
 >
 > **文档版本**：1.0.0
 >
@@ -23,6 +23,7 @@
   - [checkContent](#checkcontent)
   - [getDailyTip](#getdailytip)
   - [getHomeData](#gethomedata)
+  - [imgSecCheck](#imgseccheck)
 - [diaryService](#diaryservice)
   - [add](#add)
   - [delete](#delete)
@@ -58,6 +59,7 @@
   - [getInfo](#getinfo)
   - [getStats](#getstats)
   - [login](#login)
+  - [logout](#logout)
   - [toggleFavorite](#togglefavorite)
   - [updateInfo](#updateinfo)
 - [错误码总表](#错误码总表)
@@ -357,6 +359,87 @@ wx.cloud.callFunction({
   name: 'common',
   data: {
     action: 'getHomeData'
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
+
+### imgSecCheck
+
+**功能**：图片内容安全检查（对接微信 imgSecCheck，审核合规必接）
+
+**接口地址**：`/cloud/common/imgSecCheck`
+
+**请求方法**：`POST`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'common', data: { action: 'imgSecCheck', ...params })`
+
+**请求参数**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| mediaUrl | 单张图片 cloud:// URL 或 URL 数组 | String|String[] | 单张图片 cloud:// URL 或 URL 数组 | 是 |
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+| 字段 | 说明 | 类型 | 备注 | 是否必填 |
+|------|------|------|------|----------|
+| results | 每张图的检测结果数组 | - | - | 是 |
+| results[].suggest | pass=通过, review=疑似, block=违规 | - | - | 是 |
+| allPassed | 是否全部通过 | - | - | 是 |
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'common',
+data: { action: 'imgSecCheck', mediaUrl: 'cloud://xxx/avatars/abc.jpg' }
+})
+// { code: 0, data: { allPassed: true, results: [{ suggest: 'pass' }] } }
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'common',
+  data: {
+    action: 'imgSecCheck',
+    mediaUrl: （填测试值）
   }
 }).then(res => {
   console.log('成功：', res.result)
@@ -2876,6 +2959,75 @@ wx.cloud.callFunction({
     userInfo: '{nickName:'花友',avatarUrl:'...'}',
     userInfo.nickName: '花友',
     userInfo.avatarUrl: （填测试值）
+  }
+}).then(res => {
+  console.log('成功：', res.result)
+}).catch(err => {
+  console.error('失败：', err)
+})
+```
+
+> **预期返回**：参考上方「正确返回示例」
+
+---
+
+### logout
+
+**功能**：用户退出登录（清除 session，但不删除用户数据）
+
+**接口地址**：`/cloud/user/logout`
+
+**请求方法**：`POST`
+
+> 实际调用：`wx.cloud.callFunction({ name: 'user', data: { action: 'logout' })`
+
+**请求参数**：无
+
+**响应说明**：
+
+所有接口返回格式统一为：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+- `code`：状态码，`0` 表示成功，非 `0` 表示失败（详见错误码总表）
+- `message`：提示信息，成功时为 `"success"`，失败时为错误描述
+- `data`：业务数据，成功时返回，失败时为 `null` 或不返回
+
+**响应参数（`data` 结构）**：
+
+**正确返回示例**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+**调用示例**：
+
+```javascript
+const res = await wx.cloud.callFunction({
+name: 'user',
+data: { action: 'logout' }
+})
+```
+
+**接口测试**：
+
+```javascript
+// 在小程序页面 JS 中调用
+wx.cloud.callFunction({
+  name: 'user',
+  data: {
+    action: 'logout'
   }
 }).then(res => {
   console.log('成功：', res.result)

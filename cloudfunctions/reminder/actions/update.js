@@ -28,8 +28,9 @@ module.exports = async (event, context, { db, cloud }) => {
   if (!intervalDays && !nextRemindAt) return errorCodes.MISSING_PARAM
 
   // 校验归属
-  const { data } = await db.collection('reminders').doc(id).get()
-  if (!data || data._openid !== openid) return errorCodes.DATA_NOT_FOUND
+  const { data } = await db.collection('reminders').where({ _id: id, _openid: openid }).get()
+  if (!data || !data.length) return errorCodes.DATA_NOT_FOUND
+  const itemData = data[0]
 
   // 如果传了 intervalDays，自动计算 nextRemindAt
   let finalNextRemindAt = nextRemindAt
@@ -38,7 +39,7 @@ module.exports = async (event, context, { db, cloud }) => {
     const now = new Date()
     finalNextRemindAt = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000).toISOString()
   }
-  if (!finalIntervalDays) finalIntervalDays = data.intervalDays
+  if (!finalIntervalDays) finalIntervalDays = itemData.intervalDays
 
   await db.collection('reminders').doc(id).update({
     data: {

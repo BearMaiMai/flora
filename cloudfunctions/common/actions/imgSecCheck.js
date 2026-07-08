@@ -32,8 +32,15 @@ module.exports = async (event, context) => {
     const results = await Promise.all(
       urls.map(async (url) => {
         try {
+          // cloud:// fileID 需先转换为 HTTPS 临时 URL
+          let checkUrl = url
+          if (url.startsWith('cloud://')) {
+            const { fileList } = await cloud.getTempFileURL({ fileList: [url] })
+            checkUrl = (fileList && fileList[0] && fileList[0].tempFileURL) || url
+          }
+
           const res = await cloud.openapi.security.imgSecCheck({
-            media_url: url,
+            media_url: checkUrl,
           })
           return { url, suggest: res.result.suggest }
         } catch (err) {
