@@ -35,3 +35,6 @@ npm-debug.log*
 # 编译缓存
 .cache/
 .workbuddy/
+
+# 损坏的旧 .git 目录残留
+.git.broken/

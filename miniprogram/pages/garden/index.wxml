@@ -77,8 +77,40 @@
       </view>
     </view>
 
-    <empty-state wx:else iconName="tree" desc="还没有种花哦" btnText="去花卉百科添加" bind:action="goToAddPlant" />
+<empty-state wx:else iconName="tree" desc="还没有种花哦" btnText="去花卉百科添加" bind:action="goToAddPlant" />
+  </view>
+
+  <!-- 成长日记 -->
+  <view class="section anim-fade-in-up anim-delay-3">
+    <view class="section-header flex-between">
+      <view class="section-title-row">
+        <text class="section-title">成长日记</text>
+        <view class="count-badge" wx:if="{{diaryList.length}}">{{diaryList.length}}</view>
+      </view>
+      <view class="add-btn" bindtap="goToAddDiary">
+        <icon name="add" size="sm" color="var(--color-primary)" />
+        <text class="add-text">记录</text>
+      </view>
+    </view>
+
+    <view class="diary-list" wx:if="{{diaryList.length}}">
+      <view class="diary-item anim-fade-in-up" wx:for="{{diaryList}}" wx:key="_id" hover-class="hover-card" hover-stay-time="100">
+        <view class="diary-dot"></view>
+        <view class="diary-content" bindtap="goToDiaryDetail" data-id="{{item._id}}">
+          <view class="diary-meta">
+            <text class="diary-plant-name">{{item.plantName}}</text>
+            <text class="diary-time">{{item.createdAt}}</text>
+          </view>
+          <text class="diary-text">{{item.content}}</text>
+        </view>
+        <view class="diary-delete-btn" catchtap="onDeleteDiary" data-id="{{item._id}}" hover-class="hover-btn" hover-stay-time="100">
+          <icon name="delete" size="sm" color="#999" />
+        </view>
+      </view>
+    </view>
+
+    <empty-state wx:else iconName="book" desc="还没有日记，记录一下花的成长吧" btnText="去添加" bind:action="goToAddDiary" />
   </view>
     </view>
-  </scroll-view>
+    </scroll-view>
 </view>

@@ -13,8 +13,10 @@
 module.exports = async (event, context, { db, cloud }) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
+  console.log('[user/login] 开始, openid:', openid ? openid.substring(0, 8) + '...' : 'null')
 
   const { data } = await db.collection('users').where({ _openid: openid }).get()
+  console.log('[user/login] 查询结果:', data ? data.length : 'null')
 
   if (data.length > 0) {
     // 已有用户，更新登录时间 + 生成新 session token
@@ -37,5 +39,6 @@ module.exports = async (event, context, { db, cloud }) => {
     lastLoginAt: db.serverDate(),
   }
   const res = await db.collection('users').add({ data: newUser })
+  console.log('[user/login] 注册完成:', res._id)
   return { code: 0, data: { _id: res._id, ...newUser } }
 }

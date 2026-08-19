@@ -17,10 +17,15 @@ Component({
 
   lifetimes: {
     attached() {
-      const sysInfo = wx.getSystemInfoSync()
-      this.setData({
-        statusBarHeight: sysInfo.statusBarHeight || 20,
-      })
+      let statusBarHeight = 20
+      try {
+        if (wx.getWindowInfo) {
+          statusBarHeight = wx.getWindowInfo().statusBarHeight
+        } else {
+          statusBarHeight = wx.getSystemInfoSync().statusBarHeight
+        }
+      } catch (e) {}
+      this.setData({ statusBarHeight: statusBarHeight || 20 })
     },
   },
 })

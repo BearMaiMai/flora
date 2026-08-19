@@ -25,7 +25,7 @@ module.exports = async (event, context, { db, cloud }) => {
     code: 0,
     data: {
       list: flowerList,
-      total: flowerList.length
+      total: flowerList.length  // 与列表保持一致，过滤掉已删除的花卉ID
     }
   }
 }

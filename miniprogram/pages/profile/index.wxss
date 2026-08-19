@@ -80,6 +80,25 @@
   margin-bottom: 8rpx;
 }
 
+/* 未登录状态下的"点击登录"输入框（替代 username） */
+.login-nickname-input {
+  display: block;
+  width: 480rpx;
+  margin: 0 auto 8rpx auto;
+  padding: 8rpx 0;
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.login-nickname-input::placeholder {
+  color: #b5b5b5;
+  font-weight: 500;
+}
+
 .user-motto-row {
   display: flex;
   align-items: center;

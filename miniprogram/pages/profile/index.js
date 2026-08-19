@@ -1,7 +1,7 @@
 // pages/profile/index.js - 个人中心
 const userService = require('../../services/user')
 const reminderService = require('../../services/reminder')
-const { uploadImage } = require('../../utils/image')
+const { uploadImage, safeImageURL } = require('../../utils/image')
 const { checkImage } = require('../../utils/security')
 
 // 临时存储用户授权的头像和昵称（新 API 方式收集）
@@ -21,9 +21,34 @@ Page({
   },
 
   onShow() {
-    if (this.data.isLoggedIn) {
-      this.loadStats()
+    const app = getApp()
+    const loggedIn = !!(app.globalData && app.globalData.isLoggedIn)
+    // 优先级：globalData（最新）> 本地状态
+    if (loggedIn !== this.data.isLoggedIn) {
+      this.setData({ isLoggedIn: loggedIn })
     }
+    if (loggedIn) {
+      this.loadStats()
+      this.refreshUserInfo()
+    } else {
+      // 退出登录后彻底清掉本地缓存的 userInfo 和 stats
+      this.setData({
+        userInfo: { avatarUrl: '', nickName: '' },
+        stats: { plantCount: 0, diaryCount: 0, favoriteCount: 0 },
+        reminderCount: 0,
+      })
+    }
+  },
+
+  async refreshUserInfo() {
+    try {
+      const res = await userService.getInfo()
+      const data = (res && res.data) || {}
+      const avatarUrl = await safeImageURL(data.avatarUrl || '')
+      const userInfo = { avatarUrl, nickName: data.nickName || data.nickname || '花友' }
+      getApp().globalData.userInfo = userInfo
+      this.setData({ userInfo })
+    } catch (err) { console.error('refreshUserInfo:', err) }
   },
 
   /**
@@ -33,10 +58,8 @@ Page({
     try {
       const res = await userService.login()
       const data = (res && res.data) || {}
-      const userInfo = {
-        avatarUrl: data.avatarUrl || '',
-        nickName: data.nickName || data.nickname || '花友',
-      }
+      const avatarUrl = await safeImageURL(data.avatarUrl || '')
+      const userInfo = { avatarUrl, nickName: data.nickName || data.nickname || '花友' }
       const app = getApp()
       app.globalData.userInfo = userInfo
       app.globalData.isLoggedIn = true
@@ -76,8 +99,48 @@ Page({
     const avatarUrl = (e.detail && e.detail.avatarUrl) || ''
     if (!avatarUrl) return
     _pendingAvatar = avatarUrl
-    // 如果昵称也已填写，自动触发登录
+    // 已登录状态：用户更换头像，直接更新（昵称用现有的）
+    if (this.data.isLoggedIn) {
+      this.updateAvatarOnly()
+      return
+    }
+    // 未登录状态：如果昵称也已填写，自动触发登录
     if (_pendingNickname) this.doLogin()
+  },
+
+  /**
+   * 已登录用户更换头像（只改头像不动昵称）
+   */
+  async updateAvatarOnly() {
+    let cloudAvatar = _pendingAvatar || ''
+    if (!cloudAvatar) return
+    wx.showLoading({ title: '上传头像...', mask: true })
+    try {
+      // 上传到云存储
+      if (!cloudAvatar.startsWith('cloud://')) {
+        cloudAvatar = await uploadImage(cloudAvatar, 'avatars')
+      }
+      // 内容安全检测
+      const imgResult = await checkImage(cloudAvatar)
+      if (!imgResult.allPassed) {
+        wx.hideLoading()
+        wx.showToast({ title: '图片违规，请更换', icon: 'none' })
+        return
+      }
+      // 仅更新头像
+      await userService.updateInfo({ avatarUrl: cloudAvatar })
+      const httpsUrl = await safeImageURL(cloudAvatar)
+      const userInfo = { ...this.data.userInfo, avatarUrl: httpsUrl }
+      const app = getApp()
+      app.globalData.userInfo = userInfo
+      this.setData({ userInfo })
+      _pendingAvatar = ''
+      wx.hideLoading()
+      wx.showToast({ title: '头像已更新', icon: 'success' })
+    } catch (err) {
+      wx.hideLoading()
+      wx.showToast({ title: err.message || '上传失败', icon: 'none' })
+    }
   },
 
   /**
@@ -85,6 +148,10 @@ Page({
    */
   onNicknameInput(e) {
     _pendingNickname = (e.detail && e.detail.value) || ''
+    // 昵称填入后自动登录（不关键盘，由系统处理）
+    if (_pendingNickname && !this.data.isLoggedIn) {
+      this.doLogin()
+    }
   },
 
   /**
@@ -130,6 +197,9 @@ Page({
       this.setData({ userInfo, isLoggedIn: true })
       this.loadStats()
 
+      // 关闭键盘（用微信昵称弹窗需要主动隐藏）
+      wx.hideKeyboard()
+
       // 清理临时状态
       _pendingAvatar = ''
       _pendingNickname = ''
@@ -139,6 +209,8 @@ Page({
     } catch (err) {
       console.error('登录失败:', err)
       wx.hideLoading()
+      wx.hideKeyboard()
+      _pendingNickname = ''
       wx.showToast({ title: err.message || '登录失败', icon: 'none' })
     }
   },
@@ -158,7 +230,6 @@ Page({
   },
 
   goToDiaryList() {
-    // 跳转到花园页，日记列表在花园页内
     wx.switchTab({ url: '/pages/garden/index' })
   },
 
@@ -184,9 +255,11 @@ Page({
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
+          userService.logout().catch(() => {})
           const app = getApp()
           app.globalData.userInfo = null
           app.globalData.isLoggedIn = false
+          wx.setStorageSync('loggedOut', true)
           this.setData({
             isLoggedIn: false,
             userInfo: { avatarUrl: '', nickName: '' },

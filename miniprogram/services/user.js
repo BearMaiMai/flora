@@ -45,6 +45,11 @@ const userService = {
   feedback({ content, contact }) {
     return callFunction('user', { action: 'feedback', content, contact })
   },
+
+  /** 退出登录 */
+  logout() {
+    return callFunction('user', { action: 'logout' })
+  },
 }
 
 module.exports = userService

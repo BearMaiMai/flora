@@ -34,7 +34,11 @@ const callFunction = async (name, data = {}, options = {}) => {
   let lastErr = null
   for (let attempt = 0; attempt <= retry; attempt++) {
     try {
-      const res = await wx.cloud.callFunction({ name, data })
+      const res = await wx.cloud.callFunction({
+        name,
+        data,
+        config: { timeout: 10000 }
+      })
       const { result } = res
 
       // 业务错误：code 非 0

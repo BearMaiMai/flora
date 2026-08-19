@@ -252,40 +252,21 @@ Page({
     })
   },
 
-  // 编辑购买日期（2.15）
-  onEditPurchaseDate() {
+  /**
+   * 种植日期变化（picker 直接返回）
+   */
+  async onPurchaseDateChange(e) {
     const plant = this.data.plant
     if (!plant) return
-    wx.showModal({
-      title: '修改购买/种植日期',
-      content: '将打开日期选择器，选择后将重新计算养护天数。',
-      confirmText: '选择日期',
-      success: (res) => {
-        if (!res.confirm) return
-        // 计算当前日期或从 purchaseDate 推算初始值
-        const defaultDate = plant.addDate || new Date().toISOString().slice(0, 10)
-        wx.showDatePicker ? (
-          wx.showDatePicker({
-            value: defaultDate,
-            success: async (dateRes) => {
-              const purchaseDate = dateRes.date || dateRes.detail?.value
-              if (!purchaseDate) return
-              try {
-                await plantService.update(plant._id, { purchaseDate })
-                // 重新加载以刷新天数显示
-                this.loadDetail()
-                wx.showToast({ title: '已更新', icon: 'success' })
-              } catch (err) {
-                console.error('更新日期失败:', err)
-                wx.showToast({ title: '更新失败', icon: 'none' })
-              }
-            },
-          })
-        ) : (
-          // 兜底：使用 picker 模式
-          wx.showToast({ title: '请使用新版微信体验完整功能', icon: 'none' })
-        )
-      },
-    })
+    const purchaseDate = e.detail.value
+    if (!purchaseDate) return
+    try {
+      await plantService.update(plant._id, { purchaseDate })
+      this.loadDetail()
+      wx.showToast({ title: '已更新', icon: 'success' })
+    } catch (err) {
+      console.error('更新日期失败:', err)
+      wx.showToast({ title: '更新失败', icon: 'none' })
+    }
   },
 })
