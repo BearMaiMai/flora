@@ -3,7 +3,7 @@ const commonService = require('../../services/common')
 
 Page({
   data: {
-    statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20,
+    statusBarHeight: (wx.getWindowInfo && wx.getWindowInfo().statusBarHeight) || (wx.getSystemInfoSync && wx.getSystemInfoSync().statusBarHeight) || 20,
     loading: false,
     bannerList: [],
     dailyTip: '',
