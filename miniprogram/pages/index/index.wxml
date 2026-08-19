@@ -39,7 +39,7 @@
         <view class="section-header flex-between">
           <view class="section-title-row">
             <icon src="/images/icons/flower/a-002-lavender.svg" size="md" />
-            <text class="section-title">季节养护</text>
+            <text class="section-title">种植指南</text>
           </view>
           <view class="section-more-btn" bindtap="goToGuide" hover-class="hover-btn" hover-stay-time="100">
             <text>查看更多</text>

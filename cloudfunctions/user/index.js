@@ -6,6 +6,7 @@ const rateLimit = require('./utils/rate-limit')
 
 const actions = {
   login: require('./actions/login'),
+  getInfo: require('./actions/getInfo'),
   updateInfo: require('./actions/updateInfo'),
   toggleFavorite: require('./actions/toggleFavorite'),
   getFavorites: require('./actions/getFavorites'),

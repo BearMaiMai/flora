@@ -1,14 +1,16 @@
 // pages/garden/index.js - 我的花园
 const plantService = require('../../services/plant')
 const reminderService = require('../../services/reminder')
+const diaryService = require('../../services/diary')
 const { REMINDER_TYPE_ICON, REMINDER_TYPE_LABEL } = require('../../constants/reminder')
-const { toDate, formatRelativeDays, isToday } = require('../../utils/util')
+const { toDate, formatDate, formatRelativeDays, isToday } = require('../../utils/util')
 
 Page({
   data: {
     loading: true,
     plantList: [],
     todayReminders: [],
+    diaryList: [],
     _completingId: null, // 防重入：正在完成的提醒ID
   },
 
@@ -30,21 +32,36 @@ Page({
   async loadData(silent = false) {
     if (!silent) this.setData({ loading: true })
     try {
-      const [plantRes, reminderRes] = await Promise.all([
+      const [plantRes, reminderRes, diaryRes] = await Promise.all([
         plantService.getList(),
         reminderService.getList(),
+        diaryService.getList(),
       ])
       const plantList = ((plantRes && plantRes.data) || []).map(p => this.normalizePlant(p))
       const todayReminders = ((reminderRes && reminderRes.data) || [])
         .filter(r => !r.isCompleted && isToday(r.nextRemindAt))
         .map(r => this.normalizeReminder(r, plantList))
-      this.setData({ plantList, todayReminders })
+      const diaryList = this.normalizeDiaries(diaryRes && diaryRes.data, plantList)
+      this.setData({ plantList, todayReminders, diaryList })
     } catch (err) {
       console.error('我的花园加载失败:', err)
       if (!silent) wx.showToast({ title: '加载失败，请下拉重试', icon: 'none' })
     } finally {
       this.setData({ loading: false })
     }
+  },
+
+  normalizeDiaries(rawList, plantList) {
+    const list = (rawList || []).slice(0, 3).map(d => {
+      const plant = plantList.find(p => p._id === d.plantId)
+      return {
+        _id: d._id,
+        plantName: (plant && plant.nickname) || '植物',
+        content: (d.content || '').slice(0, 80) + ((d.content || '').length > 80 ? '…' : ''),
+        createdAt: formatDate(d.createdAt, 'YYYY-MM-DD HH:mm'),
+      }
+    })
+    return list
   },
 
   normalizePlant(raw) {
@@ -118,5 +135,39 @@ Page({
 
   goToAddPlant() {
     wx.switchTab({ url: '/pages/encyclopedia/index' })
+  },
+
+  goToAddDiary() {
+    if (!this.data.plantList.length) {
+      wx.showToast({ title: '请先添加植物', icon: 'none' })
+      return
+    }
+    wx.navigateTo({ url: `/pages/garden/diary-edit?plantId=${this.data.plantList[0]._id}` })
+  },
+
+  goToDiaryDetail(e) {
+    const id = e.currentTarget.dataset.id
+    if (id) wx.navigateTo({ url: `/pages/garden/diary-edit?diaryId=${id}` })
+  },
+
+  onDeleteDiary(e) {
+    const id = e.currentTarget.dataset.id
+    if (!id) return
+    wx.showModal({
+      title: '删除日记',
+      content: '确定要删除这条日记吗？',
+      confirmColor: '#E53935',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await diaryService.remove(id)
+          const diaryList = this.data.diaryList.filter(d => d._id !== id)
+          this.setData({ diaryList })
+          wx.showToast({ title: '已删除', icon: 'success' })
+        } catch (err) {
+          wx.showToast({ title: err.message || '删除失败', icon: 'none' })
+        }
+      },
+    })
   },
 })

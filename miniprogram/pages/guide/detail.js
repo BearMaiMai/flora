@@ -1,16 +1,109 @@
 // pages/guide/detail.js - 种植指南详情页
+const guideService = require('../../services/guide')
+const { formatDate } = require('../../utils/util')
+
 Page({
-  data: {
-    loading: false,
-    guide: {
-      _id: 'g1',
-      title: '新手入门：第一盆花怎么养？',
-      content: '<h3>🌱 选花篇</h3><p>新手推荐从以下植物开始：</p><p><b>绿萝</b> - 最好养的室内植物，耐阴耐湿，放哪都能活</p><p><b>多肉</b> - 少浇水就行，造型可爱</p><p><b>薄荷</b> - 生命力旺盛，还能泡茶</p><h3>🪴 选盆篇</h3><p>花盆一定要有<b>排水孔</b>！没有排水孔是新手养死花的第一大原因。</p><p>建议选择透气性好的<b>陶盆</b>或<b>红陶盆</b>，尺寸比植物根团大2-3cm即可。</p><h3>💧 浇水篇</h3><p>最重要的原则：<b>见干见湿</b></p><p>用手指插入土壤2cm，感觉干了再浇，浇就浇透。</p><p>冬季和阴雨天减少浇水频率。</p><h3>☀️ 光照篇</h3><p>大部分植物需要明亮的散射光。放在窗台附近，避免夏天正午的强光直射。</p>',
-    },
-  },
+  data: { loading: true, guide: null },
+
   onLoad(options) {
-    if (options.id) {
-      wx.setNavigationBarTitle({ title: '种植指南' })
+    const id = options && options.id
+    if (!id) {
+      this.setData({ loading: false })
+      wx.showToast({ title: '缺少文章ID', icon: 'none' })
+      return
     }
+    this.loadDetail(id)
+  },
+
+  async loadDetail(id) {
+    this.setData({ loading: true })
+    try {
+      const res = await guideService.getDetail(id)
+      const guide = res && res.data
+      if (!guide || !guide._id) {
+        wx.showToast({ title: '文章不存在', icon: 'none' })
+        return
+      }
+      wx.setNavigationBarTitle({ title: guide.title || '种植指南' })
+      const formattedContent = this.formatMarkdown(guide.content || '')
+      this.setData({
+        guide: {
+          ...guide,
+          content: formattedContent,
+          createdAt: formatDate(guide.createdAt, 'YYYY-MM-DD'),
+        },
+      })
+    } catch (err) {
+      console.error('[guide/detail] 异常:', err)
+      wx.showToast({ title: err.message || '加载失败', icon: 'none' })
+    } finally {
+      this.setData({ loading: false })
+    }
+  },
+
+  /**
+   * 简易 Markdown → HTML 转换（带行内样式，rich-text 渲染友好）
+   * 数据库里的 content 是 Markdown 格式
+   */
+  formatMarkdown(md) {
+    if (!md) return ''
+    const escapeHtml = (s) => String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+
+    let html = escapeHtml(md)
+
+    // 标题（H1/H2/H3）带行内样式
+    html = html.replace(/^### (.+)$/gm, '<h3 class="art-h3">$1</h3>')
+    html = html.replace(/^## (.+)$/gm, '<h2 class="art-h2">$1</h2>')
+    html = html.replace(/^# (.+)$/gm, '<h1 class="art-h1">$1</h1>')
+
+    // 加粗
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="art-strong">$1</strong>')
+
+    // 无序列表
+    html = html.replace(/(?:^- (.+)\n?)+/gm, (m) => {
+      const items = m.trim().split('\n').map(l => '<li class="art-li">' + l.replace(/^- /, '') + '</li>').join('')
+      return '<ul class="art-ul">' + items + '</ul>'
+    })
+
+    // 表格（简单支持 | 列1 | 列2 | 这种格式）
+    const lines = html.split('\n')
+    const out = []
+    let tableRows = []
+    let inTable = false
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      if (line.startsWith('|') && line.endsWith('|') && line.length > 2) {
+        // 跳过分隔行 |---|---|---|
+        if (/^\|[\s\-:|]+\|$/.test(line)) continue
+        const cells = line.slice(1, -1).split('|').map(c => c.trim())
+        const isHeader = !inTable && tableRows.length === 0
+        const tag = isHeader ? 'th' : 'td'
+        tableRows.push('<tr>' + cells.map(c => `<${tag} class="art-${tag}">${c}</${tag}>`).join('') + '</tr>')
+        inTable = true
+      } else {
+        if (inTable && tableRows.length) {
+          out.push('<table class="art-table">' + tableRows.join('') + '</table>')
+          tableRows = []
+          inTable = false
+        }
+        out.push(line)
+      }
+    }
+    if (inTable && tableRows.length) {
+      out.push('<table class="art-table">' + tableRows.join('') + '</table>')
+    }
+    html = out.join('\n')
+
+    // 段落（双换行 → </p><p>）
+    html = html.replace(/\n\n+/g, '</p><p class="art-p">')
+    html = '<p class="art-p">' + html + '</p>'
+
+    // 单换行 → <br>
+    html = html.replace(/\n/g, '<br>')
+
+    return html
   },
 })

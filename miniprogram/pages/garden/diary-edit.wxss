@@ -3,6 +3,7 @@
 .diary-input {
   width: 100%;
   min-height: 200rpx;
+  max-height: 320rpx;
   padding: 24rpx;
   background-color: var(--bg-card);
   border-radius: var(--border-radius-md);
@@ -29,18 +30,22 @@
   align-items: center;
   gap: 6rpx;
   padding: 12rpx 24rpx;
-  border-radius: var(--border-radius-round);
+  border-radius: 100rpx;
   background: var(--bg-card);
   border: 2rpx solid var(--border-color);
   font-size: var(--font-sm);
   color: var(--text-primary);
-  transition: all var(--transition-fast);
+  transition: all 0.2s;
 }
 
 .chip-active {
   background: var(--bg-green-light);
   border-color: var(--color-primary);
   color: var(--color-primary-dark);
+}
+
+.hover-chip {
+  opacity: 0.7;
 }
 
 .chip-icon {

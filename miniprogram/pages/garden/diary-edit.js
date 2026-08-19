@@ -33,7 +33,7 @@ Page({
     maxImageCount: 9,
     submitting: false,
     weatherOptions: WEATHER_OPTIONS,
-    careActionOptions: CARE_ACTIONS,
+    careActionOptions: CARE_ACTIONS.map(o => ({ ...o })), // 每个 chip 自己的 active 标志
   },
 
   onLoad(options) {
@@ -57,11 +57,17 @@ Page({
       if (images.length) {
         images = await toTempFileURLs(images)
       }
+      const careActions = Array.isArray(raw.careActions) ? raw.careActions : []
+      const careActionOptions = this.data.careActionOptions.map(o => ({
+        ...o,
+        active: careActions.indexOf(o.value) > -1,
+      }))
       this.setData({
         content: raw.content || '',
         images,
         weather: raw.weather || '',
-        careActions: Array.isArray(raw.careActions) ? raw.careActions : [],
+        careActions,
+        careActionOptions,
         plantId: raw.plantId || this.data.plantId,
       })
     } catch (err) {
@@ -86,7 +92,12 @@ Page({
     const idx = careActions.indexOf(value)
     if (idx > -1) careActions.splice(idx, 1)
     else careActions.push(value)
-    this.setData({ careActions })
+    // 直接把 active 标志写到每个 chip 对象里，WXML 直接读
+    const careActionOptions = this.data.careActionOptions.map(o => ({
+      ...o,
+      active: careActions.indexOf(o.value) > -1,
+    }))
+    this.setData({ careActions, careActionOptions })
   },
 
   chooseImage() {

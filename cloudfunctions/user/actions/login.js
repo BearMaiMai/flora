@@ -13,19 +13,31 @@
 module.exports = async (event, context, { db, cloud }) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
+  console.log('[user/login] 开始, openid:', openid ? openid.substring(0, 8) + '...' : 'null')
 
   const { data } = await db.collection('users').where({ _openid: openid }).get()
+  console.log('[user/login] 查询结果:', data ? data.length : 'null')
 
   if (data.length > 0) {
-    // 已有用户，更新登录时间 + 生成新 session token
+    const user = data[0]
     const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
-    await db.collection('users').doc(data[0]._id).update({
+    await db.collection('users').doc(user._id).update({
       data: { sessionToken, lastLoginAt: db.serverDate() }
     })
-    return { code: 0, data: { ...data[0], sessionToken } }
+    console.log('[user/login] 老用户更新完成')
+    return {
+      code: 0,
+      data: {
+        _id: user._id,
+        nickName: user.nickName || '花友',
+        avatarUrl: user.avatarUrl || '',
+        sessionToken,
+        favorites: user.favorites || [],
+      }
+    }
   }
 
-  // 新用户注册
+  console.log('[user/login] 新用户注册')
   const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
   const newUser = {
     _openid: openid,
@@ -37,5 +49,6 @@ module.exports = async (event, context, { db, cloud }) => {
     lastLoginAt: db.serverDate(),
   }
   const res = await db.collection('users').add({ data: newUser })
+  console.log('[user/login] 注册完成:', res._id)
   return { code: 0, data: { _id: res._id, ...newUser } }
 }

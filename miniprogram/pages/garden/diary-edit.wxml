@@ -1,6 +1,6 @@
 <!--pages/garden/diary-edit.wxml-->
 <view class="container">
-  <textarea class="diary-input" placeholder="记录今天的种植心得..." value="{{content}}" bindinput="onContentInput" maxlength="500" auto-height />
+  <textarea class="diary-input" placeholder="记录今天的种植心得..." value="{{content}}" bindinput="onContentInput" maxlength="500" auto-height show-confirm-bar="{{false}}" />
 
   <!-- 天气 -->
   <view class="diary-section-label">今日天气</view>
@@ -9,9 +9,9 @@
       class="chip {{weather === item.value ? 'chip-active' : ''}}"
       wx:for="{{weatherOptions}}"
       wx:key="value"
-      bindtap="onWeatherTap"
+      catchtap="onWeatherTap"
       data-value="{{item.value}}"
-      hover-class="hover-tag"
+      hover-class="hover-chip"
       hover-stay-time="100"
     >
       <text wx:if="{{item.icon}}" class="chip-icon">{{item.icon}}</text>
@@ -23,12 +23,12 @@
   <view class="diary-section-label">养护记录（可多选）</view>
   <view class="chip-row">
     <view
-      class="chip {{careActions.indexOf(item.value) > -1 ? 'chip-active' : ''}}"
+      class="chip {{item.active ? 'chip-active' : ''}}"
       wx:for="{{careActionOptions}}"
       wx:key="value"
-      bindtap="onCareActionTap"
+      catchtap="onCareActionTap"
       data-value="{{item.value}}"
-      hover-class="hover-tag"
+      hover-class="hover-chip"
       hover-stay-time="100"
     >
       <text class="chip-icon">{{item.icon}}</text>

@@ -53,7 +53,7 @@
   </view>
 
   <!-- 空状态 -->
-  <empty-state wx:if="{{!loading && !filteredList.length}}" iconName="lavender" desc="暂无提醒&#10;添加植物后会自动生成养护提醒哦" />
+  <empty-state wx:if="{{!loading && !filteredList.length}}" iconName="lavender" desc="暂无提醒&添加植物后会自动生成养护提醒哦" />
 
   <!-- 浮动添加按钮 -->
   <view class="fab-add" bindtap="onAddTap" hover-class="hover-btn" hover-stay-time="100">

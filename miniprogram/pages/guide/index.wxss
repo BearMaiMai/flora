@@ -1,8 +1,14 @@
 /* pages/guide/index.wxss - 种植指南样式 */
 @import '/styles/animation.wxss';
 
+.guide-scroll {
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .guide-page {
-  min-height: 100vh;
+  min-height: 100%;
   padding: 24rpx;
   padding-bottom: 48rpx;
   background-color: var(--bg-page);

@@ -47,6 +47,7 @@ module.exports = async (event, context, { db }) => {
       level: true,
       viewCount: true,
       createdAt: true,
+      // content 不在列表里返回，只在 detail 返回，避免响应过大超时
     })
     .get()
 

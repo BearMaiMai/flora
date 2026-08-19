@@ -1,7 +1,7 @@
 // pages/profile/settings/index.js - 设置页
 const userService = require('../../../services/user')
 const settingsUtil = require('../../../utils/settings')
-const { uploadImage } = require('../../../utils/image')
+const { uploadImage, safeImageURL } = require('../../../utils/image')
 const { checkText, checkImage, showSecurityWarning } = require('../../../utils/security')
 
 const APP_VERSION = 'v1.0.0'
@@ -31,10 +31,16 @@ Page({
     }
   },
 
-  loadUser() {
-    const app = getApp()
-    const userInfo = (app.globalData && app.globalData.userInfo) || { avatarUrl: '', nickName: '' }
-    this.setData({ userInfo })
+  async loadUser() {
+    try {
+      const res = await userService.getInfo()
+      const data = (res && res.data) || {}
+      const avatarUrl = await safeImageURL(data.avatarUrl || '')
+      this.setData({ userInfo: { avatarUrl, nickName: data.nickName || data.nickname || '花友' } })
+    } catch (err) {
+      const app = getApp()
+      this.setData({ userInfo: (app.globalData && app.globalData.userInfo) || { avatarUrl: '', nickName: '' } })
+    }
   },
 
   // ============ 缓存大小 ============
@@ -115,7 +121,8 @@ Page({
       }
 
       await userService.updateInfo({ avatarUrl: fileID })
-      const userInfo = { ...this.data.userInfo, avatarUrl: fileID }
+      const httpsUrl = await safeImageURL(fileID)
+      const userInfo = { ...this.data.userInfo, avatarUrl: httpsUrl }
       const app = getApp()
       app.globalData.userInfo = userInfo
       this.setData({ userInfo })
@@ -252,11 +259,13 @@ Page({
     })
     if (!res) return
 
+    userService.logout().catch(() => {})
     const app = getApp()
     app.globalData.userInfo = null
     app.globalData.isLoggedIn = false
+    wx.setStorageSync('loggedOut', true)
     this.setData({ userInfo: { avatarUrl: '', nickName: '' } })
     wx.showToast({ title: '已退出登录', icon: 'success' })
-    setTimeout(() => wx.navigateBack(), 800)
+    setTimeout(() => wx.switchTab({ url: '/pages/profile/index' }), 800)
   },
 })

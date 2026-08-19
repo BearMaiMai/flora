@@ -18,7 +18,14 @@ module.exports = async (event, context, { db, cloud }) => {
   const { data } = await db.collection('users').where({ _openid: openid }).get()
   if (!data.length) return errorCodes.USER_NOT_FOUND
 
-  // 去掉 _openid，不返回给前端
-  const { _openid, ...userData } = data[0]
-  return { code: 0, data: userData }
+  const u = data[0]
+  return {
+    code: 0,
+    data: {
+      _id: u._id,
+      nickName: u.nickName || '花友',
+      avatarUrl: u.avatarUrl || '',
+      favorites: u.favorites || [],
+    }
+  }
 }

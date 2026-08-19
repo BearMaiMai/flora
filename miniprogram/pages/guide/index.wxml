@@ -1,4 +1,5 @@
 <!--pages/guide/index.wxml - 种植指南-->
+<scroll-view class="guide-scroll" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}">
 <view class="guide-page">
   <!-- 页面头部 -->
   <view class="guide-header">
@@ -13,7 +14,7 @@
     <view class="featured-image-wrap">
       <view class="featured-image-bg"></view>
       <view class="featured-overlay">
-        <view class="featured-reading-badge">5 min</view>
+        <view class="featured-reading-badge">{{featuredGuide.readTime || '5分钟'}}</view>
         <text class="featured-title">{{featuredGuide.title}}</text>
         <text class="featured-desc">{{featuredGuide.summary}}</text>
       </view>
@@ -60,5 +61,7 @@
   </view>
 
   <!-- 空状态 -->
-  <empty-state wx:if="{{!loading && !filteredGuideList.length}}" icon="📖" desc="{{activeCategory ? '该分类暂无指南' : '种植指南即将上线'}}" />
+  <empty-state wx:if="{{!loading && !filteredGuideList.length}}" icon="📖" desc="{{activeCategory ? '该分类暂无指南' : '暂无指南文章'}}" />
 </view>
+<view class="bottom-spacer"></view>
+</scroll-view>

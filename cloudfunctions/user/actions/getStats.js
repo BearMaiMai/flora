@@ -18,12 +18,22 @@ module.exports = async (event, context, { db, cloud }) => {
     db.collection('users').where({ _openid: openid }).get(),
   ])
 
+  // 收藏数需要与 getFavorites 保持一致：只统计真实存在的花卉（过滤掉已被删除的 stale ID）
+  let favoriteCount = 0
+  const favorites = users.data[0]?.favorites || []
+  if (favorites.length > 0) {
+    const { total } = await db.collection('flowers').where({
+      _id: db.command.in(favorites)
+    }).count()
+    favoriteCount = total
+  }
+
   return {
     code: 0,
     data: {
       plantCount: plants.total,
       diaryCount: diaries.total,
-      favoriteCount: users.data[0]?.favorites?.length || 0,
+      favoriteCount,
     },
   }
 }

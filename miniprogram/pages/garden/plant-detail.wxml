@@ -17,10 +17,12 @@
         <icon src="/images/icons/common/place.svg" size="xs" />
         <text class="pill-text">{{plant.location || '点击设置位置'}}</text>
       </view>
-      <view class="info-pill" bindtap="onEditPurchaseDate">
-        <icon src="/images/icons/common/date.svg" size="xs" />
-        <text class="pill-text">养了{{plant.days}}天</text>
-      </view>
+      <picker mode="date" value="{{plant.addDate || todayStr}}" bindchange="onPurchaseDateChange" class="info-pill">
+        <view class="info-pill-inner">
+          <icon src="/images/icons/common/date.svg" size="xs" />
+          <text class="pill-text">养了{{plant.days}}天</text>
+        </view>
+      </picker>
       <view class="info-pill pill-status-{{plant.status}}" bindtap="onEditStatus">
         <icon name="leaf" size="xs" />
         <text class="pill-text">{{statusLabel}}</text>

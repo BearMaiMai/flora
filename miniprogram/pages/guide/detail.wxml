@@ -1,8 +1,26 @@
 <!--pages/guide/detail.wxml-->
-<view class="container" wx:if="{{guide}}">
-  <view class="card">
-    <text class="guide-title">{{guide.title}}</text>
-    <rich-text nodes="{{guide.content}}" class="mt-md"></rich-text>
+<scroll-view class="article-scroll" scroll-y enhanced show-scrollbar="{{false}}" bounces="{{true}}">
+  <view class="container" wx:if="{{guide}}">
+    <!-- 主标题卡片 -->
+    <view class="title-card">
+      <text class="article-main-title">{{guide.title}}</text>
+      <view class="article-meta">
+        <text class="meta-tag meta-tag-category">{{guide.category}}</text>
+        <text class="meta-tag">{{guide.readTime || 5}}分钟阅读</text>
+        <text class="meta-tag">{{guide.createdAt}}</text>
+      </view>
+      <view wx:if="{{guide.summary}}" class="article-summary">{{guide.summary}}</view>
+    </view>
+
+    <!-- 正文 -->
+    <view class="content-card">
+      <rich-text nodes="{{guide.content}}" class="article-content"></rich-text>
+    </view>
+
+    <view class="bottom-spacer"></view>
   </view>
-</view>
-<view class="empty-placeholder" wx:else><text>加载中...</text></view>
+
+  <view class="empty-placeholder" wx:else>
+    <text class="empty-text">{{loading ? '加载中…' : '文章不存在'}}</text>
+  </view>
+</scroll-view>
