@@ -19,25 +19,15 @@ module.exports = async (event, context, { db, cloud }) => {
   console.log('[user/login] 查询结果:', data ? data.length : 'null')
 
   if (data.length > 0) {
-    const user = data[0]
+    // 已有用户，更新登录时间 + 生成新 session token
     const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
-    await db.collection('users').doc(user._id).update({
+    await db.collection('users').doc(data[0]._id).update({
       data: { sessionToken, lastLoginAt: db.serverDate() }
     })
-    console.log('[user/login] 老用户更新完成')
-    return {
-      code: 0,
-      data: {
-        _id: user._id,
-        nickName: user.nickName || '花友',
-        avatarUrl: user.avatarUrl || '',
-        sessionToken,
-        favorites: user.favorites || [],
-      }
-    }
+    return { code: 0, data: { ...data[0], sessionToken } }
   }
 
-  console.log('[user/login] 新用户注册')
+  // 新用户注册
   const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2)}`
   const newUser = {
     _openid: openid,

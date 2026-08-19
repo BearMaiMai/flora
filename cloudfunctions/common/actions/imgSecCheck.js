@@ -30,32 +30,17 @@ module.exports = async (event, context) => {
     const results = await Promise.all(
       urls.map(async (url) => {
         try {
-          // 策略：先把 cloud:// 转 HTTPS 临时 URL，检查 API；
-          //        URL 方式失败时降级为下载二进制 buffer 走 media 方式
+          // cloud:// fileID 需先转换为 HTTPS 临时 URL
           let checkUrl = url
           if (url.startsWith('cloud://')) {
-            try {
-              const { fileList } = await cloud.getTempFileURL({ fileList: [url] })
-              if (fileList && fileList[0] && fileList[0].tempFileURL) {
-                checkUrl = fileList[0].tempFileURL
-              }
-            } catch (e) {
-              console.warn('[imgSecCheck] getTempFileURL 失败，降级走 buffer:', e.message)
-              return await checkByBuffer(url)
-            }
+            const { fileList } = await cloud.getTempFileURL({ fileList: [url] })
+            checkUrl = (fileList && fileList[0] && fileList[0].tempFileURL) || url
           }
 
-          try {
-            const res = await cloud.openapi.security.imgSecCheck({ media_url: checkUrl })
-            return { url, suggest: res.result.suggest }
-          } catch (urlErr) {
-            console.warn('[imgSecCheck] media_url 方式失败，降级走 buffer:', urlErr.message)
-            // URL 方式如果也是 cloud://，能下载 buffer；否则无法降级
-            if (url.startsWith('cloud://')) {
-              return await checkByBuffer(url)
-            }
-            return { url, suggest: 'pass', error: urlErr.message }
-          }
+          const res = await cloud.openapi.security.imgSecCheck({
+            media_url: checkUrl,
+          })
+          return { url, suggest: res.result.suggest }
         } catch (err) {
           console.error('[imgSecCheck] 单图检测异常:', url, err)
           return { url, suggest: 'block', error: err.message }
